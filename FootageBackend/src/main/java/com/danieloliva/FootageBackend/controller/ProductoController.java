@@ -1,8 +1,7 @@
-package com.danieloliva.FootageBackend.usuario.controller;
+package com.danieloliva.FootageBackend.controller;
 
 import com.danieloliva.FootageBackend.model.Producto;
-import com.danieloliva.FootageBackend.usuario.model.Usuario;
-import com.danieloliva.FootageBackend.usuario.service.UsuarioService;
+import com.danieloliva.FootageBackend.service.ProductoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -20,106 +19,105 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Usuario", description = "Controller de los usuarios")
-public class UsuarioController {
+@Tag(name = "Producto", description = "Controller de los productos")
+@RequestMapping("/producto/")
+public class ProductoController {
 
-    private final UsuarioService usuarioService;
+    private final ProductoService productoService;
 
-    @Operation(summary = "Obtiene lista de usuarios")
+    @Operation(summary = "Obtiene lista de productos")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
-                    description = "Se han encontrado los usuarios",
+                    description = "Se han encontrado los productos",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Producto.class))}),
             @ApiResponse(responseCode = "400",
-                    description = "No se han encontrado los usuarios",
+                    description = "No se han encontrado los productos",
                     content = @Content),
     })
     @GetMapping("")
-    public ResponseEntity<List<Usuario>> findAll() {
+    public ResponseEntity<List<Producto>> findAll() {
 
-        List<Usuario> usuarios = usuarioService.findAll();
+        List<Producto> productos = productoService.findAll();
 
-        if (usuarios.isEmpty()) {
+        if (productos.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok().body(usuarios);
+            return ResponseEntity.ok().body(productos);
         }
 
     }
 
-    @Operation(summary = "Obtiene un usuario en base a su ID")
+    @Operation(summary = "Obtiene un producto en base a su ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
-                    description = "Se ha encontrado el usuario",
+                    description = "Se ha encontrado el producto",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Producto.class))}),
             @ApiResponse(responseCode = "400",
-                    description = "No se ha encontrado el usuario",
+                    description = "No se ha encontrado el producto",
                     content = @Content),
     })
     @GetMapping("{id}")
-    public ResponseEntity<Optional<Usuario>> findOne(@PathVariable UUID id) {
+    public ResponseEntity<Optional<Producto>> findOne(@PathVariable UUID id) {
 
-        Optional<Usuario> usuario = usuarioService.findById(id);
+        Optional<Producto> producto = productoService.findById(id);
 
-        if (usuario.isEmpty()) {
+        if (producto.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok().body(usuario);
+            return ResponseEntity.ok().body(producto);
         }
 
     }
 
-    @Operation(summary = "Crea un nuevo usuario")
+    @Operation(summary = "Crea un nuevo producto")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
-                    description = "Se ha creado el nuevo usuario",
+                    description = "Se ha creado el nuevo producto",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Producto.class))}),
             @ApiResponse(responseCode = "404",
-                    description = "No se ha creado el nuevo usuario",
+                    description = "No se ha creado el nuevo producto",
                     content = @Content),
     })
     @PostMapping("")
-    public ResponseEntity<Usuario> create (@RequestBody Usuario usuario) {
+    public ResponseEntity<Producto> create (@RequestBody Producto producto) {
 
-        if (usuario.getUsername().isEmpty()) {
+        if (producto.getTitulo().isEmpty()) {
             return ResponseEntity.badRequest().build();
         } else {
-            usuarioService.save(usuario);
-            return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
+            productoService.save(producto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(producto);
         }
 
     }
 
-    @Operation(summary = "Edita un usuario anteriormente creado, buscando por su ID")
+    @Operation(summary = "Edita un producto anteriormente creado, buscando por su ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
-                    description = "Se ha editado el usuario",
+                    description = "Se ha editado el producto",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Producto.class))}),
             @ApiResponse(responseCode = "400",
-                    description = "No se ha editado el usuario",
+                    description = "No se ha editado el producto",
                     content = @Content),
     })
     @PutMapping("{id}")
-    public ResponseEntity<Usuario> edit (@RequestBody Usuario usuario, @PathVariable UUID id) {
+    public ResponseEntity<Producto> edit (@RequestBody Producto producto, @PathVariable UUID id) {
 
-        if (usuarioService.findById(id).isEmpty()) {
+        if (productoService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.of(
-                    usuarioService.findById(id).map(p -> {
-                        p.setNombre(usuario.getNombre());
-                        p.setApellidos(usuario.getApellidos());
-                        p.setUsername(usuario.getUsername());
-                        p.setPassword(usuario.getPassword());
-                        p.setAvatar(usuario.getAvatar());
-                        p.setPremium(usuario.isPremium());
-                        p.setRol(usuario.getRol());
-                        p.setArticulos(usuario.getArticulos());
-                        usuarioService.save(p);
+                    productoService.findById(id).map(p -> {
+                        p.setTitulo(producto.getTitulo());
+                        p.setDescripcion(producto.getDescripcion());
+                        p.setPrecio(producto.getPrecio());
+                        p.setIntercambio(producto.isIntercambio());
+                        p.setOriginal(producto.isOriginal());
+                        p.setFotos(producto.getFotos());
+                        productoService.save(p);
                         return p;
                     })
             );
@@ -127,22 +125,22 @@ public class UsuarioController {
 
     }
 
-    @Operation(summary = "Borra un usuario específico")
+    @Operation(summary = "Borra un producto específico")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
-                    description = "Se ha borrado el usuario",
+                    description = "Se ha borrado el producto",
                     content = { @Content(mediaType = "application/json") }),
             @ApiResponse(responseCode = "400",
-                    description = "No se ha borrado el usuario",
+                    description = "No se ha borrado el producto",
                     content = @Content),
     })
     @DeleteMapping("{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id) {
 
-        if (usuarioService.findById(id).isEmpty()) {
+        if (productoService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            usuarioService.deleteById(id);
+            productoService.deleteById(id);
             return ResponseEntity.noContent().build();
         }
 

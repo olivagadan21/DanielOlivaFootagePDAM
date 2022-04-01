@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class BaseService <T, ID, R extends JpaRepository<T,ID>> {
+public abstract class BaseService<T, ID, R extends JpaRepository<T, ID>> {
 
     @Autowired
     protected R repositorio;
@@ -17,13 +17,9 @@ public abstract class BaseService <T, ID, R extends JpaRepository<T,ID>> {
         return repositorio.findAll();
     }
 
-    public Page<T> findAll(Pageable pageable){
+    public Page<T> findAll(Pageable pageable) {
 
         return repositorio.findAll(pageable);
-    }
-
-    public List<T>findAlldto(){
-        return repositorio.findAll();
     }
 
     public Optional<T> findById(ID id) {

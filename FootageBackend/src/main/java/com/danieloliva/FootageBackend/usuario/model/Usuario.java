@@ -1,5 +1,6 @@
 package com.danieloliva.FootageBackend.usuario.model;
 
+import com.danieloliva.FootageBackend.model.Producto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -57,6 +59,9 @@ public class Usuario implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(name = "rol")
     private RolUsuario rol;
+
+    @OneToMany
+    private List<Producto> articulos = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
