@@ -19,19 +19,8 @@ import java.util.UUID;
 public class Producto implements Serializable {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator",
-            parameters = {
-                    @org.hibernate.annotations.Parameter(
-                            name = "uuid_gen_strategy_class",
-                            value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
-                    )
-            }
-    )
-    @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+    @GeneratedValue
+    private Long id;
 
     private String titulo;
 
@@ -44,10 +33,24 @@ public class Producto implements Serializable {
 
     private boolean original;
 
+    @Column
+    @ElementCollection(targetClass = String.class)
     private List<String> fotos = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", updatable = false, nullable = false)
     private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "seccion_id")
+    private Seccion seccion;
+
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
+
+    @ManyToOne
+    @JoinColumn(name = "marca_id")
+    private Marca marca;
 
 }

@@ -117,6 +117,9 @@ public class ProductoController {
                         p.setIntercambio(producto.isIntercambio());
                         p.setOriginal(producto.isOriginal());
                         p.setFotos(producto.getFotos());
+                        p.setCategoria(producto.getCategoria());
+                        p.setSeccion(producto.getSeccion());
+                        p.setMarca(producto.getMarca());
                         productoService.save(p);
                         return p;
                     })
