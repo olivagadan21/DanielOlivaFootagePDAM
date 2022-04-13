@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -61,7 +60,7 @@ public class UsuarioController {
                     content = @Content),
     })
     @GetMapping("{id}")
-    public ResponseEntity<Optional<Usuario>> findOne(@PathVariable UUID id) {
+    public ResponseEntity<Optional<Usuario>> findOne(@PathVariable Long id) {
 
         Optional<Usuario> usuario = usuarioService.findById(id);
 
@@ -106,7 +105,7 @@ public class UsuarioController {
                     content = @Content),
     })
     @PutMapping("{id}")
-    public ResponseEntity<Usuario> edit (@RequestBody Usuario usuario, @PathVariable UUID id) {
+    public ResponseEntity<Usuario> edit (@RequestBody Usuario usuario, @PathVariable Long id) {
 
         if (usuarioService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -119,6 +118,7 @@ public class UsuarioController {
                         p.setPassword(usuario.getPassword());
                         p.setAvatar(usuario.getAvatar());
                         p.setPremium(usuario.isPremium());
+                        p.setLocalizacion(usuario.getLocalizacion());
                         p.setRol(usuario.getRol());
                         p.setArticulos(usuario.getArticulos());
                         usuarioService.save(p);
@@ -139,7 +139,7 @@ public class UsuarioController {
                     content = @Content),
     })
     @DeleteMapping("{id}")
-    public ResponseEntity<?> delete(@PathVariable UUID id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
 
         if (usuarioService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();

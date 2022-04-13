@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -59,7 +58,7 @@ public class AnuncioController {
                     content = @Content),
     })
     @GetMapping("{id}")
-    public ResponseEntity<Optional<Anuncio>> findOne(@PathVariable UUID id) {
+    public ResponseEntity<Optional<Anuncio>> findOne(@PathVariable Long id) {
 
         Optional<Anuncio> anuncio = anuncioService.findById(id);
 
@@ -104,7 +103,7 @@ public class AnuncioController {
                     content = @Content),
     })
     @PutMapping("{id}")
-    public ResponseEntity<Anuncio> edit (@RequestBody Anuncio anuncio, @PathVariable UUID id) {
+    public ResponseEntity<Anuncio> edit (@RequestBody Anuncio anuncio, @PathVariable Long id) {
 
         if (anuncioService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -132,7 +131,7 @@ public class AnuncioController {
                     content = @Content),
     })
     @DeleteMapping("{id}")
-    public ResponseEntity<?> delete(@PathVariable UUID id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
 
         if (anuncioService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();

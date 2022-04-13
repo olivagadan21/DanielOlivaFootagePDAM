@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -59,7 +58,7 @@ public class CategoriaController {
                     content = @Content),
     })
     @GetMapping("{id}")
-    public ResponseEntity<Optional<Categoria>> findOne(@PathVariable UUID id) {
+    public ResponseEntity<Optional<Categoria>> findOne(@PathVariable Long id) {
 
         Optional<Categoria> categoria = categoriaService.findById(id);
 
@@ -104,13 +103,15 @@ public class CategoriaController {
                     content = @Content),
     })
     @PutMapping("{id}")
-    public ResponseEntity<Categoria> edit(@RequestBody Categoria categoria, @PathVariable UUID id) {
+    public ResponseEntity<Categoria> edit(@RequestBody Categoria categoria, @PathVariable Long id) {
 
-        if (categoriaService.findById(id).isEmpty()) {
+        Optional<Categoria> cat = categoriaService.findById(id);
+
+        if (cat.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.of(
-                    categoriaService.findById(id).map(c -> {
+                    cat.map(c -> {
                         c.setNombre(categoria.getNombre());
                         c.setImagen(categoria.getImagen());
                         categoriaService.save(c);
@@ -131,7 +132,7 @@ public class CategoriaController {
                     content = @Content),
     })
     @DeleteMapping("{id}")
-    public ResponseEntity<?> delete(@PathVariable UUID id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
 
         if (categoriaService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();

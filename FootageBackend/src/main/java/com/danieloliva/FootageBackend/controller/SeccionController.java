@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -59,7 +58,7 @@ public class SeccionController {
                     content = @Content),
     })
     @GetMapping("{id}")
-    public ResponseEntity<Optional<Seccion>> findOne(@PathVariable UUID id) {
+    public ResponseEntity<Optional<Seccion>> findOne(@PathVariable Long id) {
 
         Optional<Seccion> seccion = seccionService.findById(id);
 
@@ -104,7 +103,7 @@ public class SeccionController {
                     content = @Content),
     })
     @PutMapping("{id}")
-    public ResponseEntity<Seccion> edit(@RequestBody Seccion seccion, @PathVariable UUID id) {
+    public ResponseEntity<Seccion> edit(@RequestBody Seccion seccion, @PathVariable Long id) {
 
         if (seccionService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -131,7 +130,7 @@ public class SeccionController {
                     content = @Content),
     })
     @DeleteMapping("{id}")
-    public ResponseEntity<?> delete(@PathVariable UUID id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
 
         if (seccionService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();

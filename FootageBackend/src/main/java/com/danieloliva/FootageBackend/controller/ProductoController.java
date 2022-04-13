@@ -1,5 +1,7 @@
 package com.danieloliva.FootageBackend.controller;
 
+import com.danieloliva.FootageBackend.dto.CreateProductoDto;
+import com.danieloliva.FootageBackend.dto.ProductoDtoConverter;
 import com.danieloliva.FootageBackend.model.Producto;
 import com.danieloliva.FootageBackend.service.ProductoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,6 +25,7 @@ import java.util.UUID;
 public class ProductoController {
 
     private final ProductoService productoService;
+    private final ProductoDtoConverter productoDtoConverter;
 
     @Operation(summary = "Obtiene lista de productos")
     @ApiResponses(value = {
@@ -59,7 +61,7 @@ public class ProductoController {
                     content = @Content),
     })
     @GetMapping("{id}")
-    public ResponseEntity<Optional<Producto>> findOne(@PathVariable UUID id) {
+    public ResponseEntity<Optional<Producto>> findOne(@PathVariable Long id) {
 
         Optional<Producto> producto = productoService.findById(id);
 
@@ -82,11 +84,12 @@ public class ProductoController {
                     content = @Content),
     })
     @PostMapping("")
-    public ResponseEntity<Producto> create (@RequestBody Producto producto) {
+    public ResponseEntity<Producto> create (@RequestBody CreateProductoDto productoDto) {
 
-        if (producto.getTitulo().isEmpty()) {
+        if (productoDto.getTitulo().isEmpty()) {
             return ResponseEntity.badRequest().build();
         } else {
+            Producto producto = productoDtoConverter.createProductoDtoToProducto(productoDto);
             productoService.save(producto);
             return ResponseEntity.status(HttpStatus.CREATED).body(producto);
         }
@@ -104,7 +107,7 @@ public class ProductoController {
                     content = @Content),
     })
     @PutMapping("{id}")
-    public ResponseEntity<Producto> edit (@RequestBody Producto producto, @PathVariable UUID id) {
+    public ResponseEntity<Producto> edit (@RequestBody Producto producto, @PathVariable Long id) {
 
         if (productoService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -138,7 +141,7 @@ public class ProductoController {
                     content = @Content),
     })
     @DeleteMapping("{id}")
-    public ResponseEntity<?> delete(@PathVariable UUID id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
 
         if (productoService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();

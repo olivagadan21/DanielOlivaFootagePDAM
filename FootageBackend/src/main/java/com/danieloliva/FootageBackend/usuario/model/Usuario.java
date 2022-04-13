@@ -2,22 +2,20 @@
 package com.danieloliva.FootageBackend.usuario.model;
 
 import com.danieloliva.FootageBackend.model.Producto;
+import com.danieloliva.FootageBackend.validacion.anotaciones.UniqueUsername;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "usuarios")
@@ -29,22 +27,14 @@ import java.util.UUID;
 public class Usuario implements UserDetails {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator",
-            parameters = {
-                    @org.hibernate.annotations.Parameter(name = "uuid_gen_strategy_class",
-                            value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
-                    )
-            }
-    )
-    private UUID id;
+    @GeneratedValue
+    private Long id;
 
     private String nombre;
 
     private String apellidos;
 
+    @UniqueUsername(message = "El usuario debe ser único")
     private String username;
 
     @NaturalId
@@ -54,6 +44,8 @@ public class Usuario implements UserDetails {
     private String password;
 
     private String avatar;
+
+    private String localizacion;
 
     private boolean premium;
 

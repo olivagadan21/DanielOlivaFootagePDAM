@@ -2,13 +2,10 @@ package com.danieloliva.FootageBackend.model;
 
 import com.danieloliva.FootageBackend.usuario.model.Usuario;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter
