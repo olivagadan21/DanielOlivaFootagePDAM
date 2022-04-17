@@ -3,10 +3,7 @@ package com.danieloliva.FootageBackend.usuario.model;
 
 import com.danieloliva.FootageBackend.model.Producto;
 import com.danieloliva.FootageBackend.validacion.anotaciones.UniqueUsername;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,7 +17,8 @@ import java.util.List;
 @Entity
 @Table(name = "usuarios")
 @EntityListeners(AuditingEntityListener.class)
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -53,7 +51,7 @@ public class Usuario implements UserDetails {
     @Column(name = "rol")
     private RolUsuario rol;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Producto> articulos = new ArrayList<>();
 
     @Override

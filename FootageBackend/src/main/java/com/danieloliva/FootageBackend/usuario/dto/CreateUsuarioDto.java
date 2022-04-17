@@ -1,13 +1,14 @@
 package com.danieloliva.FootageBackend.usuario.dto;
 
-import com.danieloliva.FootageBackend.usuario.model.RolUsuario;
 import com.danieloliva.FootageBackend.validacion.anotaciones.UniqueUsername;
 import org.hibernate.annotations.NaturalId;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CreateUsuarioDto {
 
     private String nombre;

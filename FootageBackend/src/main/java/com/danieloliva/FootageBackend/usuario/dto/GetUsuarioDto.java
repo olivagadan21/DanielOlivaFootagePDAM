@@ -1,27 +1,22 @@
 package com.danieloliva.FootageBackend.usuario.dto;
 
 import com.danieloliva.FootageBackend.usuario.model.RolUsuario;
-import com.danieloliva.FootageBackend.validacion.anotaciones.UniqueUsername;
 import lombok.*;
-import org.hibernate.annotations.NaturalId;
-
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UpdateUsuarioDto {
+public class GetUsuarioDto {
 
     private String nombre;
 
     private String apellidos;
 
-    @UniqueUsername(message = "El usuario debe ser único")
     private String username;
+
+    private String email;
 
     private String avatar;
 
@@ -29,8 +24,6 @@ public class UpdateUsuarioDto {
 
     private boolean premium;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "rol")
     private RolUsuario rol;
 
 }
