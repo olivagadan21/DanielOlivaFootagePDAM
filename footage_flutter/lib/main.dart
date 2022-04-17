@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:footage_flutter/ui/screens/buscado-screen.dart';
-import 'package:footage_flutter/ui/screens/buscar-screen.dart';
-import 'package:footage_flutter/ui/screens/chat-screen.dart';
-import 'package:footage_flutter/ui/screens/detalleproducto-screen.dart';
-import 'package:footage_flutter/ui/screens/editarperfil-screen.dart';
-import 'package:footage_flutter/ui/screens/inicio-screen.dart';
-import 'package:footage_flutter/ui/screens/login-screen.dart';
-import 'package:footage_flutter/ui/screens/mensajes-screen.dart';
-import 'package:footage_flutter/ui/screens/perfil-screen.dart';
-import 'package:footage_flutter/ui/screens/principal-screen.dart';
-import 'package:footage_flutter/ui/screens/register-screen.dart';
-import 'package:footage_flutter/ui/screens/vender-screen.dart';
+
+import 'ui/screens/buscado_screen.dart';
+import 'ui/screens/buscar_screen.dart';
+import 'ui/screens/chat_screen.dart';
+import 'ui/screens/detalleproducto_screen.dart';
+import 'ui/screens/editarperfil_screen.dart';
+import 'ui/screens/inicio_screen.dart';
+import 'ui/screens/login_screen.dart';
+import 'ui/screens/mensajes_screen.dart';
+import 'ui/screens/perfil_screen.dart';
+import 'ui/screens/principal_screen.dart';
+import 'ui/screens/register_screen.dart';
+import 'ui/screens/vender_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Footage',
       theme: ThemeData(
         primarySwatch: Colors.grey,

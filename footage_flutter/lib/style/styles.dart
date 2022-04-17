@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Style {
+class Colores {
 
   static const Color principal = Color.fromRGBO(59, 181, 189, 100);
   static const Color negro = Colors.black;
