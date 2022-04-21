@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:footage_flutter/ui/screens/inicio_screen.dart';
+import 'package:footage_flutter/ui/screens/menu_screen.dart';
 
 class DetalleProducto extends StatelessWidget {
 
@@ -24,7 +24,7 @@ class DetalleProducto extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const Inicio()));}, icon: const Icon(Icons.arrow_back, color: Colors.white,)),
+                    IconButton(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const Menu()));}, icon: const Icon(Icons.arrow_back, color: Colors.white,)),
                     const Padding(
                       padding: EdgeInsets.only(top: 12),
                       child: Icon(Icons.favorite_border, color: Colors.white,),

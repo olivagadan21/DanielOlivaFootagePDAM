@@ -78,6 +78,9 @@ flutter:
     - assets/images/principal.jpg
     - assets/images/icono.png
     - assets/images/camiseta.jpg
+    - assets/images/categoria.jpg
+    - assets/images/seccion.jpg
+    - assets/images/marca.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

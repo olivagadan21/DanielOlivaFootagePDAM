@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:footage_flutter/ui/screens/menu_screen.dart';
 
 import 'ui/screens/buscado_screen.dart';
 import 'ui/screens/buscar_screen.dart';
@@ -28,20 +29,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),
-      initialRoute: '/principal',
+      initialRoute: '/menu',
       routes: {
         '/principal': (context) => const Principal(),
         '/login': (context) => const Login(),
         '/register': (context) => const Register(),
-        '/inicio': (context) => const Inicio(),
-        '/buscar': (context) => const Buscar(),
-        '/buscado': (context) => const Buscado(),
-        '/detalleproducto': (context) => const DetalleProducto(),
-        '/vender': (context) => const Vender(),
-        '/mensajes': (context) => const Mensajes(),
-        '/chat': (context) => const Chat(),
-        '/perfil': (context) => const Perfil(),
-        '/editarperfil': (context) => const EditarPerfil(),
+        '/menu': (context) => const Menu()
       },
     );
   }
