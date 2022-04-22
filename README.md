@@ -1,8 +1,6 @@
-
 **MEMORIA PDAM**
 
-![](Aspose.Words.9afcbc38-7ca0-424c-85f8-6f8550f29369.001.png)
-
+![Aspose Words 9afcbc38-7ca0-424c-85f8-6f8550f29369 001](https://user-images.githubusercontent.com/74652143/164620794-1d6dc2d4-d73b-4a35-96e0-feba0ab6715f.png)
 
 Realizado por: **Daniel Oliva García**
 
