@@ -1,7 +1,7 @@
 package com.danieloliva.FootageBackend.controller;
 
-import com.danieloliva.FootageBackend.dto.CreateProductoDto;
-import com.danieloliva.FootageBackend.dto.ProductoDtoConverter;
+import com.danieloliva.FootageBackend.dto.producto.CreateProductoDto;
+import com.danieloliva.FootageBackend.dto.producto.ProductoDtoConverter;
 import com.danieloliva.FootageBackend.model.Producto;
 import com.danieloliva.FootageBackend.service.ProductoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor

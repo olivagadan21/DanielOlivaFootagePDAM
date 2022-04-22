@@ -1,7 +1,8 @@
 package com.danieloliva.FootageBackend.controller;
 
+import com.danieloliva.FootageBackend.model.Anuncio;
 import com.danieloliva.FootageBackend.model.Categoria;
-import com.danieloliva.FootageBackend.service.CategoriaService;
+import com.danieloliva.FootageBackend.service.CategoriaServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,9 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,7 +24,7 @@ import java.util.UUID;
 @RequestMapping("/categoria/")
 public class CategoriaController {
 
-    private final CategoriaService categoriaService;
+    private final CategoriaServiceImpl categoriaServiceImpl;
 
     @Operation(summary = "Obtiene lista de categorías")
     @ApiResponses(value = {
@@ -37,7 +39,7 @@ public class CategoriaController {
     @GetMapping("")
     public ResponseEntity<List<Categoria>> findAll() {
 
-        List<Categoria> categorias = categoriaService.findAll();
+        List<Categoria> categorias = categoriaServiceImpl.findAll();
 
         if (categorias.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -60,7 +62,7 @@ public class CategoriaController {
     @GetMapping("{id}")
     public ResponseEntity<Optional<Categoria>> findOne(@PathVariable Long id) {
 
-        Optional<Categoria> categoria = categoriaService.findById(id);
+        Optional<Categoria> categoria = categoriaServiceImpl.findById(id);
 
         if (categoria.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -81,12 +83,12 @@ public class CategoriaController {
                     content = @Content),
     })
     @PostMapping("")
-    public ResponseEntity<Categoria> create(@RequestBody Categoria categoria) {
+    public ResponseEntity<Categoria> create(@RequestPart("categoria") Categoria categoria, @RequestPart("file") MultipartFile file) {
 
         if (categoria.getNombre().isEmpty()) {
             return ResponseEntity.badRequest().build();
         } else {
-            categoriaService.save(categoria);
+            categoriaServiceImpl.save(categoria, file);
             return ResponseEntity.status(HttpStatus.CREATED).body(categoria);
         }
 
@@ -103,21 +105,14 @@ public class CategoriaController {
                     content = @Content),
     })
     @PutMapping("{id}")
-    public ResponseEntity<Categoria> edit(@RequestBody Categoria categoria, @PathVariable Long id) {
+    public ResponseEntity<Categoria> edit(@RequestPart("anuncio") Categoria categoria, @RequestPart("file") MultipartFile file, @PathVariable Long id) {
 
-        Optional<Categoria> cat = categoriaService.findById(id);
+        Optional<Categoria> cat = categoriaServiceImpl.findById(id);
 
         if (cat.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.of(
-                    cat.map(c -> {
-                        c.setNombre(categoria.getNombre());
-                        c.setImagen(categoria.getImagen());
-                        categoriaService.save(c);
-                        return c;
-                    })
-            );
+            return ResponseEntity.ok().body(categoriaServiceImpl.edit(categoria, file, id));
         }
 
     }
@@ -134,10 +129,10 @@ public class CategoriaController {
     @DeleteMapping("{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
 
-        if (categoriaService.findById(id).isEmpty()) {
+        if (categoriaServiceImpl.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            categoriaService.deleteById(id);
+            categoriaServiceImpl.deleteById(id);
             return ResponseEntity.noContent().build();
         }
 

@@ -1,4 +1,4 @@
-package com.danieloliva.FootageBackend.dto;
+package com.danieloliva.FootageBackend.dto.producto;
 
 import lombok.*;
 
