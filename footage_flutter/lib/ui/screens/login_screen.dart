@@ -43,31 +43,29 @@ class _LoginState extends State<Login> {
 
   _createBody(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-            color: Colors.white,
-            padding: const EdgeInsets.all(20),
-            child: BlocConsumer<LoginBloc, LoginState>(
-                listenWhen: (context, state) {
-              return state is LoginSuccessState || state is LoginErrorState;
-            }, listener: (context, state) async {
-              if (state is LoginSuccessState) {
-                _loginSuccess(context, state.loginResponse);
-              } else if (state is LoginErrorState) {
-                _showSnackbar(context, state.message);
-              }
-            }, buildWhen: (context, state) {
-              return state is LoginInitialState || state is LoginLoadingState;
-            }, builder: (ctx, state) {
-              if (state is LoginInitialState) {
-                return _login(ctx);
-              } else if (state is LoginLoadingState) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                return _login(ctx);
-              }
-            })),
-      ),
+      body: Container(
+          color: Colors.white,
+          padding: const EdgeInsets.all(20),
+          child: BlocConsumer<LoginBloc, LoginState>(
+              listenWhen: (context, state) {
+            return state is LoginSuccessState || state is LoginErrorState;
+          }, listener: (context, state) async {
+            if (state is LoginSuccessState) {
+              _loginSuccess(context, state.loginResponse);
+            } else if (state is LoginErrorState) {
+              _showSnackbar(context, state.message);
+            }
+          }, buildWhen: (context, state) {
+            return state is LoginInitialState || state is LoginLoadingState;
+          }, builder: (ctx, state) {
+            if (state is LoginInitialState) {
+              return _login(ctx);
+            } else if (state is LoginLoadingState) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              return _login(ctx);
+            }
+          })),
     );
   }
 

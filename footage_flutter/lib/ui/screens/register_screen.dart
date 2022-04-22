@@ -65,31 +65,29 @@ class _RegisterState extends State<Register> {
 
   _createBody(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-            color: Colors.white,
-            padding: const EdgeInsets.all(20),
-            child: BlocConsumer<RegisterBloc, RegisterState>(
-                listenWhen: (context, state) {
-              return state is RegisterSuccessState || state is LoginErrorState;
-            }, listener: (context, state) async {
-              if (state is RegisterSuccessState) {
-                _registerSuccess(context, state.loginResponse);
-              } else if (state is LoginErrorState) {
-                _showSnackbar(context, state.message);
-              }
-            }, buildWhen: (context, state) {
-              return state is RegisterInitial || state is RegisterLoading;
-            }, builder: (ctx, state) {
-              if (state is RegisterInitial) {
-                return _register(ctx);
-              } else if (state is RegisterLoading) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                return _register(ctx);
-              }
-            })),
-      ),
+      body: Container(
+          color: Colors.white,
+          padding: const EdgeInsets.all(20),
+          child: BlocConsumer<RegisterBloc, RegisterState>(
+              listenWhen: (context, state) {
+            return state is RegisterSuccessState || state is LoginErrorState;
+          }, listener: (context, state) async {
+            if (state is RegisterSuccessState) {
+              _registerSuccess(context, state.loginResponse);
+            } else if (state is LoginErrorState) {
+              _showSnackbar(context, state.message);
+            }
+          }, buildWhen: (context, state) {
+            return state is RegisterInitial || state is RegisterLoading;
+          }, builder: (ctx, state) {
+            if (state is RegisterInitial) {
+              return _register(ctx);
+            } else if (state is RegisterLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              return _register(ctx);
+            }
+          })),
     );
   }
 
