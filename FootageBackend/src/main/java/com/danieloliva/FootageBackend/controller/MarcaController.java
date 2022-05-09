@@ -1,7 +1,7 @@
 package com.danieloliva.FootageBackend.controller;
 
 import com.danieloliva.FootageBackend.model.Marca;
-import com.danieloliva.FootageBackend.service.MarcaService;
+import com.danieloliva.FootageBackend.service.base.MarcaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,9 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -81,12 +81,12 @@ public class MarcaController {
                     content = @Content),
     })
     @PostMapping("")
-    public ResponseEntity<Marca> create(@RequestBody Marca marca) {
+    public ResponseEntity<Marca> create(@RequestPart("marca") Marca marca, @RequestPart("file") MultipartFile file) {
 
         if (marca.getNombre().isEmpty()) {
             return ResponseEntity.badRequest().build();
         } else {
-            marcaService.save(marca);
+            marcaService.save(marca, file);
             return ResponseEntity.status(HttpStatus.CREATED).body(marca);
         }
 
@@ -103,19 +103,14 @@ public class MarcaController {
                     content = @Content),
     })
     @PutMapping("{id}")
-    public ResponseEntity<Marca> edit(@RequestBody Marca marca, @PathVariable Long id) {
+    public ResponseEntity<Marca> edit(@RequestPart("marca") Marca marca, @RequestPart("file") MultipartFile file, @PathVariable Long id) {
 
-        if (marcaService.findById(id).isEmpty()) {
+        Optional<Marca> mar = marcaService.findById(id);
+
+        if (mar.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.of(
-                    marcaService.findById(id).map(m -> {
-                        m.setNombre(marca.getNombre());
-                        m.setImagen(marca.getImagen());
-                        marcaService.save(m);
-                        return m;
-                    })
-            );
+            return ResponseEntity.ok().body(marcaService.edit(marca, file, id));
         }
 
     }

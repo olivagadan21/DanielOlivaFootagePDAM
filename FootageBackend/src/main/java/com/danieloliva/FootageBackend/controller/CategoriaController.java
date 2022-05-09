@@ -1,8 +1,7 @@
 package com.danieloliva.FootageBackend.controller;
 
-import com.danieloliva.FootageBackend.model.Anuncio;
 import com.danieloliva.FootageBackend.model.Categoria;
-import com.danieloliva.FootageBackend.service.CategoriaServiceImpl;
+import com.danieloliva.FootageBackend.service.base.CategoriaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +22,7 @@ import java.util.Optional;
 @RequestMapping("/categoria/")
 public class CategoriaController {
 
-    private final CategoriaServiceImpl categoriaServiceImpl;
+    private final CategoriaService categoriaService;
 
     @Operation(summary = "Obtiene lista de categorías")
     @ApiResponses(value = {
@@ -39,7 +37,7 @@ public class CategoriaController {
     @GetMapping("")
     public ResponseEntity<List<Categoria>> findAll() {
 
-        List<Categoria> categorias = categoriaServiceImpl.findAll();
+        List<Categoria> categorias = categoriaService.findAll();
 
         if (categorias.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -62,7 +60,7 @@ public class CategoriaController {
     @GetMapping("{id}")
     public ResponseEntity<Optional<Categoria>> findOne(@PathVariable Long id) {
 
-        Optional<Categoria> categoria = categoriaServiceImpl.findById(id);
+        Optional<Categoria> categoria = categoriaService.findById(id);
 
         if (categoria.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -88,7 +86,7 @@ public class CategoriaController {
         if (categoria.getNombre().isEmpty()) {
             return ResponseEntity.badRequest().build();
         } else {
-            categoriaServiceImpl.save(categoria, file);
+            categoriaService.save(categoria, file);
             return ResponseEntity.status(HttpStatus.CREATED).body(categoria);
         }
 
@@ -105,14 +103,14 @@ public class CategoriaController {
                     content = @Content),
     })
     @PutMapping("{id}")
-    public ResponseEntity<Categoria> edit(@RequestPart("anuncio") Categoria categoria, @RequestPart("file") MultipartFile file, @PathVariable Long id) {
+    public ResponseEntity<Categoria> edit(@RequestPart("categoria") Categoria categoria, @RequestPart("file") MultipartFile file, @PathVariable Long id) {
 
-        Optional<Categoria> cat = categoriaServiceImpl.findById(id);
+        Optional<Categoria> cat = categoriaService.findById(id);
 
         if (cat.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok().body(categoriaServiceImpl.edit(categoria, file, id));
+            return ResponseEntity.ok().body(categoriaService.edit(categoria, file, id));
         }
 
     }
@@ -129,10 +127,10 @@ public class CategoriaController {
     @DeleteMapping("{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
 
-        if (categoriaServiceImpl.findById(id).isEmpty()) {
+        if (categoriaService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            categoriaServiceImpl.deleteById(id);
+            categoriaService.deleteById(id);
             return ResponseEntity.noContent().build();
         }
 

@@ -3,7 +3,9 @@ package com.danieloliva.FootageBackend.security;
 import com.danieloliva.FootageBackend.security.dto.JwtUsuarioResponse;
 import com.danieloliva.FootageBackend.security.dto.LoginDto;
 import com.danieloliva.FootageBackend.security.jwt.JwtProvider;
+import com.danieloliva.FootageBackend.usuario.dto.UsuarioDtoConverter;
 import com.danieloliva.FootageBackend.usuario.model.Usuario;
+import com.danieloliva.FootageBackend.usuario.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,8 @@ public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
+    private final UsuarioDtoConverter usuarioDtoConverter;
+    private final UsuarioService usuarioService;
 
     @PostMapping("/auth/login")
     public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
@@ -46,7 +50,7 @@ public class AuthenticationController {
 
     }
 
-    @GetMapping("/me")
+    @GetMapping("/profile/me")
     public ResponseEntity<?> identificarme(@AuthenticationPrincipal Usuario usuario){
         return ResponseEntity.ok(convertUsuarioToJwtUsuariorResponse(usuario, null));
     }
@@ -54,11 +58,16 @@ public class AuthenticationController {
 
     private JwtUsuarioResponse convertUsuarioToJwtUsuariorResponse(Usuario usuario, String jwt) {
         return JwtUsuarioResponse.builder()
+                .id(usuario.getId())
                 .nombre(usuario.getNombre())
                 .apellidos(usuario.getApellidos())
+                .username(usuario.getUsername())
                 .email(usuario.getEmail())
                 .avatar(usuario.getAvatar())
+                .localizacion(usuario.getLocalizacion())
+                .premium(usuario.isPremium())
                 .rol(usuario.getRol().name())
+                .articulos(usuario.getArticulos())
                 .token(jwt)
                 .build();
     }

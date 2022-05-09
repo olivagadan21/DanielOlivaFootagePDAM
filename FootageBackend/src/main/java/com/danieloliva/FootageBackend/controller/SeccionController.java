@@ -1,7 +1,7 @@
 package com.danieloliva.FootageBackend.controller;
 
 import com.danieloliva.FootageBackend.model.Seccion;
-import com.danieloliva.FootageBackend.service.SeccionService;
+import com.danieloliva.FootageBackend.service.base.SeccionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,9 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -81,12 +81,12 @@ public class SeccionController {
                     content = @Content),
     })
     @PostMapping("")
-    public ResponseEntity<Seccion> create(@RequestBody Seccion seccion) {
+    public ResponseEntity<Seccion> create(@RequestPart("seccion") Seccion seccion, @RequestPart("file") MultipartFile file) {
 
         if (seccion.getNombre().isEmpty()) {
             return ResponseEntity.badRequest().build();
         } else {
-            seccionService.save(seccion);
+            seccionService.save(seccion, file);
             return ResponseEntity.status(HttpStatus.CREATED).body(seccion);
         }
 
@@ -103,19 +103,12 @@ public class SeccionController {
                     content = @Content),
     })
     @PutMapping("{id}")
-    public ResponseEntity<Seccion> edit(@RequestBody Seccion seccion, @PathVariable Long id) {
+    public ResponseEntity<Seccion> edit(@RequestPart("seccion") Seccion seccion, @RequestPart("file") MultipartFile file, @PathVariable Long id) {
 
         if (seccionService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.of(
-                    seccionService.findById(id).map(s -> {
-                        s.setNombre(seccion.getNombre());
-                        s.setImagen(seccion.getImagen());
-                        seccionService.save(s);
-                        return s;
-                    })
-            );
+            return ResponseEntity.ok().body(seccionService.edit(seccion, file, id));
         }
 
     }

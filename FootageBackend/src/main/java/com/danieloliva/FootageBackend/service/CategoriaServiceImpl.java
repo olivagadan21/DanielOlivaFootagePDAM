@@ -2,17 +2,14 @@ package com.danieloliva.FootageBackend.service;
 
 import com.danieloliva.FootageBackend.model.Categoria;
 import com.danieloliva.FootageBackend.repository.CategoriaRepository;
-import com.danieloliva.FootageBackend.service.base.BaseService;
 import com.danieloliva.FootageBackend.service.base.CategoriaService;
 import com.danieloliva.FootageBackend.service.base.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor

@@ -18,6 +18,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -49,11 +55,39 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/auth/login").anonymous()
-                .antMatchers(HttpMethod.POST, "/auth/register/user").anonymous()
+                //auth
+                .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth/register/user").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth/register/admin").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/me").authenticated()
+                //usuario
+                .antMatchers(HttpMethod.GET, "/usuarios/").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/usuarios/premium").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/usuarios/admin").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/usuarios/user").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/usuarios/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/usuarios/{id}").hasRole("ADMIN")
+                //producto
 
+                //seccion
+                .antMatchers(HttpMethod.GET, "/seccion/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/seccion/").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/seccion/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/seccion/{id}").hasRole("ADMIN")
+                //categoria
+                .antMatchers(HttpMethod.GET, "/categoria/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/categoria/").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/categoria/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/categoria/{id}").hasRole("ADMIN")
+                //marca
+                .antMatchers(HttpMethod.GET, "/marca/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/marca/").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/marca/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/marca/{id}").hasRole("ADMIN")
+                //anuncio
+                .antMatchers(HttpMethod.GET, "/anuncio/").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/anuncio/").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/anuncio/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/anuncio/{id}").hasRole("ADMIN")
                 .antMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated();
 
@@ -66,6 +100,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST", "DELETE"));
+        configuration.setAllowedHeaders(Collections.singletonList("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
 }

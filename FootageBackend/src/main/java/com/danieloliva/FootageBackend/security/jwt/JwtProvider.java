@@ -48,7 +48,7 @@ public class JwtProvider {
 
         return Jwts.builder()
                 .setHeaderParam("typ", TOKEN_TYPE)
-                .setSubject(Long.toString(usuario.getId()))
+                .setSubject(usuario.getId().toString())
                 .setIssuedAt(tokenExpirationDate)
                 .claim("nombre", usuario.getNombre())
                 .claim("apellidos",usuario.getApellidos())

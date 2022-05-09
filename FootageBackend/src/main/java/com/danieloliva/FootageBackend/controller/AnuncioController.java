@@ -1,7 +1,7 @@
 package com.danieloliva.FootageBackend.controller;
 
 import com.danieloliva.FootageBackend.model.Anuncio;
-import com.danieloliva.FootageBackend.service.AnuncioServiceImpl;
+import com.danieloliva.FootageBackend.service.base.AnuncioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +22,7 @@ import java.util.Optional;
 @RequestMapping("/anuncio/")
 public class AnuncioController {
 
-    private final AnuncioServiceImpl anuncioServiceImpl;
+    private final AnuncioService anuncioService;
 
     @Operation(summary = "Obtiene lista de anuncios")
     @ApiResponses(value = {
@@ -38,7 +37,7 @@ public class AnuncioController {
     @GetMapping("")
     public ResponseEntity<List<Anuncio>> findAll() {
 
-        List<Anuncio> anuncios = anuncioServiceImpl.findAll();
+        List<Anuncio> anuncios = anuncioService.findAll();
 
         if (anuncios.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -61,7 +60,7 @@ public class AnuncioController {
     @GetMapping("{id}")
     public ResponseEntity<Optional<Anuncio>> findOne(@PathVariable Long id) {
 
-        Optional<Anuncio> anuncio = anuncioServiceImpl.findById(id);
+        Optional<Anuncio> anuncio = anuncioService.findById(id);
 
         if (anuncio.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -87,7 +86,7 @@ public class AnuncioController {
         if (anuncio.getUrl().isEmpty()) {
             return ResponseEntity.badRequest().build();
         } else {
-            anuncioServiceImpl.save(anuncio, file);
+            anuncioService.save(anuncio, file);
             return ResponseEntity.status(HttpStatus.CREATED).body(anuncio);
         }
 
@@ -106,12 +105,12 @@ public class AnuncioController {
     @PutMapping("{id}")
     public ResponseEntity<Anuncio> edit (@RequestPart("anuncio") Anuncio anuncio, @RequestPart("file") MultipartFile file, @PathVariable Long id) {
 
-        Optional<Anuncio> a = anuncioServiceImpl.findById(id);
+        Optional<Anuncio> a = anuncioService.findById(id);
 
         if (a.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok().body(anuncioServiceImpl.edit(anuncio, file, id));
+            return ResponseEntity.ok().body(anuncioService.edit(anuncio, file, id));
         }
 
     }
@@ -128,10 +127,10 @@ public class AnuncioController {
     @DeleteMapping("{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
 
-        if (anuncioServiceImpl.findById(id).isEmpty()) {
+        if (anuncioService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            anuncioServiceImpl.deleteById(id);
+            anuncioService.deleteById(id);
             return ResponseEntity.noContent().build();
         }
 

@@ -2,7 +2,6 @@
 package com.danieloliva.FootageBackend.usuario.model;
 
 import com.danieloliva.FootageBackend.model.Producto;
-import com.danieloliva.FootageBackend.validacion.anotaciones.UniqueUsername;
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -32,7 +31,6 @@ public class Usuario implements UserDetails {
 
     private String apellidos;
 
-    @UniqueUsername(message = "El usuario debe ser único")
     private String username;
 
     @NaturalId
@@ -51,7 +49,7 @@ public class Usuario implements UserDetails {
     @Column(name = "rol")
     private RolUsuario rol;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Producto> articulos = new ArrayList<>();
 
     @Override
@@ -61,7 +59,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return nombre;
     }
 
     @Override

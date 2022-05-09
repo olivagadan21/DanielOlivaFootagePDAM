@@ -1,4 +1,4 @@
-package com.danieloliva.FootageBackend.config.cors;
+package com.danieloliva.FootageBackend.config;
 
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;

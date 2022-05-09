@@ -25,8 +25,6 @@ public class CreateProductoDto {
 
     private boolean original;
 
-    private List<String> fotos = new ArrayList<>();
-
     @NotNull
     private Long usuario;
 

@@ -1,7 +1,11 @@
 package com.danieloliva.FootageBackend.usuario.dto;
 
+import com.danieloliva.FootageBackend.model.Producto;
 import com.danieloliva.FootageBackend.usuario.model.RolUsuario;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -9,6 +13,8 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class GetUsuarioDto {
+
+    private Long id;
 
     private String nombre;
 
@@ -25,5 +31,7 @@ public class GetUsuarioDto {
     private boolean premium;
 
     private RolUsuario rol;
+
+    private List<Producto> articulos = new ArrayList<>();
 
 }

@@ -30,9 +30,11 @@ public class Producto implements Serializable {
 
     private boolean original;
 
-    @Column
-    @ElementCollection(targetClass = String.class)
-    private List<String> fotos = new ArrayList<>();
+    @Column(name = "foto1")
+    private String foto1;
+
+    @Column(name = "foto2")
+    private String foto2;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", updatable = false, nullable = false)

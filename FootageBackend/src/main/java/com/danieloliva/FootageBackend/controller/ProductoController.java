@@ -3,7 +3,8 @@ package com.danieloliva.FootageBackend.controller;
 import com.danieloliva.FootageBackend.dto.producto.CreateProductoDto;
 import com.danieloliva.FootageBackend.dto.producto.ProductoDtoConverter;
 import com.danieloliva.FootageBackend.model.Producto;
-import com.danieloliva.FootageBackend.service.ProductoService;
+import com.danieloliva.FootageBackend.service.ProductoServiceImpl;
+import com.danieloliva.FootageBackend.service.base.ProductoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +27,6 @@ import java.util.Optional;
 public class ProductoController {
 
     private final ProductoService productoService;
-    private final ProductoDtoConverter productoDtoConverter;
 
     @Operation(summary = "Obtiene lista de productos")
     @ApiResponses(value = {
@@ -83,13 +85,12 @@ public class ProductoController {
                     content = @Content),
     })
     @PostMapping("")
-    public ResponseEntity<Producto> create (@RequestBody CreateProductoDto productoDto) {
+    public ResponseEntity<Producto> create (@RequestPart("producto") CreateProductoDto productoDto, @RequestPart("file1") MultipartFile file1, @RequestPart("file2") MultipartFile file2) {
 
         if (productoDto.getTitulo().isEmpty()) {
             return ResponseEntity.badRequest().build();
         } else {
-            Producto producto = productoDtoConverter.createProductoDtoToProducto(productoDto);
-            productoService.save(producto);
+            Producto producto = productoService.save(productoDto, file1, file2);
             return ResponseEntity.status(HttpStatus.CREATED).body(producto);
         }
 
@@ -106,26 +107,12 @@ public class ProductoController {
                     content = @Content),
     })
     @PutMapping("{id}")
-    public ResponseEntity<Producto> edit (@RequestBody Producto producto, @PathVariable Long id) {
+    public ResponseEntity<Producto> edit (@RequestPart("producto") CreateProductoDto productoDto, @RequestPart("file1") MultipartFile file1, @RequestPart("file2") MultipartFile file2, @PathVariable Long id) {
 
         if (productoService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.of(
-                    productoService.findById(id).map(p -> {
-                        p.setTitulo(producto.getTitulo());
-                        p.setDescripcion(producto.getDescripcion());
-                        p.setPrecio(producto.getPrecio());
-                        p.setIntercambio(producto.isIntercambio());
-                        p.setOriginal(producto.isOriginal());
-                        p.setFotos(producto.getFotos());
-                        p.setCategoria(producto.getCategoria());
-                        p.setSeccion(producto.getSeccion());
-                        p.setMarca(producto.getMarca());
-                        productoService.save(p);
-                        return p;
-                    })
-            );
+            return ResponseEntity.ok().body(productoService.edit(productoDto, file1, file2, id));
         }
 
     }
