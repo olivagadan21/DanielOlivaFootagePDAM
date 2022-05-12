@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthLoginDto } from 'src/app/model/dto/auth.dto';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +11,35 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  loginDto = new AuthLoginDto();
+  loginForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', Validators.required),
+  });
+
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
+  }
+
+  getErrorMessage() {
+    if (this.loginForm.controls['email'].hasError('required')) {
+      return 'Debe introducir su email';
+    } else if (this.loginForm.controls['email'].hasError('email')) {
+      return 'Email no válido';
+    } else {
+      return 'Debe introducir su contraseña';
+    }
+  }
+
+  doLogin() {
+    this.loginDto.email = this.loginForm.get('email')?.value;
+    this.loginDto.password = this.loginForm.get('password')?.value;
+    this.authService.login(this.loginDto).subscribe((loginResult) => {
+      localStorage.setItem('BEARER_TOKEN', loginResult.token);
+      console.log(localStorage.getItem('BEARER_TOKEN'));
+      this.router.navigate(['/posts']);
+    });
   }
 
 }
