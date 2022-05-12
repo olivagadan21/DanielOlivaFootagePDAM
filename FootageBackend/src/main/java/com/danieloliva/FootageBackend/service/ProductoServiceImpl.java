@@ -2,7 +2,10 @@ package com.danieloliva.FootageBackend.service;
 
 import com.danieloliva.FootageBackend.dto.producto.CreateProductoDto;
 import com.danieloliva.FootageBackend.dto.producto.ProductoDtoConverter;
+import com.danieloliva.FootageBackend.model.Categoria;
+import com.danieloliva.FootageBackend.model.Marca;
 import com.danieloliva.FootageBackend.model.Producto;
+import com.danieloliva.FootageBackend.model.Seccion;
 import com.danieloliva.FootageBackend.repository.CategoriaRepository;
 import com.danieloliva.FootageBackend.repository.MarcaRepository;
 import com.danieloliva.FootageBackend.repository.ProductoRepository;
@@ -39,6 +42,34 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public Optional<Producto> findById(Long id) {
         return productoRepository.findById(id);
+    }
+
+    @Override
+    public List<Producto> findByOriginal() {
+        return productoRepository.findByOriginal();
+    }
+
+    @Override
+    public List<Producto> findByIntercambio() {
+        return productoRepository.findByIntercambio();
+    }
+
+    @Override
+    public List<Producto> findBySeccion(Long id) {
+        Seccion seccion = seccionRepository.getById(id);
+        return productoRepository.findBySeccion(seccion);
+    }
+
+    @Override
+    public List<Producto> findByCategoria(Long id) {
+        Categoria categoria = categoriaRepository.getById(id);
+        return productoRepository.findByCategoria(categoria);
+    }
+
+    @Override
+    public List<Producto> findByMarca(Long id) {
+        Marca marca = marcaRepository.getById(id);
+        return productoRepository.findByMarca(marca);
     }
 
     @Override

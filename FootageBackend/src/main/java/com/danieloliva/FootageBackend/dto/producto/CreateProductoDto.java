@@ -37,4 +37,7 @@ public class CreateProductoDto {
     @NotNull
     private Long marca;
 
+    @NotNull
+    private Long talla;
+
 }

@@ -1,10 +1,8 @@
 package com.danieloliva.FootageBackend.dto.producto;
 
 import com.danieloliva.FootageBackend.model.Producto;
-import com.danieloliva.FootageBackend.service.base.CategoriaService;
-import com.danieloliva.FootageBackend.service.base.MarcaService;
-import com.danieloliva.FootageBackend.service.base.SeccionService;
-import com.danieloliva.FootageBackend.service.base.StorageService;
+import com.danieloliva.FootageBackend.service.base.*;
+import com.danieloliva.FootageBackend.usuario.dto.UsuarioDtoConverter;
 import com.danieloliva.FootageBackend.usuario.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,6 +18,8 @@ public class ProductoDtoConverter {
     private final CategoriaService categoriaService;
     private final MarcaService marcaService;
     private final StorageService storageService;
+    private final TallaService tallaService;
+    private final UsuarioDtoConverter usuarioDtoConverter;
 
     public Producto createProductoDtoToProducto (CreateProductoDto p, MultipartFile file1, MultipartFile file2) {
 
@@ -49,8 +49,27 @@ public class ProductoDtoConverter {
                 .seccion(seccionService.findById(p.getSeccion()).get())
                 .categoria(categoriaService.findById(p.getCategoria()).get())
                 .marca(marcaService.findById(p.getMarca()).get())
+                .talla(tallaService.findById(p.getTalla()).get())
                 .build();
 
+    }
+
+    public GetProductoDto getProductoDto (Producto producto) {
+        return GetProductoDto.builder()
+                .id(producto.getId())
+                .titulo(producto.getTitulo())
+                .descripcion(producto.getDescripcion())
+                .precio(producto.getPrecio())
+                .intercambio(producto.isIntercambio())
+                .original(producto.isOriginal())
+                .foto1(producto.getFoto1())
+                .foto2(producto.getFoto2())
+                .usuario(usuarioDtoConverter.usuarioToGetUsuarioProductoDto(producto.getUsuario()))
+                .seccion(producto.getSeccion())
+                .categoria(producto.getCategoria())
+                .marca(producto.getMarca())
+                .talla(producto.getTalla())
+                .build();
     }
 
 }

@@ -4,6 +4,7 @@ package com.danieloliva.FootageBackend.usuario.controller;
 
 import com.danieloliva.FootageBackend.usuario.dto.CreateUsuarioDto;
 import com.danieloliva.FootageBackend.usuario.dto.GetUsuarioDto;
+import com.danieloliva.FootageBackend.usuario.dto.GetUsuarioProductoDto;
 import com.danieloliva.FootageBackend.usuario.dto.UsuarioDtoConverter;
 import com.danieloliva.FootageBackend.usuario.model.Usuario;
 import com.danieloliva.FootageBackend.usuario.service.UsuarioService;
@@ -162,13 +163,13 @@ public class UsuarioController {
                     content = @Content),
     })
     @PostMapping("/auth/register/user")
-    public ResponseEntity<GetUsuarioDto> createUser (@RequestBody CreateUsuarioDto usuario) {
+    public ResponseEntity<GetUsuarioProductoDto> createUser (@RequestBody CreateUsuarioDto usuario) {
 
         if (usuario.getUsername().isEmpty()) {
             return ResponseEntity.badRequest().build();
         } else {
             Usuario usu = usuarioService.saveUser(usuario);
-            GetUsuarioDto u = usuarioDtoConverter.usuarioToGetUsuarioDto(usu);
+            GetUsuarioProductoDto u = usuarioDtoConverter.usuarioToGetUsuarioProductoDto(usu);
             return ResponseEntity.status(HttpStatus.CREATED).body(u);
         }
 

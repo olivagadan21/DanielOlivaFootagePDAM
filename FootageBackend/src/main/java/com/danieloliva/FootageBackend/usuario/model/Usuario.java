@@ -49,7 +49,7 @@ public class Usuario implements UserDetails {
     @Column(name = "rol")
     private RolUsuario rol;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Producto> articulos = new ArrayList<>();
 
     @Override

@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "productos")
 public class Producto implements Serializable {
 
     @Id
@@ -51,5 +52,9 @@ public class Producto implements Serializable {
     @ManyToOne
     @JoinColumn(name = "marca_id")
     private Marca marca;
+
+    @ManyToOne
+    @JoinColumn(name = "talla_id")
+    private Talla talla;
 
 }

@@ -1,17 +1,13 @@
 package com.danieloliva.FootageBackend.usuario.dto;
 
-import com.danieloliva.FootageBackend.dto.producto.GetProductoUsuarioDto;
-import com.danieloliva.FootageBackend.usuario.model.RolUsuario;
 import lombok.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GetUsuarioDto {
+public class GetUsuarioProductoDto {
 
     private Long id;
 
@@ -28,9 +24,5 @@ public class GetUsuarioDto {
     private String localizacion;
 
     private boolean premium;
-
-    private RolUsuario rol;
-
-    private List<GetProductoUsuarioDto> articulos;
 
 }
