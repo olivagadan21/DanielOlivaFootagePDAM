@@ -10,7 +10,7 @@ class ProductoDto {
   late final Double precio;
   late final Bool intercambio;
   late final Bool original;
-  late final BigInt usuario;
+  late final int usuario;
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
