@@ -16,22 +16,9 @@ public class UsuarioDtoConverter {
 
     private final ProductoUsuarioDtoConverter productoDtoConverter;
 
-    public GetUsuarioDto usuarioToGetUsuarioDto (Usuario usuario){
+    public GetUsuarioDto usuarioToGetUsuarioDto(Usuario usuario) {
 
-        if (usuario.getArticulos().size()==0)
-            return GetUsuarioDto.builder()
-                    .id(usuario.getId())
-                    .nombre(usuario.getNombre())
-                    .apellidos(usuario.getApellidos())
-                    .username(usuario.getUsername())
-                    .email(usuario.getEmail())
-                    .avatar(usuario.getAvatar())
-                    .localizacion(usuario.getLocalizacion())
-                    .premium(usuario.isPremium())
-                    .rol(usuario.getRol())
-                    .build();
-        else
-            return GetUsuarioDto.builder()
+        return GetUsuarioDto.builder()
                 .id(usuario.getId())
                 .nombre(usuario.getNombre())
                 .apellidos(usuario.getApellidos())
@@ -45,7 +32,7 @@ public class UsuarioDtoConverter {
                 .build();
     }
 
-    public GetUsuarioProductoDto usuarioToGetUsuarioProductoDto (Usuario usuario){
+    public GetUsuarioProductoDto usuarioToGetUsuarioProductoDto(Usuario usuario) {
         return GetUsuarioProductoDto.builder()
                 .id(usuario.getId())
                 .nombre(usuario.getNombre())

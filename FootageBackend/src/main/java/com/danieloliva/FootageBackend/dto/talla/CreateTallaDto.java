@@ -10,10 +10,10 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class CreateTallaDto {
 
-    @NotNull
+    @NotNull(message = "{not.null}")
     private String nombre;
 
-    @NotNull
+    @NotNull(message = "{not.null}")
     private Long categoria;
 
 }

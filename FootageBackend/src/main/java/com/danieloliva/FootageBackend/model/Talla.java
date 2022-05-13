@@ -19,12 +19,12 @@ public class Talla implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @NotNull
+    @NotNull(message = "{not.null}")
     private String nombre;
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")
-    @NotNull
+    @NotNull(message = "{not.null}")
     private Categoria categoria;
 
 }

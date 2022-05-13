@@ -17,14 +17,14 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class CreateUsuarioDto {
 
-    @NotNull
+    @NotNull(message = "{not.null}")
     private String nombre;
 
-    @NotNull
+    @NotNull(message = "{not.null}")
     private String apellidos;
 
     @UniqueUsername(message = "El usuario debe ser único")
-    @NotNull
+    @NotNull(message = "{not.null}")
     private String username;
 
     private String avatar;
@@ -34,17 +34,16 @@ public class CreateUsuarioDto {
     private boolean premium;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "rol")
     private RolUsuario rol;
 
     @NaturalId
-    @NotNull
+    @NotNull(message = "{not.null}")
     private String email;
 
-    @NotNull
+    @NotNull(message = "{not.null}")
     private String password;
 
-    @NotNull
+    @NotNull(message = "{not.null}")
     private String password2;
 
 }
