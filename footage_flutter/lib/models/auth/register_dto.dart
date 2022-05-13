@@ -1,8 +1,8 @@
 class RegisterDto {
-  String? username;
-  String? email;
   String? nombre;
   String? apellidos;
+  String? username;
+  String? email;
   String? password;
   String? password2;
 

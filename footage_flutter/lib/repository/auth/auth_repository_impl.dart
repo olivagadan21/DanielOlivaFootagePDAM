@@ -31,25 +31,24 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<RegisterResponse> register(RegisterDto registerDto) async {
-    var uri = Uri.parse('http://10.0.2.2:8080/auth/register');
+  Future<RegisterResponse> registerUser(RegisterDto registerDto) async {
+    var uri = Uri.parse('http://10.0.2.2:8080/auth/register/user');
     var request = http.MultipartRequest('POST', uri);
     request.fields['nombre'] = registerDto.nombre.toString();
     request.fields['apellidos'] = registerDto.apellidos.toString();
-    request.fields['nick'] = registerDto.username.toString();
+    request.fields['username'] = registerDto.username.toString();
     request.fields['email'] = registerDto.email.toString();
     request.fields['password'] = registerDto.password.toString();
     request.fields['password2'] = registerDto.password2.toString();
 
     var response = await request.send();
-    if (response.statusCode == 201) print('Uploaded!');
-
     if (response.statusCode == 201) {
       return RegisterResponse.fromJson(
           jsonDecode(await response.stream.bytesToString()));
     } else {
       print(response.statusCode);
-      throw Exception('Ojo cuidao que te has equivocado');
+      throw Exception('Vuelva intentarlo. Se ha equivocado en algo.');
     }
   }
+
 }

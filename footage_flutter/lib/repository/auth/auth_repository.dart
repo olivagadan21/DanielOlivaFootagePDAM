@@ -5,5 +5,5 @@ import 'package:footage_flutter/models/auth/register_response.dart';
 
 abstract class AuthRepository {
   Future<LoginResponse> login(LoginDto loginDto);
-  Future<RegisterResponse> register(RegisterDto registerDto);
+  Future<RegisterResponse> registerUser(RegisterDto registerDto);
 }

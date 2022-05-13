@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:footage_flutter/bloc/auth/register_bloc/register_bloc.dart';
+import 'package:footage_flutter/bloc/auth/register_user_bloc/register_user_bloc.dart';
 import 'package:footage_flutter/models/auth/register_dto.dart';
 import 'package:footage_flutter/models/auth/register_response.dart';
 import 'package:footage_flutter/repository/auth/auth_repository.dart';
@@ -31,7 +31,7 @@ class _RegisterState extends State<Register> {
   TextEditingController password2 = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   late Future<SharedPreferences> _prefs;
-  final String uploadUrl = 'http://10.0.2.2:8080/auth/register';
+  final String uploadUrl = 'http://10.0.2.2:8080/auth/register/user';
   String path = "";
   bool _passwordVisible = false;
   bool _password2Visible = false;
@@ -70,11 +70,11 @@ class _RegisterState extends State<Register> {
           padding: const EdgeInsets.all(20),
           child: BlocConsumer<RegisterBloc, RegisterState>(
               listenWhen: (context, state) {
-            return state is RegisterSuccessState || state is LoginErrorState;
+            return state is RegisterSuccessState || state is RegisterErrorState;
           }, listener: (context, state) async {
             if (state is RegisterSuccessState) {
-              _registerSuccess(context, state.loginResponse);
-            } else if (state is LoginErrorState) {
+              _registerSuccess(context, state.registerResponse);
+            } else if (state is RegisterErrorState) {
               _showSnackbar(context, state.message);
             }
           }, buildWhen: (context, state) {
