@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:footage_flutter/bloc/auth/login_bloc/login_bloc.dart';
+import 'package:footage_flutter/models/auth/login_dto.dart';
 import 'package:footage_flutter/models/auth/login_response.dart';
 import 'package:footage_flutter/repository/auth/auth_repository.dart';
 import 'package:footage_flutter/repository/auth/auth_repository_impl.dart';
@@ -196,10 +197,13 @@ class _LoginState extends State<Login> {
                         primary: const Color.fromRGBO(59, 181, 189, 100),
                         fixedSize: const Size(320, 40)),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Menu()));
+                      if (_formKey.currentState!.validate()) {
+                          final loginDto = LoginDto(
+                              email: emailController.text,
+                              password: passwordController.text);
+                          BlocProvider.of<LoginBloc>(context)
+                              .add(DoLoginEvent(loginDto));
+                        }
                     },
                     child: const Text(
                       "Inicia sesión",

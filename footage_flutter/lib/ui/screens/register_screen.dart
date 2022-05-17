@@ -334,6 +334,7 @@ class _RegisterState extends State<Register> {
                               password: passwordController.text);
                           BlocProvider.of<RegisterBloc>(context)
                               .add(DoRegisterEvent(registerDto));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
                         }
                       },
                       child: const Text(
