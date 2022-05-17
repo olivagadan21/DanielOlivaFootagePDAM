@@ -1,0 +1,9 @@
+button {
+    border: 1px solid black;
+    float: right;
+    margin-top: 10px;
+}
+
+app-seccion-item {
+    margin: 1%;
+}
