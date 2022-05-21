@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:footage_flutter/style/styles.dart';
 
 import 'login_screen.dart';
 import 'register_screen.dart';
@@ -21,9 +22,9 @@ class Principal extends StatelessWidget {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                        color: const Color.fromRGBO(59, 181, 189, 100),
+                        color:Colores.principal,
                         border: Border.all(
-                          color: const Color.fromRGBO(59, 181, 189, 100),
+                          color:Colores.principal,
                           width: 3
                         ),
                         borderRadius: BorderRadius.circular(5)
@@ -49,13 +50,13 @@ class Principal extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 50),
                 child: Center(
-                  child: ElevatedButton(style: ElevatedButton.styleFrom(primary: const Color.fromRGBO(59, 181, 189, 100), fixedSize: const Size(280, 40)), onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const Register()));}, child: const Text("Crea tu perfil en Footage", textAlign: TextAlign.center, style: TextStyle(color: Colors.white),)),
+                  child: ElevatedButton(style: ElevatedButton.styleFrom(primary:Colores.principal, fixedSize: const Size(280, 40)), onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const Register()));}, child: const Text("Crea tu perfil en Footage", textAlign: TextAlign.center, style: TextStyle(color: Colores.blanco),)),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 30),
                 child: Center(
-                  child: ElevatedButton(style: ElevatedButton.styleFrom(primary: Colors.white, fixedSize: const Size(280, 40), side: const BorderSide(width: 2, color: Color.fromRGBO(59, 181, 189, 100))), onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));}, child: const Text("Ya tengo una cuenta", textAlign: TextAlign.center, style: TextStyle(color: Color.fromRGBO(59, 181, 189, 100)),)),
+                  child: ElevatedButton(style: ElevatedButton.styleFrom(primary: Colores.blanco, fixedSize: const Size(280, 40), side: const BorderSide(width: 2, color: Colores.principal)), onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));}, child: const Text("Ya tengo una cuenta", textAlign: TextAlign.center, style: TextStyle(color: Colores.principal),)),
                 ),
               )
             ],

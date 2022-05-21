@@ -5,6 +5,8 @@ import 'package:footage_flutter/models/auth/register_dto.dart';
 import 'package:footage_flutter/models/auth/register_response.dart';
 import 'package:footage_flutter/repository/auth/auth_repository.dart';
 import 'package:footage_flutter/repository/auth/auth_repository_impl.dart';
+import 'package:footage_flutter/style/styles.dart';
+import 'package:footage_flutter/ui/screens/menu_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'login_screen.dart';
 import 'principal_screen.dart';
@@ -49,7 +51,7 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
+      backgroundColor: Colores.blanco,
       body: MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -66,7 +68,7 @@ class _RegisterState extends State<Register> {
   _createBody(BuildContext context) {
     return Scaffold(
       body: Container(
-          color: Colors.white,
+          color: Colores.blanco,
           padding: const EdgeInsets.all(20),
           child: BlocConsumer<RegisterBloc, RegisterState>(
               listenWhen: (context, state) {
@@ -134,12 +136,12 @@ class _RegisterState extends State<Register> {
                     padding: EdgeInsets.only(top: 10.0, left: 20),
                     child: Text(
                       'Regístrate',
-                      style: TextStyle(color: Colors.black, fontSize: 20),
+                      style: TextStyle(color: Colores.negro, fontSize: 20),
                     ),
                   ),
                 ],
               ),
-              const Divider(color: Colors.black),
+              const Divider(color: Colores.negro),
               Padding(
                 padding: const EdgeInsets.only(top: 25.0),
                 child: Form(
@@ -148,13 +150,13 @@ class _RegisterState extends State<Register> {
                       Container(
                         decoration: const BoxDecoration(
                           border: Border(
-                              bottom: BorderSide(color: Colors.grey, width: 1)),
+                              bottom: BorderSide(color: Colores.gris, width: 1)),
                         ),
                         child: TextFormField(
                           controller: nombre,
                           decoration: const InputDecoration(
                             hintText: 'Nombre',
-                            hintStyle: TextStyle(color: Colors.grey),
+                            hintStyle: TextStyle(color: Colores.gris),
                             border: OutlineInputBorder(
                               borderSide: BorderSide.none,
                             ),
@@ -167,13 +169,13 @@ class _RegisterState extends State<Register> {
                           decoration: const BoxDecoration(
                             border: Border(
                                 bottom:
-                                    BorderSide(color: Colors.grey, width: 1)),
+                                    BorderSide(color: Colores.gris, width: 1)),
                           ),
                           child: TextFormField(
                             controller: apellidos,
                             decoration: const InputDecoration(
                               hintText: 'Apellidos',
-                              hintStyle: TextStyle(color: Colors.grey),
+                              hintStyle: TextStyle(color: Colores.gris),
                               border: OutlineInputBorder(
                                 borderSide: BorderSide.none,
                               ),
@@ -187,13 +189,13 @@ class _RegisterState extends State<Register> {
                           decoration: const BoxDecoration(
                             border: Border(
                                 bottom:
-                                    BorderSide(color: Colors.grey, width: 1)),
+                                    BorderSide(color: Colores.gris, width: 1)),
                           ),
                           child: TextFormField(
                             controller: username,
                             decoration: const InputDecoration(
                               hintText: 'Nombre de usuario',
-                              hintStyle: TextStyle(color: Colors.grey),
+                              hintStyle: TextStyle(color: Colores.gris),
                               border: OutlineInputBorder(
                                 borderSide: BorderSide.none,
                               ),
@@ -207,13 +209,13 @@ class _RegisterState extends State<Register> {
                           decoration: const BoxDecoration(
                             border: Border(
                                 bottom:
-                                    BorderSide(color: Colors.grey, width: 1)),
+                                    BorderSide(color: Colores.gris, width: 1)),
                           ),
                           child: TextFormField(
                             controller: emailController,
                             decoration: const InputDecoration(
                               hintText: 'Email',
-                              hintStyle: TextStyle(color: Colors.grey),
+                              hintStyle: TextStyle(color: Colores.gris),
                               border: OutlineInputBorder(
                                 borderSide: BorderSide.none,
                               ),
@@ -227,7 +229,7 @@ class _RegisterState extends State<Register> {
                           decoration: const BoxDecoration(
                             border: Border(
                                 bottom:
-                                    BorderSide(color: Colors.grey, width: 1)),
+                                    BorderSide(color: Colores.gris, width: 1)),
                           ),
                           child: TextFormField(
                             obscureText: !_passwordVisible,
@@ -239,7 +241,7 @@ class _RegisterState extends State<Register> {
                                   _passwordVisible
                                       ? Icons.visibility
                                       : Icons.visibility_off,
-                                  color: Colors.grey,
+                                  color: Colores.gris,
                                 ),
                                 onPressed: () {
                                   setState(() {
@@ -247,7 +249,7 @@ class _RegisterState extends State<Register> {
                                   });
                                 },
                               ),
-                              hintStyle: const TextStyle(color: Colors.grey),
+                              hintStyle: const TextStyle(color: Colores.gris),
                               border: const OutlineInputBorder(
                                 borderSide: BorderSide.none,
                               ),
@@ -261,7 +263,7 @@ class _RegisterState extends State<Register> {
                           decoration: const BoxDecoration(
                             border: Border(
                                 bottom:
-                                    BorderSide(color: Colors.grey, width: 1)),
+                                    BorderSide(color: Colores.gris, width: 1)),
                           ),
                           child: TextFormField(
                             obscureText: !_password2Visible,
@@ -273,7 +275,7 @@ class _RegisterState extends State<Register> {
                                   _password2Visible
                                       ? Icons.visibility
                                       : Icons.visibility_off,
-                                  color: Colors.grey,
+                                  color: Colores.gris,
                                 ),
                                 onPressed: () {
                                   setState(() {
@@ -281,7 +283,7 @@ class _RegisterState extends State<Register> {
                                   });
                                 },
                               ),
-                              hintStyle: const TextStyle(color: Colors.grey),
+                              hintStyle: const TextStyle(color: Colores.gris),
                               border: const OutlineInputBorder(
                                 borderSide: BorderSide.none,
                               ),
@@ -299,17 +301,17 @@ class _RegisterState extends State<Register> {
                   textAlign: TextAlign.center,
                   text: const TextSpan(
                     text: 'Al registrarme, confirmo que acepto los ',
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colores.negro),
                     children: <TextSpan>[
                       TextSpan(
                           text: 'términos de uso ',
                           style: TextStyle(
-                              color: Color.fromRGBO(59, 181, 189, 100))),
+                              color: Colores.principal)),
                       TextSpan(text: 'y he leído la '),
                       TextSpan(
                           text: 'política de privacidad',
                           style: TextStyle(
-                              color: Color.fromRGBO(59, 181, 189, 100))),
+                              color: Colores.principal)),
                       TextSpan(
                           text: ', y que tengo que tengo como mínimo 18 años.'),
                     ],
@@ -321,10 +323,10 @@ class _RegisterState extends State<Register> {
                 child: Center(
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          primary: const Color.fromRGBO(59, 181, 189, 100),
+                          primary: Colores.principal,
                           fixedSize: const Size(320, 40)),
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {
+                        /*if (_formKey.currentState!.validate()) {
                           final registerDto = RegisterDto(
                               nombre: nombre.text,
                               apellidos: apellidos.text,
@@ -335,12 +337,12 @@ class _RegisterState extends State<Register> {
                           BlocProvider.of<RegisterBloc>(context)
                               .add(DoRegisterEvent(registerDto));
                               Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
-                        }
+                        }*/Navigator.push(context, MaterialPageRoute(builder: (context) => const Menu()));
                       },
                       child: const Text(
                         "Regístrate",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colores.blanco),
                       )),
                 ),
               ),

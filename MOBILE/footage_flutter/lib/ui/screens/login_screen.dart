@@ -5,6 +5,7 @@ import 'package:footage_flutter/models/auth/login_dto.dart';
 import 'package:footage_flutter/models/auth/login_response.dart';
 import 'package:footage_flutter/repository/auth/auth_repository.dart';
 import 'package:footage_flutter/repository/auth/auth_repository_impl.dart';
+import 'package:footage_flutter/style/styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'menu_screen.dart';
@@ -45,7 +46,7 @@ class _LoginState extends State<Login> {
   _createBody(BuildContext context) {
     return Scaffold(
       body: Container(
-          color: Colors.white,
+          color: Colores.blanco,
           padding: const EdgeInsets.all(20),
           child: BlocConsumer<LoginBloc, LoginState>(
               listenWhen: (context, state) {
@@ -111,12 +112,12 @@ class _LoginState extends State<Login> {
                   padding: EdgeInsets.only(top: 10.0, left: 20),
                   child: Text(
                     'Inicia sesión',
-                    style: TextStyle(color: Colors.black, fontSize: 20),
+                    style: TextStyle(color: Colores.negro, fontSize: 20),
                   ),
                 ),
               ],
             ),
-            const Divider(color: Colors.black),
+            const Divider(color: Colores.negro),
             Padding(
               padding: const EdgeInsets.only(top: 25.0),
               child: Form(
@@ -127,7 +128,7 @@ class _LoginState extends State<Login> {
                       child: Container(
                         decoration: const BoxDecoration(
                           border: Border(
-                              bottom: BorderSide(color: Colors.grey, width: 1)),
+                              bottom: BorderSide(color: Colores.gris, width: 1)),
                         ),
                         child: TextFormField(
                           validator: (String? value) {
@@ -139,7 +140,7 @@ class _LoginState extends State<Login> {
                           controller: emailController,
                           decoration: const InputDecoration(
                             hintText: 'Email',
-                            hintStyle: TextStyle(color: Colors.grey),
+                            hintStyle: TextStyle(color: Colores.gris),
                             border: OutlineInputBorder(
                               borderSide: BorderSide.none,
                             ),
@@ -152,7 +153,7 @@ class _LoginState extends State<Login> {
                       child: Container(
                         decoration: const BoxDecoration(
                           border: Border(
-                              bottom: BorderSide(color: Colors.grey, width: 1)),
+                              bottom: BorderSide(color: Colores.gris, width: 1)),
                         ),
                         child: TextFormField(
                             controller: passwordController,
@@ -164,7 +165,7 @@ class _LoginState extends State<Login> {
                                   _passwordVisible
                                       ? Icons.visibility
                                       : Icons.visibility_off,
-                                  color: Colors.grey,
+                                  color: Colores.gris,
                                 ),
                                 onPressed: () {
                                   setState(() {
@@ -172,7 +173,7 @@ class _LoginState extends State<Login> {
                                   });
                                 },
                               ),
-                              hintStyle: const TextStyle(color: Colors.grey),
+                              hintStyle: const TextStyle(color: Colores.gris),
                               border: const OutlineInputBorder(
                                 borderSide: BorderSide.none,
                               ),
@@ -194,21 +195,21 @@ class _LoginState extends State<Login> {
               child: Center(
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        primary: const Color.fromRGBO(59, 181, 189, 100),
+                        primary: Colores.principal,
                         fixedSize: const Size(320, 40)),
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
+                      /*if (_formKey.currentState!.validate()) {
                           final loginDto = LoginDto(
                               email: emailController.text,
                               password: passwordController.text);
                           BlocProvider.of<LoginBloc>(context)
                               .add(DoLoginEvent(loginDto));
-                        }
+                        }*/Navigator.push(context, MaterialPageRoute(builder: (context) => const Menu()));
                     },
                     child: const Text(
                       "Inicia sesión",
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colores.blanco),
                     )),
               ),
             ),
@@ -216,7 +217,7 @@ class _LoginState extends State<Login> {
               padding: EdgeInsets.only(top: 30),
               child: InkWell(
                 child: Text("¿Olvidaste tu contraseña?",
-                    style: TextStyle(color: Color.fromRGBO(59, 181, 189, 100))),
+                    style: TextStyle(color: Colores.principal)),
               ),
             )
           ],

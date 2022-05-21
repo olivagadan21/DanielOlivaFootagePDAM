@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:footage_flutter/style/styles.dart';
 import 'package:footage_flutter/ui/screens/detalleproducto_screen.dart';
 
 class Inicio extends StatelessWidget {
@@ -21,7 +22,7 @@ class Inicio extends StatelessWidget {
                   ],
                 ),
               ),
-              const Divider(color: Colors.black),
+              const Divider(color: Colores.negro),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Column(
@@ -31,7 +32,7 @@ class Inicio extends StatelessWidget {
                       child: FractionallySizedBox(
                         widthFactor: 0.75,
                         child: Card(
-                          color: Colors.white,
+                          color: Colores.blanco,
                           child: InkWell(
                             onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const DetalleProducto()));},
                             child: SizedBox(
@@ -44,7 +45,7 @@ class Inicio extends StatelessWidget {
                                         Container(
                                           decoration: BoxDecoration(
                                             border: Border.all(
-                                              color: Colors.black,
+                                              color: Colores.negro,
                                               width: 1
                                             ),
                                             borderRadius: BorderRadius.circular(20)
@@ -73,11 +74,11 @@ class Inicio extends StatelessWidget {
                                             Text("50 €"),
                                             Padding(
                                               padding: EdgeInsets.only(top: 6),
-                                              child: Text("Nike", style: TextStyle(color: Color.fromRGBO(48, 48, 48, 100)),),
+                                              child: Text("Nike", style: TextStyle(color: Colores.navigation),),
                                             ),
                                             Padding(
                                               padding: EdgeInsets.only(top: 6),
-                                              child: Text("M", style: TextStyle(color: Color.fromRGBO(48, 48, 48, 100)),),
+                                              child: Text("M", style: TextStyle(color: Colores.navigation),),
                                             ),
                                           ],
                                         ),
