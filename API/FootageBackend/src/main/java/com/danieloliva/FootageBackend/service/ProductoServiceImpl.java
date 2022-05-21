@@ -73,46 +73,31 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
-    public Producto save(CreateProductoDto p, MultipartFile file1, MultipartFile file2) {
+    public Producto save(Producto p) {
 
-        Producto producto = productoDtoConverter.createProductoDtoToProducto(p, file1, file2);
-
-        return productoRepository.save(producto);
+        return productoRepository.save(p);
 
     }
 
     @Override
-    public Producto edit(CreateProductoDto p, MultipartFile file1, MultipartFile file2, Long id) {
+    public Producto edit(Producto p, Long id) {
 
         Producto producto = productoRepository.getById(id);
 
         storageService.deleteFile(producto.getFoto1());
         storageService.deleteFile(producto.getFoto2());
 
-        String filename1 = storageService.store(file1);
-        String filename2 = storageService.store(file2);
-
-        String uri1 = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(filename1)
-                .toUriString();
-
-        String uri2 = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(filename2)
-                .toUriString();
-
         producto.setTitulo(p.getTitulo());
         producto.setDescripcion(p.getDescripcion());
         producto.setPrecio(p.getPrecio());
         producto.setIntercambio(p.isIntercambio());
         producto.setOriginal(p.isOriginal());
-        producto.setFoto1(filename1);
-        producto.setFoto2(filename2);
-        producto.setUsuario(usuarioRepository.getById(p.getUsuario()));
-        producto.setSeccion(seccionRepository.getById(p.getSeccion()));
-        producto.setCategoria(categoriaRepository.getById(p.getCategoria()));
-        producto.setMarca(marcaRepository.getById(p.getMarca()));
+        producto.setFoto1(p.getFoto1());
+        producto.setFoto2(p.getFoto2());
+        producto.setUsuario(usuarioRepository.getById(p.getUsuario().getId()));
+        producto.setSeccion(seccionRepository.getById(p.getSeccion().getId()));
+        producto.setCategoria(categoriaRepository.getById(p.getCategoria().getId()));
+        producto.setMarca(marcaRepository.getById(p.getMarca().getId()));
 
         return productoRepository.save(producto);
 

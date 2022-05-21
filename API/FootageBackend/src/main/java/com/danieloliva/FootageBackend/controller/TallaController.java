@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -108,7 +109,7 @@ public class TallaController {
                     description = "No se ha creado la nueva talla",
                     content = @Content),
     })
-    @PostMapping("")
+    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<GetTallaDto> create(@RequestBody CreateTallaDto talla) {
 
         if (talla.getNombre().isEmpty()) {
@@ -130,7 +131,7 @@ public class TallaController {
                     description = "No se ha editado la talla",
                     content = @Content),
     })
-    @PutMapping("{id}")
+    @PutMapping(value = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<GetTallaDto> edit(@RequestBody CreateTallaDto talla, @PathVariable Long id) {
 
         Optional<Talla> data = tallaService.findById(id);

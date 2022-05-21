@@ -1,5 +1,7 @@
 package com.danieloliva.FootageBackend.controller;
 
+import com.danieloliva.FootageBackend.dto.categoria.CategoriaDtoConverter;
+import com.danieloliva.FootageBackend.dto.categoria.CreateCategoriaDto;
 import com.danieloliva.FootageBackend.model.Categoria;
 import com.danieloliva.FootageBackend.service.base.CategoriaService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +26,7 @@ import java.util.Optional;
 public class CategoriaController {
 
     private final CategoriaService categoriaService;
+    private final CategoriaDtoConverter categoriaDtoConverter;
 
     @Operation(summary = "Obtiene lista de categorías")
     @ApiResponses(value = {
@@ -80,13 +84,14 @@ public class CategoriaController {
                     description = "No se ha creado la nueva categoría",
                     content = @Content),
     })
-    @PostMapping("")
-    public ResponseEntity<Categoria> create(@RequestPart("categoria") Categoria categoria, @RequestPart("file") MultipartFile file) {
+    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Categoria> create(@RequestPart("categoria") CreateCategoriaDto categoriaDto, @RequestPart("file") MultipartFile file) {
 
-        if (categoria.getNombre().isEmpty()) {
+        if (categoriaDto.getNombre().isEmpty()) {
             return ResponseEntity.badRequest().build();
         } else {
-            categoriaService.save(categoria, file);
+            Categoria categoria = categoriaDtoConverter.createCategoria(categoriaDto, file);
+            categoriaService.save(categoria);
             return ResponseEntity.status(HttpStatus.CREATED).body(categoria);
         }
 
@@ -102,15 +107,16 @@ public class CategoriaController {
                     description = "No se ha editado la categoría",
                     content = @Content),
     })
-    @PutMapping("{id}")
-    public ResponseEntity<Categoria> edit(@RequestPart("categoria") Categoria categoria, @RequestPart("file") MultipartFile file, @PathVariable Long id) {
+    @PutMapping(value = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Categoria> edit(@RequestPart("categoria") CreateCategoriaDto categoriaDto, @RequestPart("file") MultipartFile file, @PathVariable Long id) {
 
         Optional<Categoria> cat = categoriaService.findById(id);
 
         if (cat.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok().body(categoriaService.edit(categoria, file, id));
+            Categoria categoria = categoriaDtoConverter.createCategoria(categoriaDto, file);
+            return ResponseEntity.ok().body(categoriaService.edit(categoria, id));
         }
 
     }

@@ -1,5 +1,7 @@
 package com.danieloliva.FootageBackend.controller;
 
+import com.danieloliva.FootageBackend.dto.seccion.CreateSeccionDto;
+import com.danieloliva.FootageBackend.dto.seccion.SeccionDtoConverter;
 import com.danieloliva.FootageBackend.model.Seccion;
 import com.danieloliva.FootageBackend.service.base.SeccionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +26,7 @@ import java.util.Optional;
 public class SeccionController {
 
     private final SeccionService seccionService;
+    private final SeccionDtoConverter seccionDtoConverter;
 
     @Operation(summary = "Obtiene lista de secciones")
     @ApiResponses(value = {
@@ -80,13 +84,14 @@ public class SeccionController {
                     description = "No se ha creado la nueva sección",
                     content = @Content),
     })
-    @PostMapping("")
-    public ResponseEntity<Seccion> create(@RequestPart("seccion") Seccion seccion, @RequestPart("file") MultipartFile file) {
+    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Seccion> create(@RequestPart("seccion") CreateSeccionDto seccionDto, @RequestPart("file") MultipartFile file) {
 
-        if (seccion.getNombre().isEmpty()) {
+        if (seccionDto.getNombre().isEmpty()) {
             return ResponseEntity.badRequest().build();
         } else {
-            seccionService.save(seccion, file);
+            Seccion seccion = seccionDtoConverter.createSeccion(seccionDto, file);
+            seccionService.save(seccion);
             return ResponseEntity.status(HttpStatus.CREATED).body(seccion);
         }
 
@@ -102,13 +107,14 @@ public class SeccionController {
                     description = "No se ha editado la seccion",
                     content = @Content),
     })
-    @PutMapping("{id}")
-    public ResponseEntity<Seccion> edit(@RequestPart("seccion") Seccion seccion, @RequestPart("file") MultipartFile file, @PathVariable Long id) {
+    @PutMapping(value = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Seccion> edit(@RequestPart("seccion") CreateSeccionDto seccionDto, @RequestPart("file") MultipartFile file, @PathVariable Long id) {
 
         if (seccionService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok().body(seccionService.edit(seccion, file, id));
+            Seccion seccion = seccionDtoConverter.createSeccion(seccionDto, file);
+            return ResponseEntity.ok().body(seccionService.edit(seccion, id));
         }
 
     }

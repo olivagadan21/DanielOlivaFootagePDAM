@@ -11,9 +11,9 @@ public interface CategoriaService {
 
     Optional<Categoria> findById(Long id);
 
-    Categoria save(Categoria p, MultipartFile file);
+    Categoria save(Categoria p);
 
-    Categoria edit(Categoria p, MultipartFile file, Long id);
+    Categoria edit(Categoria p, Long id);
 
     void delete(Categoria p);
 

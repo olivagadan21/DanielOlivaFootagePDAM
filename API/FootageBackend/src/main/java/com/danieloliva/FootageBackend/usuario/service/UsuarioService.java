@@ -2,6 +2,7 @@
 package com.danieloliva.FootageBackend.usuario.service;
 
 import com.danieloliva.FootageBackend.errores.excepciones.UserEntityException;
+import com.danieloliva.FootageBackend.model.Producto;
 import com.danieloliva.FootageBackend.service.base.BaseService;
 import com.danieloliva.FootageBackend.service.base.StorageService;
 import com.danieloliva.FootageBackend.usuario.dto.CreateUsuarioDto;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,16 +47,19 @@ public class UsuarioService extends BaseService<Usuario, Long, UsuarioRepository
             throw new UserEntityException("Las contraseñas no coinciden");
         else {
 
+            List<Producto> p = new ArrayList<>();
+
             Usuario usuario = Usuario.builder()
                     .nombre(createUsuarioDto.getNombre())
                     .apellidos(createUsuarioDto.getApellidos())
                     .username(createUsuarioDto.getUsername())
                     .email(createUsuarioDto.getEmail())
                     .password(passwordEncoder.encode(createUsuarioDto.getPassword()))
-                    .premium(createUsuarioDto.isPremium())
+                    .premium(false)
                     .rol(RolUsuario.USER)
-                    .localizacion(createUsuarioDto.getLocalizacion())
-                    .avatar(createUsuarioDto.getAvatar())
+                    .localizacion(null)
+                    .avatar(null)
+                    .articulos(p)
                     .build();
 
             usuarioRepository.save(usuario);
@@ -69,6 +74,8 @@ public class UsuarioService extends BaseService<Usuario, Long, UsuarioRepository
             throw new UserEntityException("Las contraseñas no coinciden");
         else {
 
+            List<Producto> p = new ArrayList<>();
+
             Usuario usuario = Usuario.builder()
                     .nombre(createUsuarioDto.getNombre())
                     .apellidos(createUsuarioDto.getApellidos())
@@ -79,6 +86,7 @@ public class UsuarioService extends BaseService<Usuario, Long, UsuarioRepository
                     .rol(RolUsuario.ADMIN)
                     .localizacion(createUsuarioDto.getLocalizacion())
                     .avatar(createUsuarioDto.getAvatar())
+                    .articulos(p)
                     .build();
 
             usuarioRepository.save(usuario);
@@ -95,7 +103,6 @@ public class UsuarioService extends BaseService<Usuario, Long, UsuarioRepository
         usuarioAuth.setUsername(newUser.getUsername());
         usuarioAuth.setLocalizacion(newUser.getLocalizacion());
         usuarioAuth.setPremium(newUser.isPremium());
-        usuarioAuth.setRol(newUser.getRol());
 
         if (!file.isEmpty()) {
             storageService.deleteFile(usuarioAuth.getAvatar());

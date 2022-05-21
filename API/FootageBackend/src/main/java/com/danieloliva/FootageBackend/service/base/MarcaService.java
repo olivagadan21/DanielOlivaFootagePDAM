@@ -12,9 +12,9 @@ public interface MarcaService {
 
     Optional<Marca> findById(Long id);
 
-    Marca save(Marca m, MultipartFile file);
+    Marca save(Marca m);
 
-    Marca edit(Marca m, MultipartFile file, Long id);
+    Marca edit(Marca m, Long id);
 
     void delete(Marca m);
 

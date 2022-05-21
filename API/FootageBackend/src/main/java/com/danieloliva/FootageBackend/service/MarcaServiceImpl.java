@@ -31,40 +31,21 @@ public class MarcaServiceImpl implements MarcaService {
     }
 
     @Override
-    public Marca save(Marca m, MultipartFile file) {
+    public Marca save(Marca m) {
 
-        String filename = storageService.store(file);
-
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(filename)
-                .toUriString();
-
-        Marca marca = Marca.builder()
-                .nombre(m.getNombre())
-                .imagen(filename)
-                .build();
-
-        return marcaRepository.save(marca);
+        return marcaRepository.save(m);
 
     }
 
     @Override
-    public Marca edit(Marca m, MultipartFile file, Long id) {
+    public Marca edit(Marca m, Long id) {
 
         Marca marca = marcaRepository.getById(id);
 
         storageService.deleteFile(marca.getImagen());
 
-        String filename = storageService.store(file);
-
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(filename)
-                .toUriString();
-
         marca.setNombre(m.getNombre());
-        marca.setImagen(filename);
+        marca.setImagen(m.getImagen());
 
         return marcaRepository.save(marca);
 

@@ -33,9 +33,6 @@ public class CreateUsuarioDto {
 
     private boolean premium;
 
-    @Enumerated(EnumType.STRING)
-    private RolUsuario rol;
-
     @NaturalId
     @NotNull(message = "{not.null}")
     private String email;

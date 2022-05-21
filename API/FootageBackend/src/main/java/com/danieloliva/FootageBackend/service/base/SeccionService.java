@@ -11,9 +11,9 @@ public interface SeccionService {
 
     Optional<Seccion> findById(Long id);
 
-    Seccion save(Seccion s, MultipartFile file);
+    Seccion save(Seccion s);
 
-    Seccion edit(Seccion s, MultipartFile file, Long id);
+    Seccion edit(Seccion s, Long id);
 
     void delete(Seccion s);
 

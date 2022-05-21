@@ -12,9 +12,9 @@ public interface AnuncioService {
 
     Optional<Anuncio> findById(Long id);
 
-    Anuncio save(Anuncio p, MultipartFile file);
+    Anuncio save(Anuncio p);
 
-    Anuncio edit(Anuncio p, MultipartFile file, Long id);
+    Anuncio edit(Anuncio p, Long id);
 
     void delete(Anuncio p);
 

@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -200,14 +201,18 @@ public class ProductoController {
                     description = "No se ha creado el nuevo producto",
                     content = @Content),
     })
-    @PostMapping("")
+    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<GetProductoDto> create (@RequestPart("producto") CreateProductoDto productoDto, @RequestPart("file1") MultipartFile file1, @RequestPart("file2") MultipartFile file2) {
 
         if (productoDto.getTitulo().isEmpty()) {
             return ResponseEntity.badRequest().build();
         } else {
-            GetProductoDto producto = productoDtoConverter.getProductoDto(productoService.save(productoDto, file1, file2));
-            return ResponseEntity.status(HttpStatus.CREATED).body(producto);
+
+            Producto producto = productoDtoConverter.createProductoDtoToProducto(productoDto, file1, file2);
+
+            GetProductoDto p = productoDtoConverter.getProductoDto(productoService.save(producto));
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(p);
         }
 
     }
@@ -222,7 +227,7 @@ public class ProductoController {
                     description = "No se ha editado el producto",
                     content = @Content),
     })
-    @PutMapping("{id}")
+    @PutMapping(value = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<GetProductoDto> edit (@AuthenticationPrincipal Usuario usuario, @RequestPart("producto") CreateProductoDto productoDto, @RequestPart("file1") MultipartFile file1, @RequestPart("file2") MultipartFile file2, @PathVariable Long id) {
 
         Optional<Producto> producto = productoService.findById(id);
@@ -232,7 +237,7 @@ public class ProductoController {
         else {
 
             if (producto.get().getUsuario().equals(usuario) || usuario.getRol().equals(RolUsuario.ADMIN))
-                return ResponseEntity.ok().body(productoDtoConverter.getProductoDto(productoService.edit(productoDto, file1, file2, id)));
+                return ResponseEntity.ok().body(productoDtoConverter.getProductoDto(productoService.edit(productoDtoConverter.createProductoDtoToProducto(productoDto, file1, file2), id)));
             else
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 

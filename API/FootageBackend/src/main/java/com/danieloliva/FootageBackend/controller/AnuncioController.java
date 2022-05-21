@@ -1,5 +1,7 @@
 package com.danieloliva.FootageBackend.controller;
 
+import com.danieloliva.FootageBackend.dto.anuncio.AnuncioDtoConverter;
+import com.danieloliva.FootageBackend.dto.anuncio.CreateAnuncioDto;
 import com.danieloliva.FootageBackend.model.Anuncio;
 import com.danieloliva.FootageBackend.service.base.AnuncioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,11 +21,12 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Anuncio", description = "Controller de los anuncios")
+@Tag(name = "anuncio", description = "Controller de los anuncios")
 @RequestMapping("/anuncio/")
 public class AnuncioController {
 
     private final AnuncioService anuncioService;
+    private final AnuncioDtoConverter anuncioDtoConverter;
 
     @Operation(summary = "Obtiene lista de anuncios")
     @ApiResponses(value = {
@@ -80,14 +84,15 @@ public class AnuncioController {
                     description = "No se ha creado el nuevo anuncio",
                     content = @Content),
     })
-    @PostMapping("")
-    public ResponseEntity<Anuncio> create (@RequestPart("anuncio") Anuncio anuncio, @RequestPart("file") MultipartFile file) {
+    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Anuncio> create (@RequestPart("anuncio") CreateAnuncioDto anuncio, @RequestPart("file") MultipartFile file) {
 
         if (anuncio.getUrl().isEmpty()) {
             return ResponseEntity.badRequest().build();
         } else {
-            anuncioService.save(anuncio, file);
-            return ResponseEntity.status(HttpStatus.CREATED).body(anuncio);
+            Anuncio a = anuncioDtoConverter.createAnuncio(anuncio, file);
+            anuncioService.save(a);
+            return ResponseEntity.status(HttpStatus.CREATED).body(a);
         }
 
     }
@@ -102,15 +107,16 @@ public class AnuncioController {
                     description = "No se ha editado el anuncio",
                     content = @Content),
     })
-    @PutMapping("{id}")
-    public ResponseEntity<Anuncio> edit (@RequestPart("anuncio") Anuncio anuncio, @RequestPart("file") MultipartFile file, @PathVariable Long id) {
+    @PutMapping(value = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Anuncio> edit (@RequestPart("anuncio") CreateAnuncioDto anuncioDto, @RequestPart("file") MultipartFile file, @PathVariable Long id) {
 
         Optional<Anuncio> a = anuncioService.findById(id);
 
         if (a.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok().body(anuncioService.edit(anuncio, file, id));
+            Anuncio anuncio = anuncioDtoConverter.createAnuncio(anuncioDto, file);
+            return ResponseEntity.ok().body(anuncioService.edit(anuncio, id));
         }
 
     }

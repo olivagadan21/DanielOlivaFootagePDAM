@@ -29,40 +29,21 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-    public Categoria save(Categoria c, MultipartFile file) {
+    public Categoria save(Categoria c) {
 
-        String filename = storageService.store(file);
-
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(filename)
-                .toUriString();
-
-        Categoria categoria = Categoria.builder()
-                .nombre(c.getNombre())
-                .imagen(filename)
-                .build();
-
-        return categoriaRepository.save(categoria);
+        return categoriaRepository.save(c);
 
     }
 
     @Override
-    public Categoria edit(Categoria c, MultipartFile file, Long id) {
+    public Categoria edit(Categoria c, Long id) {
 
         Categoria categoria = categoriaRepository.findById(id).get();
 
         storageService.deleteFile(categoria.getImagen());
 
-        String filename = storageService.store(file);
-
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(filename)
-                .toUriString();
-
         categoria.setNombre(c.getNombre());
-        categoria.setImagen(filename);
+        categoria.setImagen(c.getImagen());
 
         return categoriaRepository.save(categoria);
 

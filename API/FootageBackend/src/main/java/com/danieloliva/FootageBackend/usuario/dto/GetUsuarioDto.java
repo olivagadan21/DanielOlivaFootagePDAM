@@ -31,6 +31,6 @@ public class GetUsuarioDto {
 
     private RolUsuario rol;
 
-    private List<GetProductoUsuarioDto> articulos;
+    private List<GetProductoUsuarioDto> articulos = new ArrayList<>();
 
 }

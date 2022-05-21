@@ -1,4 +1,4 @@
-package com.danieloliva.FootageBackend.dto;
+package com.danieloliva.FootageBackend.dto.file;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -30,39 +30,19 @@ public class SeccionServiceImpl implements SeccionService {
     }
 
     @Override
-    public Seccion save(Seccion s, MultipartFile file) {
-
-        String filename = storageService.store(file);
-
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(filename)
-                .toUriString();
-
-        Seccion seccion = Seccion.builder()
-                .nombre(s.getNombre())
-                .imagen(filename)
-                .build();
-
-        return seccionRepository.save(seccion);
+    public Seccion save(Seccion s) {
+        return seccionRepository.save(s);
     }
 
     @Override
-    public Seccion edit(Seccion s, MultipartFile file, Long id) {
+    public Seccion edit(Seccion s, Long id) {
 
         Seccion seccion = seccionRepository.getById(id);
 
         storageService.deleteFile(seccion.getImagen());
 
-        String filename = storageService.store(file);
-
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(filename)
-                .toUriString();
-
         seccion.setNombre(s.getNombre());
-        seccion.setImagen(filename);
+        seccion.setImagen(s.getImagen());
 
         return seccionRepository.save(seccion);
     }
