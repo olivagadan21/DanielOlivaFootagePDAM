@@ -50,6 +50,10 @@ dependencies:
   cached_network_image: ^3.2.0
   date_field: ^2.1.3
   toggle_switch: ^1.4.0
+  google_maps_flutter: ^2.1.1
+  flutter_localizations: 
+    sdk: flutter
+    version: ^0.0.0
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +81,7 @@ flutter:
   assets:
     - assets/images/principal.jpg
     - assets/images/icono.png
+    - assets/images/nike.png
     - assets/images/camiseta.jpg
     - assets/images/categoria.jpg
     - assets/images/seccion.jpg

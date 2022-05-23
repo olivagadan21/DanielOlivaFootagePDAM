@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:footage_flutter/style/styles.dart';
 
 import 'buscar_screen.dart';
 import 'inicio_screen.dart';
@@ -48,14 +49,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colores.blanco,
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(color: Colors.white, border: Border(top: BorderSide(color: Color.fromRGBO(48, 48, 48, 100), width: 1))),
+        decoration: const BoxDecoration(color: Colores.blanco, border: Border(top: BorderSide(color: Colores.navigation, width: 1))),
         child: BottomNavigationBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Colores.blanco,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(
@@ -81,8 +82,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             ),
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: const Color.fromRGBO(59, 181, 189, 100),
-          unselectedItemColor: const Color.fromRGBO(48, 48, 48, 100),
+          selectedItemColor: Colores.principal,
+          unselectedItemColor: Colores.navigation,
           onTap: _onItemTapped,
         ),
       ),
