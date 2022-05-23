@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:footage_flutter/bloc/auth/register_user_bloc/register_user_bloc.dart';
-import 'package:footage_flutter/models/auth/register_dto.dart';
 import 'package:footage_flutter/models/auth/register_response.dart';
 import 'package:footage_flutter/repository/auth/auth_repository.dart';
 import 'package:footage_flutter/repository/auth/auth_repository_impl.dart';
@@ -25,7 +24,6 @@ class _RegisterState extends State<Register> {
   DateTime selectedDate = DateTime.now();
 
   late AuthRepository authRepository;
-  final _formKey = GlobalKey<FormState>();
   TextEditingController nombre = TextEditingController();
   TextEditingController apellidos = TextEditingController();
   TextEditingController username = TextEditingController();

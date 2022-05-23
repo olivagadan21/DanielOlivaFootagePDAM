@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:footage_flutter/bloc/auth/login_bloc/login_bloc.dart';
-import 'package:footage_flutter/models/auth/login_dto.dart';
 import 'package:footage_flutter/models/auth/login_response.dart';
 import 'package:footage_flutter/repository/auth/auth_repository.dart';
 import 'package:footage_flutter/repository/auth/auth_repository_impl.dart';
@@ -20,7 +19,6 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   late AuthRepository authRepository;
-  final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   late Future<SharedPreferences> _prefs;
