@@ -1,6 +1,6 @@
 package com.danieloliva.FootageBackend.controller;
 
-import com.danieloliva.FootageBackend.dto.FileResponse;
+import com.danieloliva.FootageBackend.dto.file.FileResponse;
 import com.danieloliva.FootageBackend.service.base.StorageService;
 import com.danieloliva.FootageBackend.utils.MediaTypeUrlResource;
 import lombok.RequiredArgsConstructor;

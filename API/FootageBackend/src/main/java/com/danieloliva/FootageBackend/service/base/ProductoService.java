@@ -26,9 +26,9 @@ public interface ProductoService {
 
     List<Producto> findByMarca(Long id);
 
-    Producto save(CreateProductoDto p, MultipartFile file1, MultipartFile file2);
+    Producto save(Producto p);
 
-    Producto edit(CreateProductoDto p, MultipartFile file1, MultipartFile file2, Long id);
+    Producto edit(Producto p, Long id);
 
     void delete(Producto p);
 

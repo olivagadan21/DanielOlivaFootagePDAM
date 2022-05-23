@@ -29,40 +29,21 @@ public class AnuncioServiceImpl implements AnuncioService {
     }
 
     @Override
-    public Anuncio save(Anuncio a, MultipartFile file) {
+    public Anuncio save(Anuncio a) {
 
-        String filename = storageService.store(file);
+        return anuncioRepository.save(a);
 
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(filename)
-                .toUriString();
-
-        Anuncio anuncio = Anuncio.builder()
-                .empresa(a.getEmpresa())
-                .imagen(filename)
-                .url(a.getUrl())
-                .build();
-
-        return anuncioRepository.save(anuncio);
     }
 
     @Override
-    public Anuncio edit(Anuncio a, MultipartFile file, Long id) {
+    public Anuncio edit(Anuncio a, Long id) {
 
         Anuncio anuncio = findById(id).get();
 
         storageService.deleteFile(anuncio.getImagen());
 
-        String filename = storageService.store(file);
-
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(filename)
-                .toUriString();
-
         anuncio.setEmpresa(a.getEmpresa());
-        anuncio.setImagen(filename);
+        anuncio.setImagen(a.getImagen());
         anuncio.setUrl(a.getUrl());
 
         return anuncioRepository.save(anuncio);

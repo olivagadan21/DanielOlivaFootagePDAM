@@ -51,7 +51,9 @@ public class UsuarioController {
         if (usuarios.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
+
             return ResponseEntity.ok().body(usuarios);
+
         }
 
     }
@@ -163,13 +165,13 @@ public class UsuarioController {
                     content = @Content),
     })
     @PostMapping("/auth/register/user")
-    public ResponseEntity<GetUsuarioProductoDto> createUser (@RequestBody CreateUsuarioDto usuario) {
+    public ResponseEntity<GetUsuarioDto> createUser (@RequestBody CreateUsuarioDto usuario) {
 
         if (usuario.getUsername().isEmpty()) {
             return ResponseEntity.badRequest().build();
         } else {
             Usuario usu = usuarioService.saveUser(usuario);
-            GetUsuarioProductoDto u = usuarioDtoConverter.usuarioToGetUsuarioProductoDto(usu);
+            GetUsuarioDto u = usuarioDtoConverter.usuarioToGetUsuarioDto(usu);
             return ResponseEntity.status(HttpStatus.CREATED).body(u);
         }
 
