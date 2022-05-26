@@ -1,13 +1,107 @@
 
+/*
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:footage_flutter/bloc/image/image_bloc.dart';
+import 'package:footage_flutter/bloc/producto/create/producto_bloc.dart';
+import 'package:footage_flutter/bloc/producto/list/productos_bloc.dart';
+import 'package:footage_flutter/repository/producto/producto_repository.dart';
+import 'package:footage_flutter/repository/producto/producto_repository_impl.dart';
 import 'package:footage_flutter/style/styles.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'menu_screen.dart';
 
-class Vender extends StatelessWidget {
+class VenderScreen extends StatefulWidget {
 
-  const Vender({ Key? key }) : super(key: key);
+  const VenderScreen({ Key? key }) : super(key: key);
 
+@override
+_RegisterScreenState createState() => _RegisterScreenState();
+
+}
+
+class _RegisterScreenState extends State<VenderScreen> {
+  String imageSelect = "Imagen no selecionada";
+  FilePickerResult? result;
+  PlatformFile? file;
+  late ProductoRepository _productoRepository;
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController titulo = TextEditingController();
+  TextEditingController descripcion = TextEditingController();
+  TextEditingController precio = TextEditingController();
+  TextEditingController intercambio = TextEditingController();
+  TextEditingController original = TextEditingController();
+  TextEditingController usuario = TextEditingController();
+  TextEditingController seccion = TextEditingController();
+  TextEditingController categoria = TextEditingController();
+  TextEditingController marca = TextEditingController();
+  TextEditingController talla = TextEditingController();
+  late Future<SharedPreferences> _prefs;
+  String path = "";
+
+  @override
+  void initState() {
+    _productoRepository = ProductoRepositoryImpl();
+    _prefs = SharedPreferences.getInstance();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) {
+              return ImageBloc();
+            },
+          ),
+          BlocProvider(
+            create: (context) {
+              return ProductosBloc(_productoRepository);
+            },
+          ),
+        ],
+        child: _createBody(context),
+      ),
+    );
+  }
+
+  _createBody(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Container(
+            color: Colors.white,
+            padding: const EdgeInsets.all(20),
+            child: BlocConsumer<ProductosBloc, ProductosState>(
+                listenWhen: (context, state) {
+              return state is ProductoSuccessState ||
+                  state is ProductoCreateError;
+            }, listener: (context, state) async {
+              if (state is ProductoSuccessState) {
+                _createSuccess(context, state.loginResponse);
+              } else if (state is ProductoCreateError) {
+                _showSnackbar(context, state.message);
+              }
+            }, buildWhen: (context, state) {
+              return state is ProductoInitial ||
+                  state is ProductoLoadingState;
+            }, builder: (ctx, state) {
+              if (state is ProductoInitial) {
+                return _create(ctx);
+              } else if (state is ProductoLoadingState) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                return _create(ctx);
+              }
+            })),
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     String selectedValueSeccion = "";
@@ -361,4 +455,4 @@ List<DropdownMenuItem<String>> get dropdownEstado{
                           ),
                         );
                       }
-                    ),*/
+                    ),*/*/
