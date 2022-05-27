@@ -37,7 +37,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     Buscar(),
     VenderScreen(),
     Mensajes(),
-    Perfil(),
+    PerfilScreen(),
   ];
 
   void _onItemTapped(int index) {

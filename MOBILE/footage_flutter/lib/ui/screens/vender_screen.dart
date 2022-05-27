@@ -6,11 +6,13 @@ import 'package:footage_flutter/bloc/producto/create/producto_bloc.dart';
 import 'package:footage_flutter/bloc/producto/list/productos_bloc.dart';
 import 'package:footage_flutter/models/producto/producto_dto.dart';
 import 'package:footage_flutter/models/producto/producto_response.dart';
+import 'package:footage_flutter/models/seccion/seccion_response.dart';
 import 'package:footage_flutter/repository/categoria/categoria_repository.dart';
 import 'package:footage_flutter/repository/marca/marca_repository.dart';
 import 'package:footage_flutter/repository/producto/producto_repository.dart';
 import 'package:footage_flutter/repository/producto/producto_repository_impl.dart';
 import 'package:footage_flutter/repository/seccion/seccion_repository.dart';
+import 'package:footage_flutter/repository/talla/talla_repository.dart';
 import 'package:footage_flutter/style/styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,13 +35,13 @@ class _RegisterScreenState extends State<VenderScreen> {
   late SeccionRepository seccionRepository;
   late CategoriaRepository categoriaRepository;
   late MarcaRepository marcaRepository;
-  late TallaR
+  late TallaRepository tallaRepository;
   final _formKey = GlobalKey<FormState>();
   TextEditingController titulo = TextEditingController();
   TextEditingController descripcion = TextEditingController();
-  TextEditingController precio = TextEditingController();
-  bool? intercambio;
-  bool? original;
+  bool intercambio = false;
+  bool original = false;
+  double precio = 0.0;
   Usuario? usuario;
   Seccion? seccion;
   Categoria? categoria;
@@ -334,6 +336,8 @@ class _RegisterScreenState extends State<VenderScreen> {
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width*0.7,
                     child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      controller: precio,
                       decoration: InputDecoration(
                         labelText: 'Precio',
                         focusedBorder: OutlineInputBorder(
@@ -365,10 +369,10 @@ class _RegisterScreenState extends State<VenderScreen> {
                               titulo: titulo.text,
                               descripcion: descripcion.text,
                               precio: precio,
-                              intercambio: (intercambio=='true')?true:false,
-                              original: (original=='true')?true:false,
+                              intercambio: intercambio,
+                              original: original,
                               usuario: usuario,
-                              seccion: seccion,
+                              seccion: seccion.id,
                               categoria: categoria,
                               marca: marca,
                               talla: talla

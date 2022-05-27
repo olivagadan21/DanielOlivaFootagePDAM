@@ -43,7 +43,7 @@ class DetalleProducto extends StatelessWidget {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(primary: Colores.blanco, fixedSize: const Size(320, 40)),
                     onPressed: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => const Perfil()));
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => const PerfilScreen()));
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
