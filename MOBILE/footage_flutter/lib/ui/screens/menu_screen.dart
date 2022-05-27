@@ -35,7 +35,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   static const List<Widget> _widgetOptions = <Widget>[
     InicioScreen(),
     Buscar(),
-    Vender(),
+    VenderScreen(),
     Mensajes(),
     Perfil(),
   ];

@@ -13,7 +13,7 @@ class ProductoDto {
   });
   late final String titulo;
   late final String descripcion;
-  late final int precio;
+  late final double precio;
   late final bool intercambio;
   late final bool original;
   late final int usuario;

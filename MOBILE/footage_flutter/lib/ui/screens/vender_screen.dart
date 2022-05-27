@@ -1,11 +1,11 @@
-
-/*
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:footage_flutter/bloc/image/image_bloc.dart';
 import 'package:footage_flutter/bloc/producto/create/producto_bloc.dart';
 import 'package:footage_flutter/bloc/producto/list/productos_bloc.dart';
+import 'package:footage_flutter/models/producto/producto_dto.dart';
+import 'package:footage_flutter/models/producto/producto_response.dart';
 import 'package:footage_flutter/repository/producto/producto_repository.dart';
 import 'package:footage_flutter/repository/producto/producto_repository_impl.dart';
 import 'package:footage_flutter/style/styles.dart';
@@ -31,13 +31,13 @@ class _RegisterScreenState extends State<VenderScreen> {
   TextEditingController titulo = TextEditingController();
   TextEditingController descripcion = TextEditingController();
   TextEditingController precio = TextEditingController();
-  TextEditingController intercambio = TextEditingController();
-  TextEditingController original = TextEditingController();
-  TextEditingController usuario = TextEditingController();
-  TextEditingController seccion = TextEditingController();
-  TextEditingController categoria = TextEditingController();
-  TextEditingController marca = TextEditingController();
-  TextEditingController talla = TextEditingController();
+  bool? intercambio;
+  bool? original;
+  Usuario? usuario;
+  Seccion? seccion;
+  Categoria? categoria;
+  Marca? marca;
+  Talla? talla;
   late Future<SharedPreferences> _prefs;
   String path = "";
 
@@ -77,13 +77,13 @@ class _RegisterScreenState extends State<VenderScreen> {
         child: Container(
             color: Colors.white,
             padding: const EdgeInsets.all(20),
-            child: BlocConsumer<ProductosBloc, ProductosState>(
+            child: BlocConsumer<ProductoBloc, ProductoState>(
                 listenWhen: (context, state) {
               return state is ProductoSuccessState ||
                   state is ProductoCreateError;
             }, listener: (context, state) async {
               if (state is ProductoSuccessState) {
-                _createSuccess(context, state.loginResponse);
+                _createSuccess(context, state.producto);
               } else if (state is ProductoCreateError) {
                 _showSnackbar(context, state.message);
               }
@@ -102,15 +102,30 @@ class _RegisterScreenState extends State<VenderScreen> {
       ),
     );
   }
-  @override
-  Widget build(BuildContext context) {
+
+  Future<void> _createSuccess(BuildContext context, ProductoResponse late) async {
+    _prefs.then((SharedPreferences prefs) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const Menu()),
+      );
+    });
+  }
+
+  void _showSnackbar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  _create(BuildContext context) {
     String selectedValueSeccion = "";
     String selectedValueCategoria = "";
     String selectedValueTalla = "";
     String selectedValueMarca = "";
     String selectedValueEstado = "";
-    return Scaffold(
-      body: SingleChildScrollView(
+    return SingleChildScrollView(
         child: SafeArea(
           child: Padding(
             padding: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.01, bottom: MediaQuery.of(context).size.height*0.02),
@@ -162,6 +177,7 @@ class _RegisterScreenState extends State<VenderScreen> {
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width*0.7,
                     child: TextFormField(
+                      controller: titulo,
                       decoration: InputDecoration(
                         labelText: 'Título',
                         focusedBorder: OutlineInputBorder(
@@ -185,6 +201,7 @@ class _RegisterScreenState extends State<VenderScreen> {
                     width: MediaQuery.of(context).size.width*0.7,
                     height: MediaQuery.of(context).size.height*0.2,
                     child: TextFormField(
+                      controller: descripcion,
                       keyboardType: TextInputType.multiline,
                       textInputAction: TextInputAction.newline,
                       minLines: 1,
@@ -209,7 +226,7 @@ class _RegisterScreenState extends State<VenderScreen> {
                     width: MediaQuery.of(context).size.width*0.7,
                     child: DropdownButtonFormField(
                       value: selectedValueSeccion,
-                      items: dropdownSeccion,
+                      items: ,
                       decoration: const InputDecoration(
                         labelText: "Sección",
                         labelStyle: TextStyle(fontSize: 18)
@@ -334,7 +351,24 @@ class _RegisterScreenState extends State<VenderScreen> {
                         style: ElevatedButton.styleFrom(
                             primary: Colores.principal,
                             fixedSize: const Size(320, 40)),
-                        onPressed: () {},
+                        onPressed: () async {
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          if (_formKey.currentState!.validate()) {
+                            final producto = ProductoDto(
+                              titulo: titulo.text,
+                              descripcion: descripcion.text,
+                              precio: precio,
+                              intercambio: (intercambio=='true')?true:false,
+                              original: (original=='true')?true:false,
+                              usuario: usuario,
+                              seccion: seccion,
+                              categoria: categoria,
+                              marca: marca,
+                              talla: talla
+                            );
+                            titulo = titulo.text,
+                          }
+                        },
                         child: const Text(
                           "Subir",
                           textAlign: TextAlign.center,
@@ -353,11 +387,8 @@ class _RegisterScreenState extends State<VenderScreen> {
             ),
           )
         ),
-      ),
-    );
+      );
   }
-
-  void setState(Null Function() param0) {}
   
 }
 
@@ -455,4 +486,4 @@ List<DropdownMenuItem<String>> get dropdownEstado{
                           ),
                         );
                       }
-                    ),*/*/
+                    ),*/
