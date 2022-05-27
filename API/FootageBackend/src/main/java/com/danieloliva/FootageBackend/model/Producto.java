@@ -57,4 +57,8 @@ public class Producto implements Serializable {
     @JoinColumn(name = "talla_id")
     private Talla talla;
 
+    @Builder.Default
+    @OneToMany(mappedBy = "producto", cascade = {CascadeType.REMOVE})
+    private List<MeGusta> meGustas = new ArrayList<>();
+
 }

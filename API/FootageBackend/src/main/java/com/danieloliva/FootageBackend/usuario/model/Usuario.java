@@ -1,6 +1,7 @@
 
 package com.danieloliva.FootageBackend.usuario.model;
 
+import com.danieloliva.FootageBackend.model.MeGusta;
 import com.danieloliva.FootageBackend.model.Producto;
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
@@ -51,6 +52,10 @@ public class Usuario implements UserDetails {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Producto> articulos = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "usuario")
+    private List<MeGusta> meGustas = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
