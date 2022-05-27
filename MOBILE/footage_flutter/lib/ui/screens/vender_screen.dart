@@ -6,8 +6,11 @@ import 'package:footage_flutter/bloc/producto/create/producto_bloc.dart';
 import 'package:footage_flutter/bloc/producto/list/productos_bloc.dart';
 import 'package:footage_flutter/models/producto/producto_dto.dart';
 import 'package:footage_flutter/models/producto/producto_response.dart';
+import 'package:footage_flutter/repository/categoria/categoria_repository.dart';
+import 'package:footage_flutter/repository/marca/marca_repository.dart';
 import 'package:footage_flutter/repository/producto/producto_repository.dart';
 import 'package:footage_flutter/repository/producto/producto_repository_impl.dart';
+import 'package:footage_flutter/repository/seccion/seccion_repository.dart';
 import 'package:footage_flutter/style/styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,7 +29,11 @@ class _RegisterScreenState extends State<VenderScreen> {
   String imageSelect = "Imagen no selecionada";
   FilePickerResult? result;
   PlatformFile? file;
-  late ProductoRepository _productoRepository;
+  late ProductoRepository productoRepository;
+  late SeccionRepository seccionRepository;
+  late CategoriaRepository categoriaRepository;
+  late MarcaRepository marcaRepository;
+  late TallaR
   final _formKey = GlobalKey<FormState>();
   TextEditingController titulo = TextEditingController();
   TextEditingController descripcion = TextEditingController();
@@ -43,7 +50,7 @@ class _RegisterScreenState extends State<VenderScreen> {
 
   @override
   void initState() {
-    _productoRepository = ProductoRepositoryImpl();
+    productoRepository = ProductoRepositoryImpl();
     _prefs = SharedPreferences.getInstance();
     super.initState();
   }
@@ -62,7 +69,7 @@ class _RegisterScreenState extends State<VenderScreen> {
           ),
           BlocProvider(
             create: (context) {
-              return ProductosBloc(_productoRepository);
+              return ProductosBloc(productoRepository);
             },
           ),
         ],
