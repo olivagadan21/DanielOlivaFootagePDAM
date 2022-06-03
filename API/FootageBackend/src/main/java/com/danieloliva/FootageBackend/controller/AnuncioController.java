@@ -74,6 +74,27 @@ public class AnuncioController {
 
     }
 
+    @Operation(summary = "Obtiene un anuncio al azar")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha encontrado el anuncio",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Anuncio.class))}),
+            @ApiResponse(responseCode = "400",
+                    description = "No se ha encontrado el anuncio",
+                    content = @Content),
+    })
+    @GetMapping("/aleatorio")
+    public ResponseEntity<Anuncio> findOneAleatory() {
+
+        if (anuncioService.findAll().isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(anuncioService.findOneAleatory());
+        }
+
+    }
+
     @Operation(summary = "Crea un nuevo anuncio")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",

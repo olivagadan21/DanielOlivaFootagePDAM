@@ -1,5 +1,6 @@
 package com.danieloliva.FootageBackend.usuario.dto;
 
+import com.danieloliva.FootageBackend.dto.meGusta.MeGustaDtoConverter;
 import com.danieloliva.FootageBackend.dto.producto.GetProductoUsuarioDto;
 import com.danieloliva.FootageBackend.dto.producto.ProductoUsuarioDtoConverter;
 import com.danieloliva.FootageBackend.model.Producto;
@@ -29,6 +30,9 @@ public class UsuarioDtoConverter {
                 .premium(usuario.isPremium())
                 .rol(usuario.getRol())
                 .articulos(usuario.getArticulos().stream().map(productoDtoConverter::getProductoUsuarioDto).toList())
+                .meGustas(usuario.getMeGustas().stream().map(meGusta -> {
+                    return productoDtoConverter.getProductoUsuarioDto(meGusta.getProducto());
+                }).toList())
                 .build();
     }
 

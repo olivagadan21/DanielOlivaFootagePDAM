@@ -15,7 +15,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class MeGustaPk implements Serializable {
 
-    private Long productoId;
-    private Long usuarioId;
+    private Long producto_id;
+    private Long usuario_id;
 
 }

@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +27,13 @@ public class AnuncioServiceImpl implements AnuncioService {
     @Override
     public Optional<Anuncio> findById(Long id) {
         return anuncioRepository.findById(id);
+    }
+
+    @Override
+    public Anuncio findOneAleatory() {
+        List<Anuncio> anuncios = findAll();
+        Long id = new Random().nextLong(anuncios.size()) + 1;
+        return anuncioRepository.getById(id);
     }
 
     @Override

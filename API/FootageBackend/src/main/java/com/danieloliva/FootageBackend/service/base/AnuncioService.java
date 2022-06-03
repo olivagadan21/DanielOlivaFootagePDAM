@@ -12,6 +12,8 @@ public interface AnuncioService {
 
     Optional<Anuncio> findById(Long id);
 
+    Anuncio findOneAleatory();
+
     Anuncio save(Anuncio p);
 
     Anuncio edit(Anuncio p, Long id);

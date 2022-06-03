@@ -1,5 +1,6 @@
 package com.danieloliva.FootageBackend.dto.producto;
 
+import com.danieloliva.FootageBackend.dto.meGusta.MeGustaDtoConverter;
 import com.danieloliva.FootageBackend.model.Producto;
 import com.danieloliva.FootageBackend.service.base.*;
 import com.danieloliva.FootageBackend.usuario.dto.UsuarioDtoConverter;
@@ -69,6 +70,9 @@ public class ProductoDtoConverter {
                 .categoria(producto.getCategoria())
                 .marca(producto.getMarca())
                 .talla(producto.getTalla())
+                .meGustas(producto.getMeGustas().stream().map(meGusta -> {
+                    return usuarioDtoConverter.usuarioToGetUsuarioProductoDto(meGusta.getUsuario());
+                }).toList())
                 .build();
     }
 
