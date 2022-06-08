@@ -1,6 +1,6 @@
 .example-card {
     display: inline-block;
-    max-width: 400px;
+    width: 300px;
     border: 1px solid grey;
 }
 
@@ -12,19 +12,15 @@ img {
     background-size: cover;
 }
 
-.juntos {
-    display: flex;
+.nombre {
+    padding-top: 10%;
     text-align: center;
+    font-size: 50pt;
 }
 
-.juntos mat-card-title {
-    font-size: 12pt;
-    padding-left: 10px;
-}
-
-.juntos mat-icon {
-    font-size: 12pt;
-    padding-left: 10px;
+.categoria {
+    font-size: 15pt;
+    color: grey;
 }
 
 button {

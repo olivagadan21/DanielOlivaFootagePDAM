@@ -1,0 +1,18 @@
+<form class="custom-form" method="post">
+    <h1>Editar Usuario</h1>
+    <input type="text" name="nombre" [(ngModel)]="usuario.nombre" placeholder="Nombre" required="required" />
+    <input type="text" name="apellidos" [(ngModel)]="usuario.apellidos" placeholder="Apellidos" required="required" />
+    <input type="text" name="username" [(ngModel)]="usuario.username" placeholder="Nombre de Usuario" required="required" />
+    <input type="text" name="localizacion" [(ngModel)]="usuario.localizacion" placeholder="Localización" required="required" />
+    <mat-form-field class="nombre" floatLabel="always">
+        <mat-slide-toggle matInput [checked]="false " [(ngModel)]="usuario.premium " name="premium ">&nbsp;&nbsp;&nbsp;&nbsp;Original</mat-slide-toggle>
+        <textarea matInput hidden></textarea>
+    </mat-form-field>
+    <br>
+    <mat-form-field floatLabel="always" class="nombre">
+        <mat-label>Imagen</mat-label>
+        <input type="file" name="nombre" required="required" />
+        <textarea matInput hidden></textarea>
+    </mat-form-field>
+    <button type="submit" (click)="onSubmit()">Editar</button>
+</form>

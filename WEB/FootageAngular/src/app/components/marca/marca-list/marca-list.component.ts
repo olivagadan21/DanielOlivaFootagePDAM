@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { MarcaResponse } from 'src/app/model/interfaces/marca';
+import { MarcaService } from 'src/app/services/marca.service';
 
 @Component({
   selector: 'app-marca-list',
@@ -7,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MarcaListComponent implements OnInit {
 
-  constructor() { }
+  marcas: MarcaResponse[] = [];
+
+  constructor(private marcaService: MarcaService, private router: Router) { }
 
   ngOnInit(): void {
+    this.marcaService.getMarcas().subscribe(results => {this.marcas = results})
+  }
+
+  create() {
+    return this.router.navigate(['/marca-formulario'])
   }
 
 }

@@ -1,0 +1,48 @@
+.juntos {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.titulo {
+    display: flex;
+    justify-content: space-between;
+}
+
+mat-icon {
+    margin-top: 3px;
+    margin-left: 5px;
+    color: red;
+}
+
+.text {
+    margin-top: 30px;
+}
+
+.text p {
+    margin-top: 5%;
+}
+
+a {
+    color: blue;
+}
+
+img {
+    width: 40%;
+}
+
+h1 {
+    font-size: 16pt;
+}
+
+p {
+    font-size: 14pt;
+}
+
+.hr {
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+.precio {
+    margin-right: 400px;
+}

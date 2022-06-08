@@ -7,12 +7,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./side-menu.component.css']
 })
 export class SideMenuComponent implements OnInit {
-  currentPage = 'login';
 
-  constructor(private router: Router) { }
+  constructor() { }
 
   ngOnInit(): void {
-    console.log(this.router.url);
   }
 
 }

@@ -1,5 +1,5 @@
-<button mat-button color="primary" routerLink="/anuncio_post"><mat-icon aria-hidden="false" aria-label="Example home icon">add</mat-icon>Añadir talla</button>
+<button mat-button color="primary" (click)="create()"><mat-icon aria-hidden="false" aria-label="Example home icon">add</mat-icon>Añadir talla</button>
 <br>
 <br>
 <br>
-<app-talla-item></app-talla-item>
+<app-talla-item *ngFor="let tallaResponse of tallas" [tallaInput]="tallaResponse"></app-talla-item>

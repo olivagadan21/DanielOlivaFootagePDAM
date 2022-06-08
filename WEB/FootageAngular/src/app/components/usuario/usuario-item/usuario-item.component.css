@@ -1,11 +1,12 @@
 .example-card {
     display: inline-block;
-    max-width: 400px;
+    width: 300px;
     border: 1px solid grey;
 }
 
 img {
     border: 1px solid black;
+    width: 100%;
 }
 
 .example-header-image {
@@ -27,6 +28,7 @@ img {
     padding-left: 10px;
 }
 
-button {
-    float: right;
+.bottom {
+    display: flex;
+    justify-content: space-between;
 }

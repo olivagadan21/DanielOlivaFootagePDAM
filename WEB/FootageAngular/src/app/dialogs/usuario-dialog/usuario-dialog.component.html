@@ -1,0 +1,15 @@
+<div class="juntos">
+    <div class="text">
+        <h1><strong>{{usuario.nombre}} {{usuario.apellidos}}</strong></h1>
+        <p><strong>Username: </strong>{{usuario.username}}</p>
+        <p><strong>Email: </strong>{{usuario.email}}</p>
+        <p><strong>Rol: </strong>{{usuario.rol}}</p>
+        <p><strong>Premium: </strong>{{usuario.premium}}</p>
+        <p><strong>Localización: </strong>{{usuario.localizacion}}</p>
+        <div class="like">
+            <mat-icon>favorite</mat-icon>
+            <p><span><strong>: </strong></span>{{usuario.meGustas.length}}</p>
+        </div>
+    </div>
+    <img src={{usuario.avatar}}>
+</div>

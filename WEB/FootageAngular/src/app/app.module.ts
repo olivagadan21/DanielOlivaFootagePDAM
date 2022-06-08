@@ -24,6 +24,21 @@ import { MaterialImportsModule } from './modules/material-imports.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SideMenuComponent } from './share/side-menu/side-menu.component';
+import { AnuncioFormComponent } from './components/anuncio/anuncio-form/anuncio-form.component';
+import { CategoriaFormComponent } from './components/categoria/categoria-form/categoria-form.component';
+import { MarcaFormComponent } from './components/marca/marca-form/marca-form.component';
+import { ProductoFormComponent } from './components/producto/producto-form/producto-form.component';
+import { SeccionFormComponent } from './components/seccion/seccion-form/seccion-form.component';
+import { TallaFormComponent } from './components/talla/talla-form/talla-form.component';
+import { AnuncioEditComponent } from './components/anuncio/anuncio-edit/anuncio-edit.component';
+import { CategoriaEditComponent } from './components/categoria/categoria-edit/categoria-edit.component';
+import { MarcaEditComponent } from './components/marca/marca-edit/marca-edit.component';
+import { ProductoEditComponent } from './components/producto/producto-edit/producto-edit.component';
+import { SeccionEditComponent } from './components/seccion/seccion-edit/seccion-edit.component';
+import { TallaEditComponent } from './components/talla/talla-edit/talla-edit.component';
+import { UsuarioEditComponent } from './components/usuario/usuario-edit/usuario-edit.component';
+import { ProductoDialogComponent } from './dialogs/producto-dialog/producto-dialog.component';
+import { UsuarioDialogComponent } from './dialogs/usuario-dialog/usuario-dialog.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +59,22 @@ import { SideMenuComponent } from './share/side-menu/side-menu.component';
     MarcaListComponent,
     AnuncioItemComponent,
     AnuncioListComponent,
-    SideMenuComponent
+    SideMenuComponent,
+    AnuncioFormComponent,
+    CategoriaFormComponent,
+    MarcaFormComponent,
+    ProductoFormComponent,
+    SeccionFormComponent,
+    TallaFormComponent,
+    AnuncioEditComponent,
+    CategoriaEditComponent,
+    MarcaEditComponent,
+    ProductoEditComponent,
+    SeccionEditComponent,
+    TallaEditComponent,
+    UsuarioEditComponent,
+    ProductoDialogComponent,
+    UsuarioDialogComponent
   ],
   imports: [
     BrowserModule,

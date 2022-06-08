@@ -1,0 +1,13 @@
+<form class="custom-form" method="post">
+    <h1>Editar Categoría</h1>
+    <mat-form-field class="nombre">
+        <mat-label>Nombre</mat-label>
+        <input matInput type="text" name="nombre" [(ngModel)]="categoria.nombre" required="required" />
+    </mat-form-field>
+    <mat-form-field floatLabel="always" class="nombre">
+        <mat-label>Imagen</mat-label>
+        <input type="file" name="nombre" required="required" />
+        <textarea matInput hidden></textarea>
+    </mat-form-field>
+    <button type="submit" (click)="onSubmit()">Guardar</button>
+</form>
