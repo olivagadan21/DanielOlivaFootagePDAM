@@ -23,6 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Tag(name = "anuncio", description = "Controller de los anuncios")
 @RequestMapping("/anuncio/")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AnuncioController {
 
     private final AnuncioService anuncioService;

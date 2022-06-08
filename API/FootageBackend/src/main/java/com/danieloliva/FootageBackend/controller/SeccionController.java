@@ -23,6 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Tag(name = "Seccion", description = "Controller de las secciones")
 @RequestMapping("/seccion/")
+@CrossOrigin(origins = "http://localhost:4200")
 public class SeccionController {
 
     private final SeccionService seccionService;

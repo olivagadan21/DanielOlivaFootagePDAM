@@ -23,6 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Tag(name = "Categoria", description = "Controller de las categorías")
 @RequestMapping("/categoria/")
+@CrossOrigin(origins = "http://localhost:4200")
 public class CategoriaController {
 
     private final CategoriaService categoriaService;

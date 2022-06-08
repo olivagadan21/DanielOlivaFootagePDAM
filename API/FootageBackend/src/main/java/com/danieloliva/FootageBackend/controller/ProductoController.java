@@ -28,6 +28,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Tag(name = "Producto", description = "Controller de los productos")
 @RequestMapping("/producto/")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ProductoController {
 
     private final ProductoService productoService;
@@ -202,13 +203,13 @@ public class ProductoController {
                     content = @Content),
     })
     @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<GetProductoDto> create (@RequestPart("producto") CreateProductoDto productoDto, @RequestPart("file1") MultipartFile file1, @RequestPart("file2") MultipartFile file2) {
+    public ResponseEntity<GetProductoDto> create (@RequestPart("producto") CreateProductoDto productoDto, @RequestPart("file") MultipartFile file) {
 
         if (productoDto.getTitulo().isEmpty()) {
             return ResponseEntity.badRequest().build();
         } else {
 
-            Producto producto = productoDtoConverter.createProductoDtoToProducto(productoDto, file1, file2);
+            Producto producto = productoDtoConverter.createProductoDtoToProducto(productoDto, file);
 
             GetProductoDto p = productoDtoConverter.getProductoDto(productoService.save(producto));
 
@@ -228,7 +229,7 @@ public class ProductoController {
                     content = @Content),
     })
     @PutMapping(value = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<GetProductoDto> edit (@AuthenticationPrincipal Usuario usuario, @RequestPart("producto") CreateProductoDto productoDto, @RequestPart("file1") MultipartFile file1, @RequestPart("file2") MultipartFile file2, @PathVariable Long id) {
+    public ResponseEntity<GetProductoDto> edit (@AuthenticationPrincipal Usuario usuario, @RequestPart("producto") CreateProductoDto productoDto, @RequestPart("file1") MultipartFile file, @PathVariable Long id) {
 
         Optional<Producto> producto = productoService.findById(id);
 
@@ -237,7 +238,7 @@ public class ProductoController {
         else {
 
             if (producto.get().getUsuario().equals(usuario) || usuario.getRol().equals(RolUsuario.ADMIN))
-                return ResponseEntity.ok().body(productoDtoConverter.getProductoDto(productoService.edit(productoDtoConverter.createProductoDtoToProducto(productoDto, file1, file2), id)));
+                return ResponseEntity.ok().body(productoDtoConverter.getProductoDto(productoService.edit(productoDtoConverter.createProductoDtoToProducto(productoDto, file), id)));
             else
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 

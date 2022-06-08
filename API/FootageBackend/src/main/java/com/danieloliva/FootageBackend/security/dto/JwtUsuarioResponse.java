@@ -26,6 +26,5 @@ public class JwtUsuarioResponse {
     private String username;
     private String localizacion;
     private boolean premium;
-    private List<Producto> articulos = new ArrayList<>();
 
 }

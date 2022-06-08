@@ -19,7 +19,7 @@ public class GetProductoUsuarioDto {
 
     private boolean original;
 
-    private String foto1;
+    private String foto;
 
     private Marca marca;
 

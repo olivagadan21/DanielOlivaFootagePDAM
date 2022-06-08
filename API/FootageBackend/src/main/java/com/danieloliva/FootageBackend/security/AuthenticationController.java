@@ -4,6 +4,7 @@ import com.danieloliva.FootageBackend.security.dto.JwtUsuarioResponse;
 import com.danieloliva.FootageBackend.security.dto.LoginDto;
 import com.danieloliva.FootageBackend.security.jwt.JwtProvider;
 import com.danieloliva.FootageBackend.usuario.dto.UsuarioDtoConverter;
+import com.danieloliva.FootageBackend.usuario.model.RolUsuario;
 import com.danieloliva.FootageBackend.usuario.model.Usuario;
 import com.danieloliva.FootageBackend.usuario.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +15,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
@@ -50,6 +49,32 @@ public class AuthenticationController {
 
     }
 
+    @PostMapping("/auth/login/admin")
+    public ResponseEntity<?> loginAdmin(@RequestBody LoginDto loginDto) {
+
+        if (usuarioService.findByEmail(loginDto.getEmail()).get().getRol().equals(RolUsuario.valueOf("ADMIN"))) {
+            Authentication authentication =
+                    authenticationManager.authenticate(
+                            new UsernamePasswordAuthenticationToken(
+                                    loginDto.getEmail(),
+                                    loginDto.getPassword()
+                            )
+                    );
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            String jwt = jwtProvider.generateToken(authentication);
+
+            Usuario usuario = (Usuario) authentication.getPrincipal();
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(convertUsuarioToJwtUsuariorResponse(usuario, jwt));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+    }
+
     @GetMapping("/profile/me")
     public ResponseEntity<?> identificarme(@AuthenticationPrincipal Usuario usuario){
         return ResponseEntity.ok(convertUsuarioToJwtUsuariorResponse(usuario, null));
@@ -67,7 +92,6 @@ public class AuthenticationController {
                 .localizacion(usuario.getLocalizacion())
                 .premium(usuario.isPremium())
                 .rol(usuario.getRol().name())
-                .articulos(usuario.getArticulos())
                 .token(jwt)
                 .build();
     }

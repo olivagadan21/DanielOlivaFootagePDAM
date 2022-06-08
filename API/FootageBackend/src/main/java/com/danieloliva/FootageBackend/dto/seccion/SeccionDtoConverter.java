@@ -24,7 +24,7 @@ public class SeccionDtoConverter {
 
         return Seccion.builder()
                 .nombre(createSeccionDto.getNombre())
-                .imagen(filename)
+                .imagen(uri)
                 .build();
 
     }

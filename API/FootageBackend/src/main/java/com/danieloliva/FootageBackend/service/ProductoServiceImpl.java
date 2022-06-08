@@ -84,16 +84,14 @@ public class ProductoServiceImpl implements ProductoService {
 
         Producto producto = productoRepository.getById(id);
 
-        storageService.deleteFile(producto.getFoto1());
-        storageService.deleteFile(producto.getFoto2());
+        storageService.deleteFile(producto.getFoto());
 
         producto.setTitulo(p.getTitulo());
         producto.setDescripcion(p.getDescripcion());
         producto.setPrecio(p.getPrecio());
         producto.setIntercambio(p.isIntercambio());
         producto.setOriginal(p.isOriginal());
-        producto.setFoto1(p.getFoto1());
-        producto.setFoto2(p.getFoto2());
+        producto.setFoto(p.getFoto());
         producto.setUsuario(usuarioRepository.getById(p.getUsuario().getId()));
         producto.setSeccion(seccionRepository.getById(p.getSeccion().getId()));
         producto.setCategoria(categoriaRepository.getById(p.getCategoria().getId()));
@@ -105,15 +103,13 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public void delete(Producto p) {
-        storageService.deleteFile(p.getFoto1());
-        storageService.deleteFile(p.getFoto2());
+        storageService.deleteFile(p.getFoto());
         productoRepository.delete(p);
     }
 
     @Override
     public void deleteById(Long id) {
-        storageService.deleteFile(productoRepository.getById(id).getFoto1());
-        storageService.deleteFile(productoRepository.getById(id).getFoto2());
+        storageService.deleteFile(productoRepository.getById(id).getFoto());
         productoRepository.deleteById(id);
     }
 }

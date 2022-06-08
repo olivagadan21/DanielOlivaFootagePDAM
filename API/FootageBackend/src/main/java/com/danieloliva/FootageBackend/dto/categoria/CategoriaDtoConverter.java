@@ -24,7 +24,7 @@ public class CategoriaDtoConverter {
 
         return Categoria.builder()
                 .nombre(createCategoriaDto.getNombre())
-                .imagen(filename)
+                .imagen(uri)
                 .build();
 
     }

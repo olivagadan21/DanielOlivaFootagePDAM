@@ -29,7 +29,6 @@ import java.util.Optional;
 public class UsuarioService extends BaseService<Usuario, Long, UsuarioRepository> implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
-    private final UsuarioDtoConverter usuarioDtoConverter;
     private final StorageService storageService;
     private final UsuarioRepository usuarioRepository;
 
@@ -40,6 +39,10 @@ public class UsuarioService extends BaseService<Usuario, Long, UsuarioRepository
 
     public List<Usuario> findByRol (String rolUsuario) {
         return usuarioRepository.findByRol(RolUsuario.valueOf(rolUsuario));
+    }
+
+    public Optional<Usuario> findByEmail(String email){
+        return usuarioRepository.findByEmail(email);
     }
 
     public Usuario saveUser (CreateUsuarioDto createUsuarioDto) {
@@ -114,7 +117,7 @@ public class UsuarioService extends BaseService<Usuario, Long, UsuarioRepository
                     .path(filename)
                     .toUriString();
 
-            usuarioAuth.setAvatar(filename);
+            usuarioAuth.setAvatar(uri);
         }
 
         save(usuarioAuth);

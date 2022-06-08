@@ -23,6 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Tag(name = "Marca", description = "Controller de las marcas")
 @RequestMapping("/marca/")
+@CrossOrigin(origins = "http://localhost:4200")
 public class MarcaController {
 
     private final MarcaService marcaService;

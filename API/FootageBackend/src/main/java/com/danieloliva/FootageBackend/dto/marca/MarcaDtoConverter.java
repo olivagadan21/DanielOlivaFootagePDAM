@@ -24,7 +24,7 @@ public class MarcaDtoConverter {
 
         return Marca.builder()
                 .nombre(createMarcaDto.getNombre())
-                .imagen(filename)
+                .imagen(uri)
                 .build();
 
     }

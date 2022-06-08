@@ -39,7 +39,6 @@ public class TallaServiceImpl implements TallaService {
         Talla talla = tallaRepository.getById(id);
 
         talla.setNombre(t.getNombre());
-        talla.setCategoria(t.getCategoria());
 
         return tallaRepository.save(talla);
     }
@@ -54,9 +53,4 @@ public class TallaServiceImpl implements TallaService {
         tallaRepository.deleteById(id);
     }
 
-    @Override
-    public List<Talla> findByCategoria(Long id) {
-        Categoria categoria = categoriaRepository.getById(id);
-        return tallaRepository.findByCategoria(categoria);
-    }
 }

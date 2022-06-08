@@ -24,7 +24,7 @@ public class AnuncioDtoConverter {
         return Anuncio.builder()
                 .empresa(createAnuncioDto.getEmpresa())
                 .url(createAnuncioDto.getUrl())
-                .imagen(filename)
+                .imagen(uri)
                 .build();
 
     }

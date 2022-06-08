@@ -22,9 +22,4 @@ public class Talla implements Serializable {
     @NotNull(message = "{not.null}")
     private String nombre;
 
-    @ManyToOne
-    @JoinColumn(name = "categoria_id")
-    @NotNull(message = "{not.null}")
-    private Categoria categoria;
-
 }

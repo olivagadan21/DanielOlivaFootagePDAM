@@ -30,9 +30,7 @@ public class GetProductoDto {
 
     private boolean original;
 
-    private String foto1;
-
-    private String foto2;
+    private String foto;
 
     private GetUsuarioProductoDto usuario;
 
