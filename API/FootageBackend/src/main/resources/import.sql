@@ -1,0 +1,1 @@
+INSERT INTO ANUNCIOS (id, empresa, url, imagen) values (NEXTVAL('hibernate_sequence'), 'Nike', 'https://www.nike.com/es/', 'http://localhost:8080/download/anuncio_480236.png');
