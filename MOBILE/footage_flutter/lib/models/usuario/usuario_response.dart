@@ -10,6 +10,7 @@ class UsuarioResponse {
     required this.premium,
     required this.rol,
     required this.articulos,
+    required this.meGustas
   });
   late final int id;
   late final String nombre;
@@ -21,6 +22,7 @@ class UsuarioResponse {
   late final bool premium;
   late final String rol;
   late final List<dynamic> articulos;
+  late final List<dynamic> meGustas;
   
   UsuarioResponse.fromJson(Map<String, dynamic> json){
     id = json['id'];
@@ -33,6 +35,7 @@ class UsuarioResponse {
     premium = json['premium'];
     rol = json['rol'];
     articulos = List.castFrom<dynamic, dynamic>(json['articulos']);
+    meGustas = List.castFrom<dynamic, dynamic>(json['meGustas']);
   }
 
   Map<String, dynamic> toJson() {
@@ -47,6 +50,7 @@ class UsuarioResponse {
     _data['premium'] = premium;
     _data['rol'] = rol;
     _data['articulos'] = articulos;
+    _data['meGustas'] = meGustas;
     return _data;
   }
 }

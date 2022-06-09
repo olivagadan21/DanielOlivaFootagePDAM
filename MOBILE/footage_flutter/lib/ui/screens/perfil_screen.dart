@@ -150,6 +150,27 @@ Widget _perfil(BuildContext context, UsuarioResponse usuarioResponse) {
                           }
                         ),
                       ),
+                      Flexible(
+                        child: GridView.builder(
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                          ),
+                          itemCount: usuarioResponse.meGustas.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Card(
+                              color: Colors.white,
+                              child: Image(
+                                image: NetworkImage(usuarioResponse.meGustas
+                                  .elementAt(index)
+                                  .file
+                                  .toString()
+                                  .replaceFirst('localhost', '10.0.2.2')),
+                                fit: BoxFit.cover,
+                              )
+                            );
+                          }
+                        ),
+                      ),
                     ]
                   ),
                 )

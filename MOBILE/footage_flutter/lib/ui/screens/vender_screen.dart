@@ -1,29 +1,37 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:footage_flutter/bloc/image/image_bloc.dart';
 import 'package:footage_flutter/bloc/producto/create/producto_bloc.dart';
 import 'package:footage_flutter/bloc/producto/list/productos_bloc.dart';
+import 'package:footage_flutter/models/categoria/categoria_response.dart';
+import 'package:footage_flutter/models/marca/marca_response.dart';
 import 'package:footage_flutter/models/producto/producto_dto.dart';
 import 'package:footage_flutter/models/producto/producto_response.dart';
 import 'package:footage_flutter/models/seccion/seccion_response.dart';
+import 'package:footage_flutter/models/talla/talla_response.dart';
 import 'package:footage_flutter/repository/categoria/categoria_repository.dart';
 import 'package:footage_flutter/repository/marca/marca_repository.dart';
+import 'package:footage_flutter/repository/marca/marca_repository_impl.dart';
 import 'package:footage_flutter/repository/producto/producto_repository.dart';
 import 'package:footage_flutter/repository/producto/producto_repository_impl.dart';
 import 'package:footage_flutter/repository/seccion/seccion_repository.dart';
+import 'package:footage_flutter/repository/seccion/seccion_repository_impl.dart';
 import 'package:footage_flutter/repository/talla/talla_repository.dart';
+import 'package:footage_flutter/repository/talla/talla_repository_impl.dart';
 import 'package:footage_flutter/style/styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../repository/categoria/categoria_repository_impl.dart';
 import 'menu_screen.dart';
 
 class VenderScreen extends StatefulWidget {
 
   const VenderScreen({ Key? key }) : super(key: key);
 
-@override
-_RegisterScreenState createState() => _RegisterScreenState();
+  @override
+  _RegisterScreenState createState() => _RegisterScreenState();
 
 }
 
@@ -42,17 +50,21 @@ class _RegisterScreenState extends State<VenderScreen> {
   bool intercambio = false;
   bool original = false;
   double precio = 0.0;
-  Usuario? usuario;
-  Seccion? seccion;
-  Categoria? categoria;
-  Marca? marca;
-  Talla? talla;
+  int usuario = 0;
+  int seccion = 0;
+  int categoria = 0;
+  int marca = 0;
+  int talla = 0;
   late Future<SharedPreferences> _prefs;
   String path = "";
 
   @override
   void initState() {
     productoRepository = ProductoRepositoryImpl();
+    seccionRepository = SeccionRepositoryImpl();
+    categoriaRepository = CategoriaRepositoryImpl();
+    marcaRepository = MarcaRepositoryImpl();
+    tallaRepository = TallaRepositoryImpl();
     _prefs = SharedPreferences.getInstance();
     super.initState();
   }
@@ -71,7 +83,7 @@ class _RegisterScreenState extends State<VenderScreen> {
           ),
           BlocProvider(
             create: (context) {
-              return ProductosBloc(productoRepository);
+              return ProductoBloc(productoRepository);
             },
           ),
         ],
@@ -129,7 +141,7 @@ class _RegisterScreenState extends State<VenderScreen> {
   }
 
   _create(BuildContext context) {
-    String selectedValueSeccion = "";
+    String selectedValueSeccion = '';
     String selectedValueCategoria = "";
     String selectedValueTalla = "";
     String selectedValueMarca = "";
@@ -171,7 +183,7 @@ class _RegisterScreenState extends State<VenderScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: const [
                           Icon(Icons.add, color: Colores.principal,),
-                          Text("Subir fotos", style: TextStyle(color: Colores.principal, fontSize: 18),)
+                          Text("Subir foto", style: TextStyle(color: Colores.principal, fontSize: 18),)
                         ],
                       )
                     ),
@@ -229,82 +241,90 @@ class _RegisterScreenState extends State<VenderScreen> {
                     color: Colores.gris,
                   ),
                 ),
-                Padding(
+                /* Padding(
                   padding: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.04),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width*0.7,
-                    child: DropdownButtonFormField(
+                    child: DropdownButton(
+                      hint: const Text('Sección'),
                       value: selectedValueSeccion,
-                      items: ,
-                      decoration: const InputDecoration(
-                        labelText: "Sección",
-                        labelStyle: TextStyle(fontSize: 18)
-                      ),
-                      onChanged: (String? newValue){
+                      items: dropdownSeccion.map((seccion) {
+                        return DropdownMenuItem(
+                          child: Text(seccion.nombre),
+                          value: seccion.id,
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
                         setState(() {
-                          selectedValueSeccion = newValue!;
+                          selectedValueSeccion = newValue.toString();
                         });
-                      },
-                    ),
+                      }
+                    )
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.04),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width*0.7,
-                    child: DropdownButtonFormField(
+                    child: DropdownButton(
+                      hint: const Text('Categoría'),
                       value: selectedValueCategoria,
-                      items: dropdownCategoria,
-                      decoration: const InputDecoration(
-                        labelText: "Categoría",
-                        labelStyle: TextStyle(fontSize: 18)
-                      ),
-                      onChanged: (String? newValue){
+                      items: dropdownCategoria.map((categoria) {
+                        return DropdownMenuItem(
+                          child: Text(categoria.nombre),
+                          value: categoria.id,
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
                         setState(() {
-                          selectedValueCategoria = newValue!;
+                          selectedValueSeccion = newValue.toString();
                         });
-                      },
-                    ),
+                      }
+                    )
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.04),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width*0.7,
-                    child: DropdownButtonFormField(
+                    child: DropdownButton(
+                      hint: const Text('Talla'),
                       value: selectedValueTalla,
-                      items: dropdownTalla,
-                      decoration: const InputDecoration(
-                        labelText: "Talla",
-                        labelStyle: TextStyle(fontSize: 18)
-                      ),
-                      onChanged: (String? newValue){
+                      items: dropdownTalla.map((talla) {
+                        return DropdownMenuItem(
+                          child: Text(talla.nombre),
+                          value: talla.id,
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
                         setState(() {
-                          selectedValueTalla = newValue!;
+                          selectedValueSeccion = newValue.toString();
                         });
-                      },
-                    ),
+                      }
+                    )
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.04),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width*0.7,
-                    child: DropdownButtonFormField(
+                    child: DropdownButton(
+                      hint: const Text('Marca'),
                       value: selectedValueMarca,
-                      items: dropdownMarca,
-                      decoration: const InputDecoration(
-                        labelText: "Marca",
-                        labelStyle: TextStyle(fontSize: 18)
-                      ),
-                      onChanged: (String? newValue){
+                      items: dropdownMarca.map((marca) {
+                        return DropdownMenuItem(
+                          child: Text(marca.nombre),
+                          value: marca.id,
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
                         setState(() {
-                          selectedValueMarca = newValue!;
+                          selectedValueSeccion = newValue.toString();
                         });
-                      },
-                    ),
+                      }
+                    )
                   ),
-                ),
+                ), */
                 Padding(
                   padding: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.04),
                   child: SizedBox(
@@ -335,9 +355,10 @@ class _RegisterScreenState extends State<VenderScreen> {
                   padding: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.04),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width*0.7,
-                    child: TextFormField(
+                    child: TextField(
                       keyboardType: TextInputType.number,
-                      controller: precio,
+                      inputFormatters: <TextInputFormatter> [FilteringTextInputFormatter.digitsOnly],
+                      controller: TextEditingController(text: precio.toString()),
                       decoration: InputDecoration(
                         labelText: 'Precio',
                         focusedBorder: OutlineInputBorder(
@@ -372,12 +393,11 @@ class _RegisterScreenState extends State<VenderScreen> {
                               intercambio: intercambio,
                               original: original,
                               usuario: usuario,
-                              seccion: seccion.id,
+                              seccion: seccion,
                               categoria: categoria,
                               marca: marca,
                               talla: talla
                             );
-                            titulo = titulo.text,
                           }
                         },
                         child: const Text(
@@ -401,100 +421,36 @@ class _RegisterScreenState extends State<VenderScreen> {
       );
   }
   
-}
+  List<SeccionResponse> get dropdownSeccion{
+    List<SeccionResponse> menuItems = seccionRepository.fetchSecciones() as List<SeccionResponse>;
+    return menuItems;
+  }
 
-List<DropdownMenuItem<String>> get dropdownSeccion{
-  List<DropdownMenuItem<String>> menuItems = [
-    const DropdownMenuItem(child: Text(""),value: ""),
-    const DropdownMenuItem(child: Text("Hombre"),value: "Hombre"),
-    const DropdownMenuItem(child: Text("Mujer"),value: "Mujer"),
-    const DropdownMenuItem(child: Text("Otro"),value: "Otro"),
-  ];
-  return menuItems;
-}
+  List<CategoriaResponse> get dropdownCategoria{
+    List<CategoriaResponse> menuItems = categoriaRepository.fetchCategorias() as List<CategoriaResponse>;
+    return menuItems;
+  }
 
-List<DropdownMenuItem<String>> get dropdownCategoria{
-  List<DropdownMenuItem<String>> menuItems = [
-    const DropdownMenuItem(child: Text(""),value: ""),
-    const DropdownMenuItem(child: Text("Camiseta"),value: "Camiseta"),
-    const DropdownMenuItem(child: Text("Bufanda"),value: "Bufanda"),
-    const DropdownMenuItem(child: Text("Otro"),value: "Otro"),
-  ];
-  return menuItems;
-}
+  List<MarcaResponse> get dropdownMarca{
+    List<MarcaResponse> menuItems = marcaRepository.fetchMarca() as List<MarcaResponse>;
+    return menuItems;
+  }
 
-List<DropdownMenuItem<String>> get dropdownMarca{
-  List<DropdownMenuItem<String>> menuItems = [
-    const DropdownMenuItem(child: Text(""),value: ""),
-    const DropdownMenuItem(child: Text("Nike"),value: "Nike"),
-    const DropdownMenuItem(child: Text("Adidas"),value: "Adidas"),
-    const DropdownMenuItem(child: Text("Puma"),value: "Puma"),
-  ];
-  return menuItems;
-}
+  List<TallaResponse> get dropdownTalla{
+    List<TallaResponse> menuItems = tallaRepository.fetchTallas() as List<TallaResponse>;
+    return menuItems;
+  }
 
-List<DropdownMenuItem<String>> get dropdownTalla{
-  List<DropdownMenuItem<String>> menuItems = [
-    const DropdownMenuItem(child: Text(""),value: ""),
-    const DropdownMenuItem(child: Text("S"),value: "S"),
-    const DropdownMenuItem(child: Text("M"),value: "M"),
-    const DropdownMenuItem(child: Text("L"),value: "L"),
-  ];
-  return menuItems;
-}
+  List<DropdownMenuItem<String>> get dropdownEstado{
+    List<DropdownMenuItem<String>> menuItems = [
+      const DropdownMenuItem(child: Text(""),value: ""),
+      const DropdownMenuItem(child: Text("Sobresaliente"),value: "Sobresaliente"),
+      const DropdownMenuItem(child: Text("Notable"),value: "Notable"),
+      const DropdownMenuItem(child: Text("Bien"),value: "Bien"),
+      const DropdownMenuItem(child: Text("Suficiente"),value: "Suficiente"),
+      const DropdownMenuItem(child: Text("Insuficiente"),value: "Insuficiente"),
+    ];
+    return menuItems;
+  }
 
-List<DropdownMenuItem<String>> get dropdownEstado{
-  List<DropdownMenuItem<String>> menuItems = [
-    const DropdownMenuItem(child: Text(""),value: ""),
-    const DropdownMenuItem(child: Text("Sobresaliente"),value: "Sobresaliente"),
-    const DropdownMenuItem(child: Text("Notable"),value: "Notable"),
-    const DropdownMenuItem(child: Text("Bien"),value: "Bien"),
-    const DropdownMenuItem(child: Text("Suficiente"),value: "Suficiente"),
-    const DropdownMenuItem(child: Text("Insuficiente"),value: "Insuficiente"),
-  ];
-  return menuItems;
 }
-
-/* child: BlocConsumer<ImageBloc, ImageState>(
-                      listenWhen: (context, state) {
-                        return state is ImageSelectedSuccessState;
-                      },
-                      listener: (context, state) {},
-                      buildWhen: (context, state) {
-                        return state is ImageInitial ||
-                            state is ImageSelectedSuccessState;
-                      },
-                      builder: (context, state) {
-                        if (state is ImageSelectedSuccessState) {
-                          var path = state.pickedFile.path;
-                          print('PATH ${state.pickedFile.path}');
-                          return Column(children: [
-                            Image.file(
-                              File(state.pickedFile.path),
-                              height: 100,
-                            ),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.red,
-                              ),
-                              onPressed: () async {
-                                SharedPreferences prefs =
-                                    await SharedPreferences.getInstance();
-                                prefs.setString('file', path);
-                              },
-                              child: const Text('Cargar Imagen')
-                            )
-                          ]);
-                        }
-                        return Center(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              BlocProvider.of<ImageBloc>(context)
-                                  .add(const SelectImageEvent(
-                                      ImageSource.gallery));
-                            },
-                            child: const Text('Seleccionar Imagen')
-                          ),
-                        );
-                      }
-                    ),*/

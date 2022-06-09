@@ -12,7 +12,6 @@ class UsuarioBloc extends Bloc<UsuarioEvent, UsuarioState> {
 
   UsuarioBloc(this.public) : super(UsuarioInitial()) {
     on<UsuarioEvent>((event, emit) {
-      // TODO: implement event handler
     });
   }
 

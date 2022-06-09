@@ -10,12 +10,12 @@ abstract class CategoriaState extends Equatable {
 class CategoriaInitial extends CategoriaState {}
 
 class CategoriasFetched extends CategoriaState {
-  final List<CategoriaResponse> Categorias;
+  final List<CategoriaResponse> categorias;
 
-  const CategoriasFetched(this.Categorias);
+  const CategoriasFetched(this.categorias);
 
   @override
-  List<Object> get props => [Categorias];
+  List<Object> get props => [categorias];
 }
 
 class CategoriaFetchError extends CategoriaState {

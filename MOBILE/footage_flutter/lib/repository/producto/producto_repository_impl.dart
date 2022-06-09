@@ -13,7 +13,7 @@ class ProductoRepositoryImpl extends ProductoRepository {
   final Client _client = Client();
 
   @override
-  Future<ProductoResponse> createProducto(ProductoDto productoDto, String image1, String image2) async {
+  Future<ProductoResponse> createProducto(ProductoDto productoDto, String image) async {
     
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -33,9 +33,7 @@ class ProductoRepositoryImpl extends ProductoRepository {
     request.fields['marca'] = productoDto.marca.toString();
     request.fields['talla'] = productoDto.talla.toString();
     request.files.add(await http.MultipartFile.fromPath(
-        'file1', prefs.getString('file1').toString()));
-    request.files.add(await http.MultipartFile.fromPath(
-        'file2', prefs.getString('file2').toString()));
+        'file', prefs.getString('file').toString()));
     request.headers.addAll(auth);
     var response = await request.send();
     if (response.statusCode == 201) print('Uploaded!');
@@ -54,7 +52,11 @@ class ProductoRepositoryImpl extends ProductoRepository {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final response = await _client.get(
         Uri.parse('${Constant.baseUrl}/producto/'),
-        headers: {'Authorization': 'Bearer ${prefs.getString('token')}'});
+        headers: {
+          'Authorization': 'Bearer ${prefs.getString('token')}',
+          "Accept": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        });
     if (response.statusCode == 200) {
       return (json.decode(response.body) as List)
           .map((i) => ProductoResponse.fromJson(i))

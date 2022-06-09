@@ -9,10 +9,9 @@ abstract class ProductoEvent extends Equatable {
 
 class CreateProducto extends ProductoEvent {
   final ProductoDto productoDto;
-  final String imagePath1;
-  final String imagePath2;
+  final String imagePath;
 
-  const CreateProducto(this.productoDto, this.imagePath1, this.imagePath2);
+  const CreateProducto(this.productoDto, this.imagePath);
 
   @override
   List<Object> get props => [];

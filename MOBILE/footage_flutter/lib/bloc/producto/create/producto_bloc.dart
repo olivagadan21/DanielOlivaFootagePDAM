@@ -18,7 +18,7 @@ class ProductoBloc extends Bloc<ProductoEvent, ProductoState> {
   void _createProductoEvent(CreateProducto event, Emitter<ProductoState> emit) async {
     try {
       final productoResponse =
-          await public.createProducto(event.productoDto, event.imagePath1, event.imagePath2);
+          await public.createProducto(event.productoDto, event.imagePath);
       emit(ProductoSuccessState(productoResponse));
       return;
     } on Exception catch (e) {

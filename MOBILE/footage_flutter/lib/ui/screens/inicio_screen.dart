@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:footage_flutter/bloc/producto/create/producto_bloc.dart';
 import 'package:footage_flutter/bloc/producto/list/productos_bloc.dart';
 import 'package:footage_flutter/models/producto/producto_response.dart';
-import 'package:footage_flutter/repository/constants.dart';
 import 'package:footage_flutter/repository/producto/producto_repository.dart';
 import 'package:footage_flutter/repository/producto/producto_repository_impl.dart';
 import 'package:footage_flutter/style/styles.dart';
@@ -39,7 +37,7 @@ class _InicioScreenState extends State<InicioScreen> {
     return BlocProvider(
       create: (context) {
         return ProductosBloc(productoRepository)
-        ..add(FetchProducto());
+        ..add(const FetchProducto());
       },
       child: Scaffold(
         body: _createProductos(context),
@@ -136,12 +134,12 @@ Widget _producto(BuildContext context, ProductoResponse producto) {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 25),
-                                  child: Text(producto.usuario.username, style: TextStyle(fontSize: 15),),
+                                  child: Text(producto.usuario.username, style: const TextStyle(fontSize: 15),),
                                 )
                               ],
                             ),
                           ),
-                          Image(image: NetworkImage(producto.foto1.replaceAll("http://localhost:8080", "http://10.0.2.2:8080"))),
+                          Image(image: NetworkImage(producto.foto.replaceAll("http://localhost:8080", "http://10.0.2.2:8080"))),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(

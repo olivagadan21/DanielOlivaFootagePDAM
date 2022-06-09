@@ -10,11 +10,11 @@ class AnuncioRepositoryImpl extends AnuncioRepository {
   final Client _client = Client();
 
   @override
-  Future<AnuncioResponse> fetchAnuncio() async {
+  Future<AnuncioResponse> fetchAnuncioAleatory() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     final response = await _client.get(
-      Uri.parse('${Constant.baseUrl}/anuncio/'),
+      Uri.parse('${Constant.baseUrl}/anuncio/aleatory/'),
         headers: {'Authorization': 'Bearer ${prefs.getString('token')}'});
     if (response.statusCode == 200) {
       return AnuncioResponse.fromJson(json.decode(response.body));

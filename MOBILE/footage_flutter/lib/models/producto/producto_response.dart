@@ -6,8 +6,7 @@ class ProductoResponse {
     required this.precio,
     required this.intercambio,
     required this.original,
-    required this.foto1,
-    required this.foto2,
+    required this.foto,
     required this.usuario,
     required this.seccion,
     required this.categoria,
@@ -20,8 +19,7 @@ class ProductoResponse {
   late final int precio;
   late final bool intercambio;
   late final bool original;
-  late final String foto1;
-  late final String foto2;
+  late final String foto;
   late final Usuario usuario;
   late final Seccion seccion;
   late final Categoria categoria;
@@ -35,8 +33,7 @@ class ProductoResponse {
     precio = json['precio'];
     intercambio = json['intercambio'];
     original = json['original'];
-    foto1 = json['foto1'];
-    foto2 = json['foto2'];
+    foto = json['foto'];
     usuario = Usuario.fromJson(json['usuario']);
     seccion = Seccion.fromJson(json['seccion']);
     categoria = Categoria.fromJson(json['categoria']);
@@ -52,8 +49,7 @@ class ProductoResponse {
     _data['precio'] = precio;
     _data['intercambio'] = intercambio;
     _data['original'] = original;
-    _data['foto1'] = foto1;
-    _data['foto2'] = foto2;
+    _data['foto'] = foto;
     _data['usuario'] = usuario.toJson();
     _data['seccion'] = seccion.toJson();
     _data['categoria'] = categoria.toJson();
@@ -187,23 +183,19 @@ class Talla {
   Talla({
     required this.id,
     required this.nombre,
-    required this.categoria,
   });
   late final int id;
   late final String nombre;
-  late final Categoria categoria;
   
   Talla.fromJson(Map<String, dynamic> json){
     id = json['id'];
     nombre = json['nombre'];
-    categoria = Categoria.fromJson(json['categoria']);
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['id'] = id;
     _data['nombre'] = nombre;
-    _data['categoria'] = categoria.toJson();
     return _data;
   }
 }

@@ -16,7 +16,7 @@ class AnuncioBloc extends Bloc<AnuncioEvent, AnuncioState> {
 
   void _anunciosFetched(FetchAnuncio event, Emitter<AnuncioState> emit) async {
     try {
-      final anuncio = await public.fetchAnuncio();
+      final anuncio = await public.fetchAnuncioAleatory();
       emit(AnunciosFetched(anuncio));
     } on Exception catch (e) {
       emit(AnuncioFetchError(e.toString()));
