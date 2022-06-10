@@ -104,7 +104,7 @@ Widget _createBuscarView (BuildContext context, List<CategoriaResponse> categori
                           itemBuilder: (BuildContext context, int index) {
                             return _categorias(context, categorias[index]);
                           },
-                          scrollDirection: Axis.vertical,
+                          scrollDirection: Axis.horizontal,
                           separatorBuilder: (context, index) => const VerticalDivider(
                             color: Colors.transparent,
                             width: 6.0,
@@ -136,7 +136,7 @@ Widget _createBuscarView (BuildContext context, List<CategoriaResponse> categori
                           itemBuilder: (BuildContext context, int index) {
                             return _secciones(context, secciones[index]);
                           },
-                          scrollDirection: Axis.vertical,
+                          scrollDirection: Axis.horizontal,
                           separatorBuilder: (context, index) => const VerticalDivider(
                             color: Colors.transparent,
                             width: 6.0,
@@ -168,7 +168,7 @@ Widget _createBuscarView (BuildContext context, List<CategoriaResponse> categori
                           itemBuilder: (BuildContext context, int index) {
                             return _marcas(context, marcas[index]);
                           },
-                          scrollDirection: Axis.vertical,
+                          scrollDirection: Axis.horizontal,
                           separatorBuilder: (context, index) => const VerticalDivider(
                             color: Colors.transparent,
                             width: 6.0,

@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:footage_flutter/bloc/image/image_bloc.dart';
 import 'package:footage_flutter/bloc/producto/create/producto_bloc.dart';
-import 'package:footage_flutter/bloc/producto/list/productos_bloc.dart';
 import 'package:footage_flutter/models/categoria/categoria_response.dart';
 import 'package:footage_flutter/models/marca/marca_response.dart';
 import 'package:footage_flutter/models/producto/producto_dto.dart';
@@ -241,7 +240,7 @@ class _RegisterScreenState extends State<VenderScreen> {
                     color: Colores.gris,
                   ),
                 ),
-                /* Padding(
+                /*Padding(
                   padding: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.04),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width*0.7,
@@ -421,10 +420,12 @@ class _RegisterScreenState extends State<VenderScreen> {
       );
   }
   
-  List<SeccionResponse> get dropdownSeccion{
-    List<SeccionResponse> menuItems = seccionRepository.fetchSecciones() as List<SeccionResponse>;
+  /*List<String> get dropdownSeccion{
+    Future<List<SeccionResponse>> menuItems = seccionRepository.fetchSecciones();
+    List<String> list;
+    menuItems.then((value) {})
     return menuItems;
-  }
+  }*/
 
   List<CategoriaResponse> get dropdownCategoria{
     List<CategoriaResponse> menuItems = categoriaRepository.fetchCategorias() as List<CategoriaResponse>;

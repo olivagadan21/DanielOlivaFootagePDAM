@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:footage_flutter/models/producto/producto_dto.dart';
 import 'package:footage_flutter/models/producto/producto_response.dart';
 import 'package:footage_flutter/repository/producto/producto_repository.dart';
-
 part 'producto_event.dart';
 part 'producto_state.dart';
 
