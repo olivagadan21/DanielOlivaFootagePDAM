@@ -61,7 +61,7 @@ public class UsuarioService extends BaseService<Usuario, Long, UsuarioRepository
                     .premium(false)
                     .rol(RolUsuario.USER)
                     .localizacion(null)
-                    .avatar(null)
+                    .avatar("http://localhost:8080/download/user.png")
                     .articulos(p)
                     .build();
 

@@ -98,6 +98,28 @@ public class MarcaController {
 
     }
 
+    @Operation(summary = "Crea una nueva marca")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha creado la nueva marca",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Marca.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha creado la nueva marca",
+                    content = @Content),
+    })
+    @PostMapping("withoutImage")
+    public ResponseEntity<Marca> create(@RequestPart("marca") CreateMarcaDto marcaDto) {
+
+        if (marcaDto.getNombre().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            Marca marca = marcaDtoConverter.createMarca(marcaDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(marcaService.save(marca));
+        }
+
+    }
+
     @Operation(summary = "Edita una marca anteriormente creada, buscando por su ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",

@@ -119,6 +119,28 @@ public class AnuncioController {
 
     }
 
+    @Operation(summary = "Crea un nuevo anuncio")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha creado el nuevo anuncio",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Anuncio.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha creado el nuevo anuncio",
+                    content = @Content),
+    })
+    @PostMapping("withoutImage")
+    public ResponseEntity<Anuncio> create (@RequestPart("anuncio") CreateAnuncioDto anuncio) {
+
+        if (anuncio.getUrl().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            Anuncio a = anuncioDtoConverter.createAnuncio(anuncio);
+            return ResponseEntity.status(HttpStatus.CREATED).body(anuncioService.save(a));
+        }
+
+    }
+
     @Operation(summary = "Edita un anuncio anteriormente creado, buscando por su ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",

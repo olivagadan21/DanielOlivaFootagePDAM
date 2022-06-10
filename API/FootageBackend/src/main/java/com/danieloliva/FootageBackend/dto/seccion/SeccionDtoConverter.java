@@ -29,4 +29,13 @@ public class SeccionDtoConverter {
 
     }
 
+    public Seccion createSeccion (CreateSeccionDto createSeccionDto) {
+
+        return Seccion.builder()
+                .nombre(createSeccionDto.getNombre())
+                .imagen("http://localhost:8080/download/section.png")
+                .build();
+
+    }
+
 }

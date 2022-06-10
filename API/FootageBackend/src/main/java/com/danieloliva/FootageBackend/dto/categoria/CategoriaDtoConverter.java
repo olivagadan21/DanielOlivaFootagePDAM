@@ -29,4 +29,13 @@ public class CategoriaDtoConverter {
 
     }
 
+    public Categoria createCategoria (CreateCategoriaDto createCategoriaDto) {
+
+        return Categoria.builder()
+                .nombre(createCategoriaDto.getNombre())
+                .imagen("http://localhost:8080/download/category.png")
+                .build();
+
+    }
+
 }

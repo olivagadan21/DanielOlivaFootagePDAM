@@ -98,6 +98,28 @@ public class SeccionController {
 
     }
 
+    @Operation(summary = "Crea una nueva sección")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha creado la nueva sección",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Seccion.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha creado la nueva sección",
+                    content = @Content),
+    })
+    @PostMapping("")
+    public ResponseEntity<Seccion> create(@RequestPart("seccion") CreateSeccionDto seccionDto) {
+
+        if (seccionDto.getNombre().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            Seccion seccion = seccionDtoConverter.createSeccion(seccionDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(seccionService.save(seccion));
+        }
+
+    }
+
     @Operation(summary = "Edita una sección anteriormente creada, buscando por su ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",

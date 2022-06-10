@@ -29,4 +29,14 @@ public class AnuncioDtoConverter {
 
     }
 
+    public Anuncio createAnuncio (CreateAnuncioDto createAnuncioDto) {
+
+        return Anuncio.builder()
+                .empresa(createAnuncioDto.getEmpresa())
+                .url(createAnuncioDto.getUrl())
+                .imagen("http://localhost:8080/download/ad.png")
+                .build();
+
+    }
+
 }

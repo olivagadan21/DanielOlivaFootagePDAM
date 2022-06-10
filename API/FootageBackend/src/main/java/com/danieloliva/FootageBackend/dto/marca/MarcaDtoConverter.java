@@ -29,4 +29,13 @@ public class MarcaDtoConverter {
 
     }
 
+    public Marca createMarca (CreateMarcaDto createMarcaDto) {
+
+        return Marca.builder()
+                .nombre(createMarcaDto.getNombre())
+                .imagen("http://localhost:8080/download/trademark.png")
+                .build();
+
+    }
+
 }

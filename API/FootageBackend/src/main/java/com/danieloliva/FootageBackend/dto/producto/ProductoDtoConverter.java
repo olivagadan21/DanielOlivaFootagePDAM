@@ -47,6 +47,24 @@ public class ProductoDtoConverter {
 
     }
 
+    public Producto createProductoDtoToProducto (CreateProductoDto p) {
+
+        return Producto.builder()
+                .titulo(p.getTitulo())
+                .descripcion(p.getDescripcion())
+                .precio(p.getPrecio())
+                .intercambio(p.isIntercambio())
+                .original(p.isOriginal())
+                .foto("http://localhost:8080/download/product.png")
+                .usuario(usuarioService.findById(p.getUsuario()).get())
+                .seccion(seccionService.findById(p.getSeccion()).get())
+                .categoria(categoriaService.findById(p.getCategoria()).get())
+                .marca(marcaService.findById(p.getMarca()).get())
+                .talla(tallaService.findById(p.getTalla()).get())
+                .build();
+
+    }
+
     public GetProductoDto getProductoDto (Producto producto) {
         return GetProductoDto.builder()
                 .id(producto.getId())

@@ -98,6 +98,28 @@ public class CategoriaController {
 
     }
 
+    @Operation(summary = "Crea una nueva categoría")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha creado la nueva categoría",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Categoria.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha creado la nueva categoría",
+                    content = @Content),
+    })
+    @PostMapping("withoutImage")
+    public ResponseEntity<Categoria> create(@RequestPart("categoria") CreateCategoriaDto categoriaDto) {
+
+        if (categoriaDto.getNombre().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            Categoria categoria = categoriaDtoConverter.createCategoria(categoriaDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.save(categoria));
+        }
+
+    }
+
     @Operation(summary = "Edita una categoría anteriormente creada, buscando por su ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",

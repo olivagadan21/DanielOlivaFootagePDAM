@@ -218,6 +218,29 @@ public class ProductoController {
 
     }
 
+    @Operation(summary = "Crea un nuevo producto")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha creado el nuevo producto",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetProductoDto.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha creado el nuevo producto",
+                    content = @Content),
+    })
+    @PostMapping("withoutImage")
+    public ResponseEntity<GetProductoDto> create (@RequestPart("producto") CreateProductoDto productoDto) {
+
+        if (productoDto.getTitulo().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            Producto producto = productoDtoConverter.createProductoDtoToProducto(productoDto);
+            GetProductoDto p = productoDtoConverter.getProductoDto(productoService.save(producto));
+            return ResponseEntity.status(HttpStatus.CREATED).body(p);
+        }
+
+    }
+
     @Operation(summary = "Edita un producto anteriormente creado, buscando por su ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
