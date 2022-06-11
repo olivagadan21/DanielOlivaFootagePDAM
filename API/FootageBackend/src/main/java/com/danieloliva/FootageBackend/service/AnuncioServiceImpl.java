@@ -6,8 +6,13 @@ import com.danieloliva.FootageBackend.service.base.AnuncioService;
 import com.danieloliva.FootageBackend.service.base.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -48,10 +53,8 @@ public class AnuncioServiceImpl implements AnuncioService {
 
         Anuncio anuncio = findById(id).get();
 
-        storageService.deleteFile(anuncio.getImagen());
-
         anuncio.setEmpresa(a.getEmpresa());
-        anuncio.setImagen(a.getImagen());
+        anuncio.setImagen(anuncio.getImagen());
         anuncio.setUrl(a.getUrl());
 
         return anuncioRepository.save(anuncio);
@@ -60,13 +63,11 @@ public class AnuncioServiceImpl implements AnuncioService {
 
     @Override
     public void delete(Anuncio p) {
-        storageService.deleteFile(p.getImagen());
         anuncioRepository.delete(p);
     }
 
     @Override
     public void deleteById(Long id) {
-        storageService.deleteFile(anuncioRepository.findById(id).get().getImagen());
         anuncioRepository.deleteById(id);
     }
 

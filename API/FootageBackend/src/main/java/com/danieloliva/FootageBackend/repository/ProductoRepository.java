@@ -1,9 +1,7 @@
 package com.danieloliva.FootageBackend.repository;
 
-import com.danieloliva.FootageBackend.model.Categoria;
-import com.danieloliva.FootageBackend.model.Marca;
-import com.danieloliva.FootageBackend.model.Producto;
-import com.danieloliva.FootageBackend.model.Seccion;
+import com.danieloliva.FootageBackend.model.*;
+import com.danieloliva.FootageBackend.usuario.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -25,5 +23,8 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     List<Producto> findBySeccion(Seccion seccion);
     List<Producto> findByCategoria(Categoria categoria);
     List<Producto> findByMarca(Marca marca);
+    List<Producto> findByTalla(Talla talla);
+    List<Producto> findByUsuario(Usuario usuario);
+
 
 }

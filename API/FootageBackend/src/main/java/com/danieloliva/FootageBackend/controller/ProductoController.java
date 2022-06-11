@@ -21,6 +21,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -229,7 +230,7 @@ public class ProductoController {
                     content = @Content),
     })
     @PostMapping("withoutImage")
-    public ResponseEntity<GetProductoDto> create (@RequestPart("producto") CreateProductoDto productoDto) {
+    public ResponseEntity<GetProductoDto> create (@RequestBody CreateProductoDto productoDto) {
 
         if (productoDto.getTitulo().isEmpty()) {
             return ResponseEntity.badRequest().build();
@@ -252,7 +253,7 @@ public class ProductoController {
                     content = @Content),
     })
     @PutMapping(value = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<GetProductoDto> edit (@AuthenticationPrincipal Usuario usuario, @RequestPart("producto") CreateProductoDto productoDto, @RequestPart("file1") MultipartFile file, @PathVariable Long id) {
+    public ResponseEntity<GetProductoDto> edit (@AuthenticationPrincipal Usuario usuario, @RequestPart("producto") CreateProductoDto productoDto, @RequestPart("file1") MultipartFile file, @PathVariable Long id) throws IOException {
 
         Optional<Producto> producto = productoService.findById(id);
 
@@ -262,6 +263,34 @@ public class ProductoController {
 
             if (producto.get().getUsuario().equals(usuario) || usuario.getRol().equals(RolUsuario.ADMIN))
                 return ResponseEntity.ok().body(productoDtoConverter.getProductoDto(productoService.edit(productoDtoConverter.createProductoDtoToProducto(productoDto, file), id)));
+            else
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        }
+
+    }
+
+    @Operation(summary = "Edita un producto anteriormente creado, buscando por su ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha editado el producto",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetProductoDto.class))}),
+            @ApiResponse(responseCode = "400",
+                    description = "No se ha editado el producto",
+                    content = @Content),
+    })
+    @PutMapping("{id}/withoutImage")
+    public ResponseEntity<GetProductoDto> edit (@AuthenticationPrincipal Usuario usuario, @RequestPart("producto") CreateProductoDto productoDto, @PathVariable Long id) throws IOException {
+
+        Optional<Producto> producto = productoService.findById(id);
+
+        if (producto.isEmpty())
+            return ResponseEntity.notFound().build();
+        else {
+
+            if (producto.get().getUsuario().equals(usuario) || usuario.getRol().equals(RolUsuario.ADMIN))
+                return ResponseEntity.ok().body(productoDtoConverter.getProductoDto(productoService.edit(productoDtoConverter.createProductoDtoToProducto(productoDto), id)));
             else
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 

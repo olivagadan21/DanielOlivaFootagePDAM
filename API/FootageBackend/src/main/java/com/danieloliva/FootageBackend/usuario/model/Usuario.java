@@ -50,7 +50,7 @@ public class Usuario implements UserDetails {
     @Column(name = "rol")
     private RolUsuario rol;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany
     private List<Producto> articulos = new ArrayList<>();
 
     @Builder.Default

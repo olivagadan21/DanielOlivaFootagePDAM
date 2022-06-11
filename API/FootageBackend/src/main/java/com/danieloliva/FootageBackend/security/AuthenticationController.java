@@ -3,10 +3,17 @@ package com.danieloliva.FootageBackend.security;
 import com.danieloliva.FootageBackend.security.dto.JwtUsuarioResponse;
 import com.danieloliva.FootageBackend.security.dto.LoginDto;
 import com.danieloliva.FootageBackend.security.jwt.JwtProvider;
+import com.danieloliva.FootageBackend.usuario.dto.CreateUsuarioDto;
+import com.danieloliva.FootageBackend.usuario.dto.GetUsuarioDto;
 import com.danieloliva.FootageBackend.usuario.dto.UsuarioDtoConverter;
 import com.danieloliva.FootageBackend.usuario.model.RolUsuario;
 import com.danieloliva.FootageBackend.usuario.model.Usuario;
 import com.danieloliva.FootageBackend.usuario.service.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +33,52 @@ public class AuthenticationController {
     private final JwtProvider jwtProvider;
     private final UsuarioDtoConverter usuarioDtoConverter;
     private final UsuarioService usuarioService;
+
+    @Operation(summary = "Crea un nuevo usuario de tipo user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha creado el nuevo usuario de tipo user",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetUsuarioDto.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha creado el nuevo usuario de tipo user",
+                    content = @Content),
+    })
+    @PostMapping("/auth/register/user")
+    public ResponseEntity<GetUsuarioDto> createUser (@RequestBody CreateUsuarioDto usuario) {
+
+        if (usuario.getUsername().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            Usuario usu = usuarioService.saveUser(usuario);
+            GetUsuarioDto u = usuarioDtoConverter.usuarioToGetUsuarioDto(usu);
+            return ResponseEntity.status(HttpStatus.CREATED).body(u);
+        }
+
+    }
+
+    @Operation(summary = "Crea un nuevo usuario de tipo admin")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha creado el nuevo usuario de tipo admin",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetUsuarioDto.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha creado el nuevo usuario de tipo admin",
+                    content = @Content),
+    })
+    @PostMapping("/auth/register/admin")
+    public ResponseEntity<GetUsuarioDto> createAdmin (@RequestBody CreateUsuarioDto usuario) {
+
+        if (usuario.getUsername().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            Usuario usu = usuarioService.saveAdmin(usuario);
+            GetUsuarioDto u = usuarioDtoConverter.usuarioToGetUsuarioDto(usu);
+            return ResponseEntity.status(HttpStatus.CREATED).body(u);
+        }
+
+    }
 
     @PostMapping("/auth/login")
     public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {

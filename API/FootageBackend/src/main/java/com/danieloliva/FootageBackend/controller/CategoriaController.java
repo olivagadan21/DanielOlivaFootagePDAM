@@ -4,6 +4,7 @@ import com.danieloliva.FootageBackend.dto.categoria.CategoriaDtoConverter;
 import com.danieloliva.FootageBackend.dto.categoria.CreateCategoriaDto;
 import com.danieloliva.FootageBackend.model.Categoria;
 import com.danieloliva.FootageBackend.service.base.CategoriaService;
+import com.danieloliva.FootageBackend.service.base.ProductoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,6 +17,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +29,7 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:4200")
 public class CategoriaController {
 
+    private final ProductoService productoService;
     private final CategoriaService categoriaService;
     private final CategoriaDtoConverter categoriaDtoConverter;
 
@@ -85,31 +89,8 @@ public class CategoriaController {
                     description = "No se ha creado la nueva categoría",
                     content = @Content),
     })
-    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Categoria> create(@RequestPart("categoria") CreateCategoriaDto categoriaDto, @RequestPart("file") MultipartFile file) {
-
-        if (categoriaDto.getNombre().isEmpty()) {
-            return ResponseEntity.badRequest().build();
-        } else {
-            Categoria categoria = categoriaDtoConverter.createCategoria(categoriaDto, file);
-            categoriaService.save(categoria);
-            return ResponseEntity.status(HttpStatus.CREATED).body(categoria);
-        }
-
-    }
-
-    @Operation(summary = "Crea una nueva categoría")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Se ha creado la nueva categoría",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Categoria.class))}),
-            @ApiResponse(responseCode = "404",
-                    description = "No se ha creado la nueva categoría",
-                    content = @Content),
-    })
-    @PostMapping("withoutImage")
-    public ResponseEntity<Categoria> create(@RequestPart("categoria") CreateCategoriaDto categoriaDto) {
+    @PostMapping("")
+    public ResponseEntity<Categoria> create(@RequestBody CreateCategoriaDto categoriaDto) {
 
         if (categoriaDto.getNombre().isEmpty()) {
             return ResponseEntity.badRequest().build();
@@ -130,15 +111,15 @@ public class CategoriaController {
                     description = "No se ha editado la categoría",
                     content = @Content),
     })
-    @PutMapping(value = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Categoria> edit(@RequestPart("categoria") CreateCategoriaDto categoriaDto, @RequestPart("file") MultipartFile file, @PathVariable Long id) {
+    @PutMapping("{id}")
+    public ResponseEntity<Categoria> edit(@RequestBody CreateCategoriaDto categoriaDto, @PathVariable Long id) throws IOException {
 
         Optional<Categoria> cat = categoriaService.findById(id);
 
         if (cat.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            Categoria categoria = categoriaDtoConverter.createCategoria(categoriaDto, file);
+            Categoria categoria = categoriaDtoConverter.createCategoria(categoriaDto);
             return ResponseEntity.ok().body(categoriaService.edit(categoria, id));
         }
 
@@ -156,9 +137,12 @@ public class CategoriaController {
     @DeleteMapping("{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
 
-        if (categoriaService.findById(id).isEmpty()) {
+        Optional<Categoria> categoria = categoriaService.findById(id);
+
+        if (categoria.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
+            productoService.findByCategoria(id).forEach(producto -> {producto.setCategoria(null);});
             categoriaService.deleteById(id);
             return ResponseEntity.noContent().build();
         }

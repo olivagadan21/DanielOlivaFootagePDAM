@@ -6,9 +6,13 @@ import com.danieloliva.FootageBackend.service.base.SeccionService;
 import com.danieloliva.FootageBackend.service.base.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,27 +39,23 @@ public class SeccionServiceImpl implements SeccionService {
     }
 
     @Override
-    public Seccion edit(Seccion s, Long id) {
+    public Seccion edit(Seccion s, Long id) throws IOException {
 
         Seccion seccion = seccionRepository.getById(id);
 
-        storageService.deleteFile(seccion.getImagen());
-
         seccion.setNombre(s.getNombre());
-        seccion.setImagen(s.getImagen());
+        seccion.setImagen(seccion.getImagen());
 
         return seccionRepository.save(seccion);
     }
 
     @Override
     public void delete(Seccion s) {
-        storageService.deleteFile(s.getImagen());
         seccionRepository.delete(s);
     }
 
     @Override
     public void deleteById(Long id) {
-        storageService.deleteFile(seccionRepository.getById(id).getImagen());
         seccionRepository.deleteById(id);
     }
 }

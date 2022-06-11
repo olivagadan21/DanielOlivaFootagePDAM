@@ -115,11 +115,18 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public void deleteFile(String filename) {
+    public void deleteFile(Path uri) throws IOException {
         try {
-            Boolean delete = Files.deleteIfExists(this.rootLocation.resolve(filename));
-        }catch (IOException e){
-            e.printStackTrace();
+            MediaTypeUrlResource resource = new MediaTypeUrlResource(uri.toUri());
+            if (resource.exists() || resource.isReadable()) {
+                Files.delete(uri);
+            }
+            else {
+                throw new FileNotFoundException("Could not read file: " + uri);
+            }
+        }
+        catch (MalformedURLException e) {
+            throw new FileNotFoundException("Could not read file: " + uri, e);
         }
     }
 

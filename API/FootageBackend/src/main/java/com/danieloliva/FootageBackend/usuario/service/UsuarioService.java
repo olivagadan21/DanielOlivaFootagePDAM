@@ -17,9 +17,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -99,7 +103,7 @@ public class UsuarioService extends BaseService<Usuario, Long, UsuarioRepository
         }
     }
 
-    public Usuario editProfile  (CreateUsuarioDto newUser, MultipartFile file, Usuario usuarioAuth) {
+    public Usuario editProfile  (CreateUsuarioDto newUser, MultipartFile file, Usuario usuarioAuth) throws IOException {
 
         usuarioAuth.setNombre(newUser.getNombre());
         usuarioAuth.setApellidos(newUser.getApellidos());
@@ -108,13 +112,22 @@ public class UsuarioService extends BaseService<Usuario, Long, UsuarioRepository
         usuarioAuth.setPremium(newUser.isPremium());
 
         if (!file.isEmpty()) {
-            storageService.deleteFile(usuarioAuth.getAvatar());
 
-            String filename = storageService.store(file);
+            String name = StringUtils.cleanPath(String.valueOf(usuarioAuth.getAvatar())).replace("http://localhost:8080/download/", "").replace("%20", " ");
+
+            Path pa = storageService.load(name);
+
+            String filename = StringUtils.cleanPath(String.valueOf(pa)).replace("http://localhost:8080/download/", "").replace("%20", " ");
+
+            Path path = Paths.get(filename);
+
+            storageService.deleteFile(path);
+
+            String filename2 = storageService.store(file);
 
             String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path("/download/")
-                    .path(filename)
+                    .path(filename2)
                     .toUriString();
 
             usuarioAuth.setAvatar(uri);
@@ -122,6 +135,19 @@ public class UsuarioService extends BaseService<Usuario, Long, UsuarioRepository
 
         save(usuarioAuth);
 
+        return usuarioAuth;
+
+    }
+
+    public Usuario editProfile  (CreateUsuarioDto newUser, Usuario usuarioAuth) {
+
+        usuarioAuth.setNombre(newUser.getNombre());
+        usuarioAuth.setApellidos(newUser.getApellidos());
+        usuarioAuth.setUsername(newUser.getUsername());
+        usuarioAuth.setLocalizacion(newUser.getLocalizacion());
+        usuarioAuth.setPremium(newUser.isPremium());
+        usuarioAuth.setAvatar(usuarioAuth.getAvatar());
+        save(usuarioAuth);
         return usuarioAuth;
 
     }

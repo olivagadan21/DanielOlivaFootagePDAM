@@ -16,6 +16,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -106,31 +108,8 @@ public class AnuncioController {
                     description = "No se ha creado el nuevo anuncio",
                     content = @Content),
     })
-    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Anuncio> create (@RequestPart("anuncio") CreateAnuncioDto anuncio, @RequestPart("file") MultipartFile file) {
-
-        if (anuncio.getUrl().isEmpty()) {
-            return ResponseEntity.badRequest().build();
-        } else {
-            Anuncio a = anuncioDtoConverter.createAnuncio(anuncio, file);
-            anuncioService.save(a);
-            return ResponseEntity.status(HttpStatus.CREATED).body(a);
-        }
-
-    }
-
-    @Operation(summary = "Crea un nuevo anuncio")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Se ha creado el nuevo anuncio",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Anuncio.class))}),
-            @ApiResponse(responseCode = "404",
-                    description = "No se ha creado el nuevo anuncio",
-                    content = @Content),
-    })
-    @PostMapping("withoutImage")
-    public ResponseEntity<Anuncio> create (@RequestPart("anuncio") CreateAnuncioDto anuncio) {
+    @PostMapping("")
+    public ResponseEntity<Anuncio> create (@RequestBody CreateAnuncioDto anuncio) {
 
         if (anuncio.getUrl().isEmpty()) {
             return ResponseEntity.badRequest().build();
@@ -151,15 +130,15 @@ public class AnuncioController {
                     description = "No se ha editado el anuncio",
                     content = @Content),
     })
-    @PutMapping(value = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Anuncio> edit (@RequestPart("anuncio") CreateAnuncioDto anuncioDto, @RequestPart("file") MultipartFile file, @PathVariable Long id) {
+    @PutMapping("{id}")
+    public ResponseEntity<Anuncio> edit (@RequestBody CreateAnuncioDto anuncioDto, @PathVariable Long id) throws IOException {
 
         Optional<Anuncio> a = anuncioService.findById(id);
 
         if (a.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            Anuncio anuncio = anuncioDtoConverter.createAnuncio(anuncioDto, file);
+            Anuncio anuncio = anuncioDtoConverter.createAnuncio(anuncioDto);
             return ResponseEntity.ok().body(anuncioService.edit(anuncio, id));
         }
 

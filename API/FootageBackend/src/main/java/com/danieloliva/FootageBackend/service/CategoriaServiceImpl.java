@@ -6,8 +6,13 @@ import com.danieloliva.FootageBackend.service.base.CategoriaService;
 import com.danieloliva.FootageBackend.service.base.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,10 +45,8 @@ public class CategoriaServiceImpl implements CategoriaService {
 
         Categoria categoria = categoriaRepository.findById(id).get();
 
-        storageService.deleteFile(categoria.getImagen());
-
         categoria.setNombre(c.getNombre());
-        categoria.setImagen(c.getImagen());
+        categoria.setImagen(categoria.getImagen());
 
         return categoriaRepository.save(categoria);
 
@@ -51,13 +54,11 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Override
     public void delete(Categoria c) {
-        storageService.deleteFile(c.getImagen());
         categoriaRepository.delete(c);
     }
 
     @Override
     public void deleteById(Long id) {
-        storageService.deleteFile(categoriaRepository.findById(id).get().getImagen());
         categoriaRepository.deleteById(id);
     }
 

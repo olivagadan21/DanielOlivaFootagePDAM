@@ -1,6 +1,7 @@
 package com.danieloliva.FootageBackend.controller;
 
 import com.danieloliva.FootageBackend.model.Talla;
+import com.danieloliva.FootageBackend.service.base.ProductoService;
 import com.danieloliva.FootageBackend.service.base.TallaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,6 +23,7 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:4200")
 public class TallaController {
 
+    private final ProductoService productoService;
     private final TallaService tallaService;
 
     @Operation(summary = "Obtiene lista de tallas")
@@ -129,6 +131,7 @@ public class TallaController {
         if (tallaService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
+            productoService.findByTalla(id).forEach(producto -> {producto.setTalla(null);});
             tallaService.deleteById(id);
             return ResponseEntity.noContent().build();
         }
