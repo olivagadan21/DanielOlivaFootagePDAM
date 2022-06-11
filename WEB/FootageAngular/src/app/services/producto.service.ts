@@ -28,33 +28,13 @@ export class ProductoService {
   getProducto(id: number) {
     return this.http.get<ProductoResponse>(`${productoUrl}${id}`, DEFAULT_HEADERS);
   }
-
-  getProductosSeccion(id: number): Observable<ProductoResponse[]>{
-    return this.http.get<ProductoResponse[]>(`${productoUrl}seccion/${id}`, DEFAULT_HEADERS);
-  }
-
-  getProductosMarca(id: number): Observable<ProductoResponse[]>{
-    return this.http.get<ProductoResponse[]>(`${productoUrl}marca/${id}`, DEFAULT_HEADERS);
-  }
-
-  getProductosCategoria(id: number): Observable<ProductoResponse[]>{
-    return this.http.get<ProductoResponse[]>(`${productoUrl}categoria/${id}`, DEFAULT_HEADERS);
-  }
-
-  getProductosOriginal(): Observable<ProductoResponse[]>{
-    return this.http.get<ProductoResponse[]>(`${productoUrl}original`, DEFAULT_HEADERS);
-  }
-
-  getProductosIntercambio(): Observable<ProductoResponse[]>{
-    return this.http.get<ProductoResponse[]>(`${productoUrl}intercambio`, DEFAULT_HEADERS);
-  }
-
+  
   postProducto(producto: ProductoDto): Observable<ProductoResponse> {
-    return this.http.post<ProductoResponse>(productoUrl, producto, DEFAULT_HEADERS);
+    return this.http.post<ProductoResponse>(`${productoUrl}withoutImage`, producto, DEFAULT_HEADERS);
   }
 
   editProducto(producto: ProductoDto, id:number): Observable<ProductoResponse> {
-    return this.http.put<ProductoResponse>(`${productoUrl}${id}`, producto, DEFAULT_HEADERS);
+    return this.http.put<ProductoResponse>(`${productoUrl}${id}withoutImage`, producto, DEFAULT_HEADERS);
   }
 
   deleteProducto(id:number): Observable<ProductoResponse[]>{

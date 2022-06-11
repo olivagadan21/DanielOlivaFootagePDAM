@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -30,11 +30,7 @@ export class AnuncioService {
   }
 
   postAnuncio(anuncio: AnuncioDto): Observable<AnuncioResponse> {
-    const headers = {
-      'Content-Type': 'multipart/form-data',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    }
-    return this.http.post<AnuncioResponse>(anuncioUrl, anuncio, {'headers':headers});
+    return this.http.post<AnuncioResponse>(`${anuncioUrl}`, anuncio, DEFAULT_HEADERS);
   }
 
   editAnuncio(anuncio: AnuncioDto, id:number): Observable<AnuncioResponse> {

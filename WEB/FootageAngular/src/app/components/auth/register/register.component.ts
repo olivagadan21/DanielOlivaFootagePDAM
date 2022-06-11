@@ -22,6 +22,10 @@ export class RegisterComponent implements OnInit {
     this.usuarioService.postusuarioAdmin(this.usuarioA).subscribe(res => {this.router.navigate(['/usuario'])})
   }
 
+  list() {
+    return this.router.navigate(['/usuario'])
+  }
+
   onSubmitU(){
     this.usuarioService.postusuarioUser(this.usuarioU).subscribe(res => {this.router.navigate(['/usuario'])})
   }

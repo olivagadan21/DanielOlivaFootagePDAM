@@ -50,10 +50,5 @@
             <mat-option *ngFor="let talla of tallas" [value]="talla.id ">{{talla.nombre}}</mat-option>
         </mat-select>
     </mat-form-field>
-    <mat-form-field floatLabel="always" class="nombre">
-        <mat-label>Imagen</mat-label>
-        <input type="file" name="nombre" required="required" />
-        <textarea matInput hidden></textarea>
-    </mat-form-field>
     <button type="submit " (click)="onSubmit() ">Guardar</button>
 </form>

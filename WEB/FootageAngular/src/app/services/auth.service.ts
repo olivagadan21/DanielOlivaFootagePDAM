@@ -8,10 +8,6 @@ import { LoginResponse } from '../model/interfaces/auth';
 const DEFAULT_HEADERS = {
   headers:new HttpHeaders({
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    "Access-Control-Max-Age": "3600",
-    'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
   })
 }
 

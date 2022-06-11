@@ -7,10 +7,14 @@
                 <mat-icon>favorite_border</mat-icon>
             </div>
         </div>
-        <p><strong>Sección: </strong>{{producto.seccion.nombre}}</p>
-        <p><strong>Categoría: </strong>{{producto.categoria.nombre}}</p>
-        <p><strong>Talla: </strong>{{producto.talla.nombre}}</p>
-        <p><strong>Marca: </strong>{{producto.marca.nombre}}</p>
+        <p *ngIf="producto.seccion==null"><strong>Sección: </strong>Sin especificar</p>
+        <p *ngIf="producto.seccion!=null"><strong>Sección: </strong>{{producto.seccion.nombre}}</p>
+        <p *ngIf="producto.categoria==null"><strong>Categoría: </strong>Sin especificar</p>
+        <p *ngIf="producto.categoria!=null"><strong>Categoría: </strong>{{producto.categoria.nombre}}</p>
+        <p *ngIf="producto.talla==null"><strong>Talla: </strong>Sin especificar</p>
+        <p *ngIf="producto.talla!=null"><strong>Talla: </strong>{{producto.talla.nombre}}</p>
+        <p *ngIf="producto.marca==null"><strong>Marca: </strong>Sin especificar</p>
+        <p *ngIf="producto.marca!=null"><strong>Marca: </strong>{{producto.marca.nombre}}</p>
         <p class="precio"><strong>Precio: </strong>{{producto.precio}} €</p>
         <p><strong>Usuario: </strong><a (click)="openDialog(producto.usuario.id)">{{producto.usuario.username}}</a></p>
     </div>

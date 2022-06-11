@@ -9,6 +9,7 @@ export class ProductoDto {
     categoria:   number;
     marca:       number;
     talla:       number;
+    foto:    string;
     constructor () {
         this.titulo = '';
         this.descripcion = '';
@@ -20,5 +21,6 @@ export class ProductoDto {
         this.categoria = 0;
         this.marca = 0;
         this.talla = 0;
+        this.foto = ''
     }
 }

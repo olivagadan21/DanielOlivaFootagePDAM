@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { UsuarioDto } from '../model/dto/usuario.dto';
 import { UsuarioResponse } from '../model/interfaces/usuario';
 
-const usuarioUrl = `${environment.apiBaseUrl}usuarios/`
+const usuarioUrl = `${environment.apiBaseUrl}usuario/`
 const authUrl = `${environment.apiBaseUrl}auth/register/`
 
 const DEFAULT_HEADERS = {
@@ -36,12 +36,7 @@ export class UsuarioService {
 
   getUsuariosAdmin(): Observable<UsuarioResponse[]>{
     return this.http.get<UsuarioResponse[]>(`${usuarioUrl}admin`, DEFAULT_HEADERS)
-  }
-
-  getUsuariosPremium(): Observable<UsuarioResponse[]>{
-    return this.http.get<UsuarioResponse[]>(`${usuarioUrl}premium`, DEFAULT_HEADERS)
-  }
-  
+  }  
 
   postusuarioUser(usuario:UsuarioDto): Observable<UsuarioResponse> {
     return this.http.post<UsuarioResponse>(`${authUrl}user`, usuario, DEFAULT_HEADERS)
@@ -52,7 +47,7 @@ export class UsuarioService {
   }
 
   editUsuario(usuario:UsuarioDto, id:number): Observable<UsuarioResponse> {
-    return this.http.put<UsuarioResponse>(`${usuarioUrl}${id}`, usuario, DEFAULT_HEADERS)
+    return this.http.put<UsuarioResponse>(`${usuarioUrl}${id}/withoutImage`, usuario, DEFAULT_HEADERS)
   }
 
   deleteUsuario(id:number): Observable<UsuarioResponse[]>{

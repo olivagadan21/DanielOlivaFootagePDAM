@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   doLogin() {
     this.authService.login(this.loginDto).subscribe(loginResult => {
       localStorage.setItem('token', loginResult.token);
-      this.router.navigate(['usuario']);
+      this.router.navigate(['/producto']);
     });
   }
 

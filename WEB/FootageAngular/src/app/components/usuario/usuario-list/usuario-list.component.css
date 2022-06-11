@@ -4,6 +4,11 @@ button {
     margin-top: 10px;
 }
 
+.row {
+    display: flex;
+    justify-content: space-between;
+}
+
 app-usuario-item {
     margin: 1%;
 }

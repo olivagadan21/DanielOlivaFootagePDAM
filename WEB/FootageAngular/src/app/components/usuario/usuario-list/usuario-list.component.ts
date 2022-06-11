@@ -22,4 +22,19 @@ export class UsuarioListComponent implements OnInit {
     return this.router.navigate(['/register'])
   }
 
+  user() {
+    this.usuarioService.getUsuariosUser().subscribe(res=>{this.usuarios=res})
+    window.location.reload
+  }
+
+  admin() {
+    this.usuarioService.getUsuariosAdmin().subscribe(res=>{this.usuarios=res})
+    window.location.reload
+  }
+
+  all() {
+    this.usuarioService.getUsuarios().subscribe(results => {this.usuarios = results})
+    window.location.reload
+  }
+
 }
