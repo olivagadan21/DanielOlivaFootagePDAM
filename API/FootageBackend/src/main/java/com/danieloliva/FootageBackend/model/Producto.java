@@ -53,6 +53,14 @@ public class Producto implements Serializable {
     @JoinColumn(name = "talla_id")
     private Talla talla;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado")
+    private Estado estado;
+
+    @ManyToOne
+    @JoinColumn(name = "anuncio_id")
+    private Anuncio anuncio;
+
     @Builder.Default
     @OneToMany(mappedBy = "producto", cascade = {CascadeType.REMOVE})
     private List<MeGusta> meGustas = new ArrayList<>();

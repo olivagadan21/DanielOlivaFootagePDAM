@@ -64,7 +64,7 @@ public class UsuarioService extends BaseService<Usuario, Long, UsuarioRepository
                     .password(passwordEncoder.encode(createUsuarioDto.getPassword()))
                     .premium(false)
                     .rol(RolUsuario.USER)
-                    .localizacion(null)
+                    .localizacion("")
                     .avatar("http://localhost:8080/download/user.png")
                     .articulos(p)
                     .build();

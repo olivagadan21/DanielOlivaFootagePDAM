@@ -17,6 +17,8 @@ public class ProductoUsuarioDtoConverter {
                 .foto(producto.getFoto())
                 .marca(producto.getMarca())
                 .talla(producto.getTalla())
+                .estado(producto.getEstado())
+                .anuncio(producto.getAnuncio())
                 .build();
     }
 

@@ -46,6 +46,7 @@ public class UsuarioDtoConverter {
                 .avatar(usuario.getAvatar())
                 .localizacion(usuario.getLocalizacion())
                 .premium(usuario.isPremium())
+                .articulos(usuario.getArticulos().stream().map(productoDtoConverter::getProductoUsuarioDto).toList())
                 .build();
     }
 

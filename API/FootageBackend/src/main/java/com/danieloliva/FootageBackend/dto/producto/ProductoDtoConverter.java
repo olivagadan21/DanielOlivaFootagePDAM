@@ -21,6 +21,7 @@ public class ProductoDtoConverter {
     private final StorageService storageService;
     private final TallaService tallaService;
     private final UsuarioDtoConverter usuarioDtoConverter;
+    private final AnuncioService anuncioService;
 
     public Producto createProductoDtoToProducto (CreateProductoDto p, MultipartFile file) {
 
@@ -43,6 +44,8 @@ public class ProductoDtoConverter {
                 .categoria(categoriaService.findById(p.getCategoria()).get())
                 .marca(marcaService.findById(p.getMarca()).get())
                 .talla(tallaService.findById(p.getTalla()).get())
+                .estado(p.getEstado())
+                .anuncio(anuncioService.findOneAleatory())
                 .build();
 
     }
@@ -61,6 +64,7 @@ public class ProductoDtoConverter {
                 .categoria(categoriaService.findById(p.getCategoria()).get())
                 .marca(marcaService.findById(p.getMarca()).get())
                 .talla(tallaService.findById(p.getTalla()).get())
+                .estado(p.getEstado())
                 .build();
 
     }
@@ -79,6 +83,8 @@ public class ProductoDtoConverter {
                 .categoria(producto.getCategoria())
                 .marca(producto.getMarca())
                 .talla(producto.getTalla())
+                .estado(producto.getEstado())
+                .anuncio(producto.getAnuncio())
                 .meGustas(producto.getMeGustas().stream().map(meGusta -> {
                     return usuarioDtoConverter.usuarioToGetUsuarioProductoDto(meGusta.getUsuario());
                 }).toList())

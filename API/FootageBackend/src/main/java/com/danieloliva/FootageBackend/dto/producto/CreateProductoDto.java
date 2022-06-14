@@ -1,5 +1,6 @@
 package com.danieloliva.FootageBackend.dto.producto;
 
+import com.danieloliva.FootageBackend.model.Estado;
 import lombok.*;
 
 import javax.persistence.*;
@@ -43,5 +44,8 @@ public class CreateProductoDto {
 
     @NotNull(message = "{not.null}")
     private Long talla;
+
+    @Enumerated(EnumType.STRING)
+    private Estado estado;
 
 }
