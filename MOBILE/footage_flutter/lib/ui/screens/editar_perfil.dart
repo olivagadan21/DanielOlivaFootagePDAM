@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:footage_flutter/style/styles.dart';
 import 'package:footage_flutter/ui/screens/mapa.dart';
-import 'package:footage_flutter/ui/screens/menu_screen.dart';
+import 'package:footage_flutter/ui/screens/menu.dart';
 
 class EditarPerfil extends StatelessWidget {
 

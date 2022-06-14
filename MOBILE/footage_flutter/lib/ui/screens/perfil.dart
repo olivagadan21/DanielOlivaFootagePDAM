@@ -5,8 +5,10 @@ import 'package:footage_flutter/models/usuario/usuario_response.dart';
 import 'package:footage_flutter/repository/usuario/usuario_repository.dart';
 import 'package:footage_flutter/repository/usuario/usuario_repository_impl.dart';
 import 'package:footage_flutter/style/styles.dart';
-import 'package:footage_flutter/ui/screens/editarperfil_screen.dart';
+import 'package:footage_flutter/ui/screens/editar_perfil.dart';
 import 'package:footage_flutter/ui/widgets/error_page.dart';
+
+import '../../models/usuario/perfil_response.dart';
 
 class PerfilScreen extends StatefulWidget  {
 
@@ -57,7 +59,7 @@ Widget _createPerfil(BuildContext context) {
           },
         );
       } else if (state is UsuarioFetched) {
-        return _perfil(context, state.usuarioResponse);
+        return _perfil(context, state.profileResponse);
       } else {
         return const Text('Not support');
       }
@@ -65,7 +67,7 @@ Widget _createPerfil(BuildContext context) {
   );
 }
 
-Widget _perfil(BuildContext context, UsuarioResponse usuarioResponse) {
+Widget _perfil(BuildContext context, ProfileResponse profileResponse) {
   return Scaffold(
     body: SingleChildScrollView(
       child: SafeArea(
@@ -82,8 +84,8 @@ Widget _perfil(BuildContext context, UsuarioResponse usuarioResponse) {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(50),
-                      child: const Image(
-                        image: AssetImage("assets/images/icono.png"),
+                      child: Image(
+                        image: NetworkImage(profileResponse.avatar),
                         width: 80,
                       )
                     )
@@ -93,9 +95,9 @@ Widget _perfil(BuildContext context, UsuarioResponse usuarioResponse) {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text("Daniel Oliva García", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), maxLines: 1, softWrap: false, overflow: TextOverflow.fade),
-                        Text("danioliva20", style: TextStyle(fontSize: 18, color: Colores.gris, fontWeight: FontWeight.w500),)
+                      children: [
+                        Text('${profileResponse.nombre} ${profileResponse.apellidos}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold), maxLines: 1, softWrap: false, overflow: TextOverflow.fade),
+                        Text(profileResponse.username, style: const TextStyle(fontSize: 18, color: Colores.gris, fontWeight: FontWeight.w500),)
                       ],
                     ),
                   )
@@ -134,43 +136,35 @@ Widget _perfil(BuildContext context, UsuarioResponse usuarioResponse) {
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
                           ),
-                          itemCount: usuarioResponse.articulos.length,
+                          itemCount: profileResponse.articulos.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Card(
                               color: Colors.white,
                               child: Image(
-                                image: NetworkImage(usuarioResponse.articulos
-                                  .elementAt(index)
-                                  .file
-                                  .toString()
-                                  .replaceFirst('localhost', '10.0.2.2')),
+                                image: NetworkImage(profileResponse.articulos.elementAt(index).foto),
                                 fit: BoxFit.cover,
                               )
                             );
                           }
                         ),
                       ),
-                      Flexible(
+                      /* Flexible(
                         child: GridView.builder(
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
                           ),
-                          itemCount: usuarioResponse.meGustas.length,
+                          itemCount: profileResponse.meGustas.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Card(
                               color: Colors.white,
                               child: Image(
-                                image: NetworkImage(usuarioResponse.meGustas
-                                  .elementAt(index)
-                                  .file
-                                  .toString()
-                                  .replaceFirst('localhost', '10.0.2.2')),
+                                image: NetworkImage(profileResponse.meGustas.elementAt(index).producto),
                                 fit: BoxFit.cover,
                               )
                             );
                           }
                         ),
-                      ),
+                      ), */
                     ]
                   ),
                 )

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:footage_flutter/models/map/map.dart';
 import 'package:footage_flutter/style/styles.dart';
-import 'package:footage_flutter/ui/screens/editarperfil_screen.dart';
+import 'package:footage_flutter/ui/screens/editar_perfil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

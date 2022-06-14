@@ -10,6 +10,7 @@ class ProductoDto {
     required this.categoria,
     required this.marca,
     required this.talla,
+    required this.estado
   });
   late final String titulo;
   late final String descripcion;
@@ -21,6 +22,7 @@ class ProductoDto {
   late final int categoria;
   late final int marca;
   late final int talla;
+  late final String estado;
   
   ProductoDto.fromJson(Map<String, dynamic> json){
     titulo = json['titulo'];
@@ -33,6 +35,7 @@ class ProductoDto {
     categoria = json['categoria'];
     marca = json['marca'];
     talla = json['talla'];
+    estado = json['estado'];
   }
 
   Map<String, dynamic> toJson() {
@@ -47,6 +50,7 @@ class ProductoDto {
     _data['categoria'] = categoria;
     _data['marca'] = marca;
     _data['talla'] = talla;
+    _data['estado'] = estado;
     return _data;
   }
 }

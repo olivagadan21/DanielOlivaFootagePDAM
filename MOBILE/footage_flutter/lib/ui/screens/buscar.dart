@@ -10,7 +10,7 @@ import 'package:footage_flutter/repository/marca/marca_repository.dart';
 import 'package:footage_flutter/repository/marca/marca_repository_impl.dart';
 import 'package:footage_flutter/repository/seccion/seccion_repository.dart';
 import 'package:footage_flutter/repository/seccion/seccion_repository_impl.dart';
-import 'package:footage_flutter/ui/screens/buscado_screen.dart';
+import 'package:footage_flutter/ui/screens/buscado.dart';
 import 'package:footage_flutter/ui/widgets/error_page.dart';
 
 class BuscarScreen extends StatefulWidget  {
@@ -198,7 +198,7 @@ Widget _categorias (BuildContext context, CategoriaResponse categoriaResponse) {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Image(image: NetworkImage(categoriaResponse.imagen.replaceAll("http://localhost:8080", "http://10.0.2.2:8080")), width: 150,),
+                  child: Image(image: NetworkImage(categoriaResponse.imagen), width: 150,),
                 ),
                 Text(categoriaResponse.nombre)
               ],
@@ -221,7 +221,7 @@ Widget _secciones (BuildContext context, SeccionResponse seccionResponse) {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Image(image: NetworkImage(seccionResponse.imagen.replaceAll("http://localhost:8080", "http://10.0.2.2:8080")), width: 150,),
+                  child: Image(image: NetworkImage(seccionResponse.imagen.replaceAll("http://localhost:8080", "http://localhost:8080")), width: 150,),
                 ),
                 Text(seccionResponse.nombre)
               ],
@@ -244,7 +244,7 @@ Widget _marcas (BuildContext context, MarcaResponse marcaResponse) {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Image(image: NetworkImage(marcaResponse.imagen.replaceAll("http://localhost:8080", "http://10.0.2.2:8080")), width: 150,),
+                  child: Image(image: NetworkImage(marcaResponse.imagen.replaceAll("http://localhost:8080", "http://localhost:8080")), width: 150,),
                 ),
                 Text(marcaResponse.nombre)
               ],

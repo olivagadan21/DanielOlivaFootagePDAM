@@ -14,7 +14,7 @@ class TallaRepositoryImpl extends TallaRepository {
   @override
   Future<List<TallaResponse>> fetchTallas() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final response = await _client.get(Uri.parse('${Constant.baseUrl}/talla/'), headers: {'Authorization': 'Bearer ${prefs.getString('token')}'});
+    final response = await _client.get(Uri.parse('${Constant.baseUrl}talla/'), headers: {'Authorization': 'Bearer ${prefs.getString('token')}'});
     if (response.statusCode == 200) {
       return (json.decode(response.body) as List).map((i) => TallaResponse.fromJson(i)).toList();
     } else {

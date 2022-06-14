@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,7 +10,6 @@ import 'package:footage_flutter/models/categoria/categoria_response.dart';
 import 'package:footage_flutter/models/marca/marca_response.dart';
 import 'package:footage_flutter/models/producto/producto_dto.dart';
 import 'package:footage_flutter/models/producto/producto_response.dart';
-import 'package:footage_flutter/models/seccion/seccion_response.dart';
 import 'package:footage_flutter/models/talla/talla_response.dart';
 import 'package:footage_flutter/repository/categoria/categoria_repository.dart';
 import 'package:footage_flutter/repository/marca/marca_repository.dart';
@@ -20,10 +21,11 @@ import 'package:footage_flutter/repository/seccion/seccion_repository_impl.dart'
 import 'package:footage_flutter/repository/talla/talla_repository.dart';
 import 'package:footage_flutter/repository/talla/talla_repository_impl.dart';
 import 'package:footage_flutter/style/styles.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../repository/categoria/categoria_repository_impl.dart';
-import 'menu_screen.dart';
+import 'menu.dart';
 
 class VenderScreen extends StatefulWidget {
 
@@ -167,27 +169,38 @@ class _RegisterScreenState extends State<VenderScreen> {
                     color: Colores.gris,
                   ),
                 ),
-                SizedBox(
-                  width:MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height*0.3,
-                  child: Center(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Colores.blanco,
-                        fixedSize: const Size(200, 40),
-                        side: const BorderSide(color: Colores.principal, width: 2)
-                      ),
-                      onPressed: (){},
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: const [
-                          Icon(Icons.add, color: Colores.principal,),
-                          Text("Subir foto", style: TextStyle(color: Colores.principal, fontSize: 18),)
-                        ],
-                      )
-                    ),
+                Padding(
+                  padding: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.1, bottom: MediaQuery.of(context).size.height*0.1),
+                  child: BlocConsumer<ImageBloc, ImageState>(
+                    listenWhen: (context, state) {return state is ImageSelectedSuccessState;},
+                    listener: (context, state) {},
+                    buildWhen: (context, state) {return state is ImageInitial || state is ImageSelectedSuccessState;},
+                    builder: (context, state) {
+                      if (state is ImageSelectedSuccessState) {
+                        path = state.pickedFile.path;
+                        // ignore: avoid_print
+                        print('PATH ${state.pickedFile.path}');
+                        return Column(children: [
+                          Image.file(
+                            File(state.pickedFile.path),
+                            height: 100,
+                          ),
+                        ]);
+                      }
+                      return Center(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Colores.blanco,
+                            fixedSize: const Size(200, 40),
+                            side: const BorderSide(color: Colores.principal, width: 2)
+                          ),
+                          onPressed: () {BlocProvider.of<ImageBloc>(context).add(const SelectImageEvent(ImageSource.gallery));},
+                          child: const Text('Seleccionar Imagen', style: TextStyle(color: Colores.principal,))
+                        )
+                      );
+                    }
                   ),
-                ), 
+                ),
                 Container(
                   height: 8,
                   color: Colores.gris,
@@ -395,7 +408,8 @@ class _RegisterScreenState extends State<VenderScreen> {
                               seccion: seccion,
                               categoria: categoria,
                               marca: marca,
-                              talla: talla
+                              talla: talla,
+                              estado: selectedValueEstado
                             );
                           }
                         },
