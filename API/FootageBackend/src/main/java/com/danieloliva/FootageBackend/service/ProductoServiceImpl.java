@@ -32,7 +32,6 @@ public class ProductoServiceImpl implements ProductoService {
     private final MarcaRepository marcaRepository;
     private final ProductoRepository productoRepository;
     private final StorageService storageService;
-    private final ProductoDtoConverter productoDtoConverter;
 
     @Override
     public List<Producto> findAll() {

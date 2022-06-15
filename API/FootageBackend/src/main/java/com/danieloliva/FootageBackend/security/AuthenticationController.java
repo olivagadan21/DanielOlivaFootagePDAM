@@ -1,5 +1,7 @@
 package com.danieloliva.FootageBackend.security;
 
+import com.danieloliva.FootageBackend.dto.meGusta.MeGustaDtoConverter;
+import com.danieloliva.FootageBackend.dto.producto.ProductoUsuarioDtoConverter;
 import com.danieloliva.FootageBackend.security.dto.JwtUsuarioResponse;
 import com.danieloliva.FootageBackend.security.dto.LoginDto;
 import com.danieloliva.FootageBackend.security.jwt.JwtProvider;
@@ -130,7 +132,7 @@ public class AuthenticationController {
 
     @GetMapping("/profile/me")
     public ResponseEntity<?> identificarme(@AuthenticationPrincipal Usuario usuario){
-        return ResponseEntity.ok(convertUsuarioToJwtUsuariorResponse(usuario, null));
+        return ResponseEntity.ok(usuarioDtoConverter.usuarioToGetUsuarioProductoDto(usuario));
     }
 
 
