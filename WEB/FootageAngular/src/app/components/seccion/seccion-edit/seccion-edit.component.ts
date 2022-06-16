@@ -18,14 +18,14 @@ export class SeccionEditComponent implements OnInit {
   constructor(private seccionService: SeccionService, @Inject(MAT_DIALOG_DATA) private data: DialogData) { }
 
   ngOnInit(): void {
-    this.seccionService.editSeccion(this.seccion, this.data.id).subscribe(a=>{
+    this.seccionService.getSeccion(this.data.id).subscribe(a=>{
       this.seccion.nombre = a.nombre
     })
   }
 
   onSubmit() {
     this.seccionService.editSeccion(this.seccion, this.data.id).subscribe(res=>{this.seccionResponse=res})
-    window.location.reload
+    window.location.reload()
   }
 
 }

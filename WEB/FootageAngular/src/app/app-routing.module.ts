@@ -15,9 +15,10 @@ import { SeccionListComponent } from './components/seccion/seccion-list/seccion-
 import { TallaFormComponent } from './components/talla/talla-form/talla-form.component';
 import { TallaListComponent } from './components/talla/talla-list/talla-list.component';
 import { UsuarioListComponent } from './components/usuario/usuario-list/usuario-list.component';
+import { SideMenuComponent } from './share/side-menu/side-menu.component';
 
 const routes: Routes = [
-  {path: '',pathMatch: 'full', redirectTo: '/producto'},
+  {path: '',pathMatch: 'full', redirectTo: '/login'},
   {path: 'login',component:LoginComponent},
   {path: 'register',component:RegisterComponent},
   {path: 'anuncio',component:AnuncioListComponent},
@@ -33,6 +34,7 @@ const routes: Routes = [
   {path: 'producto-formulario',component:ProductoFormComponent},
   {path: 'seccion-formulario',component:SeccionFormComponent},
   {path: 'talla-formulario',component:TallaFormComponent},
+  {path: 'side-menu', component:SideMenuComponent}
 ];
 
 @NgModule({

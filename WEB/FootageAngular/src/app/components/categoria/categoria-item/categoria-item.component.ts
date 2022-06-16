@@ -27,6 +27,7 @@ export class CategoriaItemComponent implements OnInit {
   deleteCategoria() {
     this.categoriaService.deleteCategoria(this.categoriaInput.id).subscribe(res => {this.categoriaList = res})
     alert('Se ha eliminado correctamente.')
+    window.location.reload()
   }
 
   openEditDialog(categoria: CategoriaResponse){

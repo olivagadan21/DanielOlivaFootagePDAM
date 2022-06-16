@@ -47,7 +47,7 @@ export class UsuarioService {
   }
 
   editUsuario(usuario:UsuarioDto, id:number): Observable<UsuarioResponse> {
-    return this.http.put<UsuarioResponse>(`${usuarioUrl}${id}/withoutImage`, usuario, DEFAULT_HEADERS)
+    return this.http.put<UsuarioResponse>(`${usuarioUrl}${id}`, usuario, DEFAULT_HEADERS)
   }
 
   deleteUsuario(id:number): Observable<UsuarioResponse[]>{

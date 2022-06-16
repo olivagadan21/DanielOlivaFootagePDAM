@@ -26,6 +26,7 @@ export class SeccionItemComponent implements OnInit {
   deleteSeccion(){
     this.seccionService.deleteSeccion(this.seccionInput.id).subscribe(res => {this.seccionList = res})
     alert('Se ha eliminado correctamente.')
+    window.location.reload()
   }
 
   openEditDialog(seccion: SeccionResponse){

@@ -31,6 +31,7 @@ export class ProductoItemComponent implements OnInit {
   deleteProducto(){
     this.productoService.deleteProducto(this.productoInput.id).subscribe(res => {this.productoList = res})
     alert('Se ha eliminado correctamente.')
+    window.location.reload()
   }
 
   openDialog(id: number){

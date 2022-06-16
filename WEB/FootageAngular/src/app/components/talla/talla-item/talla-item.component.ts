@@ -26,6 +26,7 @@ export class TallaItemComponent implements OnInit {
   deleteTalla() {
     this.tallaService.deleteTalla(this.tallaInput.id).subscribe(res => {this.tallaList = res})
     alert('Se ha eliminado correctamente.')
+    window.location.reload()
   }
 
   openEditDialog(talla: TallaResponse){

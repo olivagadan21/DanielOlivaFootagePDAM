@@ -28,6 +28,7 @@ export class UsuarioItemComponent implements OnInit {
   deleteUsuario() {
     this.usuarioService.deleteUsuario(this.usuarioInput.id).subscribe(res => {this.usuarioList = res})
     alert('Se ha eliminado correctamente.')
+    window.location.reload()
   }
 
   openDialog(id: number){

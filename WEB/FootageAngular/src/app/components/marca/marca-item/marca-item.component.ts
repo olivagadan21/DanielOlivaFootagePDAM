@@ -26,6 +26,7 @@ export class MarcaItemComponent implements OnInit {
   deleteMarca() {
     this.marcaService.deleteMarca(this.marcaInput.id).subscribe(res => {this.marcaList = res})
     alert('Se ha eliminado correctamente.')
+    window.location.reload()
   }
 
   openEditDialog(marca: MarcaResponse){

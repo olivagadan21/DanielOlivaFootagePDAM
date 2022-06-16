@@ -5,8 +5,8 @@
         <mat-card-title>{{categoriaInput.nombre}}</mat-card-title>
         <div mat-card-avatar class="example-header-image"></div>
         <div>
-            <a href="http://localhost:4200/categoria"><button (click)="deleteCategoria()"><mat-icon class="delete" aria-hidden="false" aria-label="Example home icon">delete</mat-icon></button></a>
-            <a><button (click)="openEditDialog(categoriaInput)"><mat-icon class="edit" aria-hidden="false" aria-label="Example home icon">edit</mat-icon></button></a>
+            <button (click)="deleteCategoria()"><mat-icon class="delete" aria-hidden="false" aria-label="Example home icon">delete</mat-icon></button>
+            <button (click)="openEditDialog(categoriaInput)"><mat-icon class="edit" aria-hidden="false" aria-label="Example home icon">edit</mat-icon></button>
         </div>
     </mat-card-content>
 </mat-card>

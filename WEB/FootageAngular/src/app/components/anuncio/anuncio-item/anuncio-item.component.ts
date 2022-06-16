@@ -26,6 +26,7 @@ export class AnuncioItemComponent implements OnInit {
   deleteAnuncio() {
     this.anuncioService.deleteAnuncio(this.anuncioInput.id).subscribe(res => {this.anuncioList = res})
     alert('Se ha eliminado correctamente.')
+    window.location.reload()
   }
 
   openEditDialog(anuncio: AnuncioResponse){

@@ -30,6 +30,7 @@ export class UsuarioEditComponent implements OnInit {
 
   onSubmit(){
     this.usuarioService.editUsuario(this.usuario, this.data.id).subscribe(res=>{this.usuarioResponse=res})
+    window.location.reload()
   }
 
 }

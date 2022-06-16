@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthLoginDto } from 'src/app/model/dto/auth.dto';
 import { AuthService } from 'src/app/services/auth.service';
@@ -21,8 +20,8 @@ export class LoginComponent implements OnInit {
   doLogin() {
     this.authService.login(this.loginDto).subscribe(loginResult => {
       localStorage.setItem('token', loginResult.token);
-      this.router.navigate(['/producto']);
     });
+    this.router.navigate(['/producto']);
   }
 
 }
