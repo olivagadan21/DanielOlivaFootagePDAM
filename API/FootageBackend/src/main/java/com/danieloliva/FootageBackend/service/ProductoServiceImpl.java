@@ -93,11 +93,11 @@ public class ProductoServiceImpl implements ProductoService {
 
         Producto producto = productoRepository.getById(id);
 
-        String name = StringUtils.cleanPath(String.valueOf(producto.getFoto())).replace("http://localhost:8080/download/", "").replace("%20", " ");
+        String name = StringUtils.cleanPath(String.valueOf(producto.getFoto())).replace("https://api-footage.herokuapp.com/download/", "").replace("%20", " ");
 
         Path pa = storageService.load(name);
 
-        String filename = StringUtils.cleanPath(String.valueOf(pa)).replace("http://localhost:8080/download/", "").replace("%20", " ");
+        String filename = StringUtils.cleanPath(String.valueOf(pa)).replace("https://api-footage.herokuapp.com/download/", "").replace("%20", " ");
 
         Path path = Paths.get(filename);
 

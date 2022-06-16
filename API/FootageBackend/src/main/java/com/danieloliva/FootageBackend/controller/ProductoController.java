@@ -281,7 +281,7 @@ public class ProductoController {
                     content = @Content),
     })
     @PutMapping("{id}/withoutImage")
-    public ResponseEntity<GetProductoDto> edit (@AuthenticationPrincipal Usuario usuario, @RequestPart("producto") CreateProductoDto productoDto, @PathVariable Long id) throws IOException {
+    public ResponseEntity<GetProductoDto> edit (@AuthenticationPrincipal Usuario usuario, @RequestBody CreateProductoDto productoDto, @PathVariable Long id) throws IOException {
 
         Optional<Producto> producto = productoService.findById(id);
 

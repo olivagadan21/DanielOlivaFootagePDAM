@@ -65,7 +65,7 @@ public class UsuarioService extends BaseService<Usuario, Long, UsuarioRepository
                     .premium(false)
                     .rol(RolUsuario.USER)
                     .localizacion("")
-                    .avatar("http://localhost:8080/download/user.png")
+                    .avatar("https://api-footage.herokuapp.com/download/user.png")
                     .articulos(p)
                     .build();
 
@@ -92,7 +92,7 @@ public class UsuarioService extends BaseService<Usuario, Long, UsuarioRepository
                     .premium(createUsuarioDto.isPremium())
                     .rol(RolUsuario.ADMIN)
                     .localizacion(createUsuarioDto.getLocalizacion())
-                    .avatar(createUsuarioDto.getAvatar())
+                    .avatar("https://api-footage.herokuapp.com/download/user.png")
                     .articulos(p)
                     .build();
 
@@ -113,11 +113,11 @@ public class UsuarioService extends BaseService<Usuario, Long, UsuarioRepository
 
         if (!file.isEmpty()) {
 
-            String name = StringUtils.cleanPath(String.valueOf(usuarioAuth.getAvatar())).replace("http://localhost:8080/download/", "").replace("%20", " ");
+            String name = StringUtils.cleanPath(String.valueOf(usuarioAuth.getAvatar())).replace("https://api-footage.herokuapp.com/download/", "").replace("%20", " ");
 
             Path pa = storageService.load(name);
 
-            String filename = StringUtils.cleanPath(String.valueOf(pa)).replace("http://localhost:8080/download/", "").replace("%20", " ");
+            String filename = StringUtils.cleanPath(String.valueOf(pa)).replace("https://api-footage.herokuapp.com/download/", "").replace("%20", " ");
 
             Path path = Paths.get(filename);
 

@@ -58,7 +58,7 @@ public class ProductoDtoConverter {
                 .precio(p.getPrecio())
                 .intercambio(p.isIntercambio())
                 .original(p.isOriginal())
-                .foto("http://localhost:8080/download/product.png")
+                .foto("https://api-footage.herokuapp.com/download/product.png")
                 .usuario(usuarioService.findById(p.getUsuario()).get())
                 .seccion(seccionService.findById(p.getSeccion()).get())
                 .categoria(categoriaService.findById(p.getCategoria()).get())

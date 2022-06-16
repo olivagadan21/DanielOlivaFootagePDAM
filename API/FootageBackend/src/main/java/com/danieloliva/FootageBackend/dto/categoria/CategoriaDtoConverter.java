@@ -33,7 +33,7 @@ public class CategoriaDtoConverter {
 
         return Categoria.builder()
                 .nombre(createCategoriaDto.getNombre())
-                .imagen("http://localhost:8080/download/category.png")
+                .imagen("https://api-footage.herokuapp.com/download/category.png")
                 .build();
 
     }

@@ -33,7 +33,7 @@ public class SeccionDtoConverter {
 
         return Seccion.builder()
                 .nombre(createSeccionDto.getNombre())
-                .imagen("http://localhost:8080/download/section.png")
+                .imagen("https://api-footage.herokuapp.com/download/section.png")
                 .build();
 
     }

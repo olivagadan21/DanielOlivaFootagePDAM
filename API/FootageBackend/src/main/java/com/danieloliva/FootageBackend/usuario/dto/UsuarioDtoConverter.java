@@ -6,7 +6,6 @@ import com.danieloliva.FootageBackend.service.base.ProductoService;
 import com.danieloliva.FootageBackend.usuario.model.Usuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor

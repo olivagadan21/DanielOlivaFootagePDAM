@@ -34,7 +34,7 @@ public class AnuncioDtoConverter {
         return Anuncio.builder()
                 .empresa(createAnuncioDto.getEmpresa())
                 .url(createAnuncioDto.getUrl())
-                .imagen("http://localhost:8080/download/ad.png")
+                .imagen("https://api-footage.herokuapp.com/download/ad.png")
                 .build();
 
     }
