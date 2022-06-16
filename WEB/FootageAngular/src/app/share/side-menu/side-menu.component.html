@@ -4,66 +4,43 @@
         <mat-list role="list">
 
             <mat-list-item role="listitem">
-                <a [routerLink]="['/register']" (click)="sidenav.toggle()" routerLinkActive="router-link-active">
-                    <mat-icon class="sidenav-icon">home</mat-icon> Register
-                </a>
+                <a [routerLink]="['/anuncio']" (click)="sidenav.toggle()" routerLinkActive="router-link-active">Anuncios</a>
             </mat-list-item>
 
             <mat-list-item role="listitem">
-                <a [routerLink]="['/anuncio']" (click)="sidenav.toggle()" routerLinkActive="router-link-active">
-                    <mat-icon class="sidenav-icon">home</mat-icon> Anuncios
-                </a>
+                <a [routerLink]="['/categoria']" (click)="sidenav.toggle()" routerLinkActive="router-link-active">Categorias</a>
             </mat-list-item>
 
             <mat-list-item role="listitem">
-                <a [routerLink]="['/categoria']" (click)="sidenav.toggle()" routerLinkActive="router-link-active">
-                    <mat-icon class="sidenav-icon">home</mat-icon> Categorias
-                </a>
+                <a [routerLink]="['/marca']" (click)="sidenav.toggle()" routerLinkActive="router-link-active">Marcas</a>
             </mat-list-item>
 
             <mat-list-item role="listitem">
-                <a [routerLink]="['/marca']" (click)="sidenav.toggle()" routerLinkActive="router-link-active">
-                    <mat-icon class="sidenav-icon">home</mat-icon> Marcas
-                </a>
+                <a [routerLink]="['/producto']" (click)="sidenav.toggle()" routerLinkActive="router-link-active">Productos</a>
             </mat-list-item>
 
             <mat-list-item role="listitem">
-                <a [routerLink]="['/producto']" (click)="sidenav.toggle()" routerLinkActive="router-link-active">
-                    <mat-icon class="sidenav-icon">home</mat-icon> Productos
-                </a>
+                <a [routerLink]="['/seccion']" (click)="sidenav.toggle()" routerLinkActive="router-link-active">Seccion</a>
             </mat-list-item>
 
             <mat-list-item role="listitem">
-                <a [routerLink]="['/seccion']" (click)="sidenav.toggle()" routerLinkActive="router-link-active">
-                    <mat-icon class="sidenav-icon">home</mat-icon> Seccion
-                </a>
+                <a [routerLink]="['/talla']" (click)="sidenav.toggle()" routerLinkActive="router-link-active">Talla</a>
             </mat-list-item>
 
             <mat-list-item role="listitem">
-                <a [routerLink]="['/talla']" (click)="sidenav.toggle()" routerLinkActive="router-link-active">
-                    <mat-icon class="sidenav-icon">home</mat-icon> Talla
-                </a>
-            </mat-list-item>
-
-            <mat-list-item role="listitem">
-                <a [routerLink]="['/usuario']" (click)="sidenav.toggle()" routerLinkActive="router-link-active">
-                    <mat-icon class="sidenav-icon">home</mat-icon> Usuarios
-                </a>
-            </mat-list-item>
-
-            <mat-divider></mat-divider>
-            <mat-list-item role="listitem">
-                <mat-icon class="sidenav-icon">logout</mat-icon> Salir
+                <a [routerLink]="['/usuario']" (click)="sidenav.toggle()" routerLinkActive="router-link-active">Usuarios</a>
             </mat-list-item>
         </mat-list>
     </mat-sidenav>
 
     <mat-sidenav-content>
-        <mat-toolbar color="primary">
+        <mat-toolbar>
             <button (click)="sidenav.toggle()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
                 <mat-icon>menu</mat-icon>
             </button>
-            <span style="margin-left: 90%;">Footage</span>
+            <span style="margin-left: 90%; color: #3BB5BD;">
+                <div routerLink="/producto" mat-card-avatar style="background-image: url(assets/F.png); background-size: cover;"></div>
+            </span>
             <span class="example-spacer"></span>
         </mat-toolbar>
         <router-outlet></router-outlet>

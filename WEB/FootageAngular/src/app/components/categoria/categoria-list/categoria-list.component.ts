@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { CategoriaResponse } from 'src/app/model/interfaces/categoria';
+import { CategoriaService } from 'src/app/services/categoria.service';
 
 @Component({
   selector: 'app-categoria-list',
@@ -7,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CategoriaListComponent implements OnInit {
 
-  constructor() { }
+  categorias: CategoriaResponse[] = [];
+
+  constructor(private categoriaService: CategoriaService, private router: Router) { }
 
   ngOnInit(): void {
+    this.categoriaService.getCategorias().subscribe(results => {this.categorias = results})
+  }
+
+  create() {
+    return this.router.navigate(['/categoria-formulario'])
   }
 
 }

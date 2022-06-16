@@ -1,15 +1,23 @@
 <mat-card class="example-card" style="margin-top: 2%;">
+    <mat-card-header>
+        <div class="avatar" mat-card-avatar [style]="getAvatar(productoInput.usuario.avatar)"></div>
+        <mat-card-title>{{productoInput.usuario.username}}</mat-card-title>
+        <mat-card-subtitle>{{productoInput.usuario.email}}</mat-card-subtitle>
+    </mat-card-header>
     <mat-card-content>
-        <img src="imagen" width="100%" alt="">
         <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>nombre</mat-card-title>
+        <img [src]="getAvatar2(productoInput)" width="100%" alt="">
         <div mat-card-avatar class="example-header-image"></div>
-        <div class="juntos">
-            <mat-card-title>Categoria</mat-card-title>
-            <mat-card-title>*</mat-card-title>
-            <mat-card-title class="telefono">precio</mat-card-title>
+        <mat-card-title style="font-size: 15pt;">{{productoInput.precio}} €</mat-card-title>
+        <mat-card-title style="font-size: 15pt;">{{productoInput.marca.nombre}}</mat-card-title>
+        <mat-card-title style="font-size: 15pt;">{{productoInput.talla.nombre}}</mat-card-title>
+        <div mat-card-avatar class="example-header-image"></div>
+        <div class="bottom">
+            <button (click)="openDialog(productoInput.id)"><strong>DETALLES</strong></button>
+            <div>
+                <button (click)="openEditDialog(productoInput)"><mat-icon class="edit" aria-hidden="false" aria-label="Example home icon">edit</mat-icon></button>
+                <button (click)="deleteProducto()"><mat-icon class="delete" aria-hidden="false" aria-label="Example home icon">delete</mat-icon></button>
+            </div>
         </div>
-        <div mat-card-avatar class="example-header-image"></div>
-        <a href="http://localhost:4200/anuncio"><button><mat-icon class="delete" aria-hidden="false" aria-label="Example home icon">delete</mat-icon></button></a>
     </mat-card-content>
 </mat-card>

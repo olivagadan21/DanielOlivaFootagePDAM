@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { SeccionResponse } from 'src/app/model/interfaces/seccion';
+import { SeccionService } from 'src/app/services/seccion.service';
+import { SeccionEditComponent } from '../seccion-edit/seccion-edit.component';
 
 @Component({
   selector: 'app-seccion-item',
@@ -7,9 +11,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SeccionItemComponent implements OnInit {
 
-  constructor() { }
+  @Input() seccionInput!: SeccionResponse;
+  seccionList: SeccionResponse[] | undefined;
+
+  constructor(private seccionService: SeccionService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
+  }
+
+  getAvatar(seccion: SeccionResponse) {
+    return `${seccion.imagen}`;
+  }
+
+  deleteSeccion(){
+    this.seccionService.deleteSeccion(this.seccionInput.id).subscribe(res => {this.seccionList = res})
+    alert('Se ha eliminado correctamente.')
+    window.location.reload()
+  }
+
+  openEditDialog(seccion: SeccionResponse){
+    this.dialog.open(SeccionEditComponent, {height: '350px', width:'600px', data: {id:seccion.id}})
   }
 
 }

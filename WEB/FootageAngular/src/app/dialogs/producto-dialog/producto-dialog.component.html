@@ -1,0 +1,30 @@
+<div class="juntos">
+    <div class="text">
+        <div class="titulo">
+            <h1><strong>{{producto.titulo}}</strong></h1>
+            <div class="titulo">
+                <h1>{{producto.meGustas.length}}</h1>
+                <mat-icon>favorite_border</mat-icon>
+            </div>
+        </div>
+        <p *ngIf="producto.seccion==null"><strong>Sección: </strong>Sin especificar</p>
+        <p *ngIf="producto.seccion!=null"><strong>Sección: </strong>{{producto.seccion.nombre}}</p>
+        <p *ngIf="producto.categoria==null"><strong>Categoría: </strong>Sin especificar</p>
+        <p *ngIf="producto.categoria!=null"><strong>Categoría: </strong>{{producto.categoria.nombre}}</p>
+        <p *ngIf="producto.talla==null"><strong>Talla: </strong>Sin especificar</p>
+        <p *ngIf="producto.talla!=null"><strong>Talla: </strong>{{producto.talla.nombre}}</p>
+        <p *ngIf="producto.marca==null"><strong>Marca: </strong>Sin especificar</p>
+        <p *ngIf="producto.marca!=null"><strong>Marca: </strong>{{producto.marca.nombre}}</p>
+        <p class="precio"><strong>Precio: </strong>{{producto.precio}} €</p>
+        <p><strong>Usuario: </strong><a (click)="openDialog(producto.usuario.id)">{{producto.usuario.username}}</a></p>
+    </div>
+    <img src={{producto.foto}}>
+</div>
+<hr class="hr">
+<p><strong>Descripción:</strong></p>
+<p>{{producto.descripcion}}</p>
+<hr class="hr">
+<div class="juntos">
+    <p><strong>Intercambio: </strong>{{producto.intercambio}}</p>
+    <p><strong>Original: </strong>{{producto.original}}</p>
+</div>

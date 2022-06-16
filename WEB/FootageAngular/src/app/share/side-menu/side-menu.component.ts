@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-side-menu',
@@ -7,12 +6,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./side-menu.component.css']
 })
 export class SideMenuComponent implements OnInit {
-  currentPage = 'login';
 
-  constructor(private router: Router) { }
+  route = window.location.pathname
+
+  constructor() { }
 
   ngOnInit(): void {
-    console.log(this.router.url);
   }
 
 }

@@ -1,0 +1,36 @@
+.custom-form {
+    background-color: #ecf0f3;
+    border-radius: 2.5rem;
+    width: 97%;
+    padding: 1.5%;
+}
+
+h1 {
+    text-align: center;
+}
+
+.nombre {
+    width: 100%;
+    font-size: 12pt;
+}
+
+.row {
+    display: flex;
+}
+
+.custom-form button {
+    margin-top: 5%;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    border: none;
+    font-size: 0.875rem;
+    color: #ffffff;
+    font-weight: bold;
+    background-color: #3BB5BD;
+    width: 100%;
+    display: block;
+    padding: 0.875rem 1rem;
+    border-radius: 1.5rem;
+    box-shadow: 3px 3px 8px #b1b1b1, -3px -3px 8px #ffffff;
+    cursor: pointer;
+}

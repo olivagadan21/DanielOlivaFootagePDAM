@@ -1,0 +1,54 @@
+<form class="custom-form" method="post">
+    <h1>Editar Producto</h1>
+    <mat-form-field class="nombre">
+        <mat-label>Nombre</mat-label>
+        <input matInput type="text" name="titulo" [(ngModel)]="producto.titulo" required="required" />
+    </mat-form-field>
+    <mat-form-field class="nombre">
+        <mat-label>Descripción</mat-label>
+        <input matInput type="text" name="descripcion" [(ngModel)]=" producto.descripcion" required="required " />
+    </mat-form-field>
+    <mat-form-field class="nombre">
+        <mat-label>Precio</mat-label>
+        <input matInput type="number" name="precio" min="1" step="0.1" value="1.00" [(ngModel)]="producto.precio" required="required" />
+    </mat-form-field>
+    <div class="row">
+        <mat-form-field class="nombre" floatLabel="always">
+            <mat-slide-toggle matInput [checked]="false" [(ngModel)]="producto.intercambio " name="intercambio ">&nbsp;&nbsp;&nbsp;&nbsp;Intercambio</mat-slide-toggle>
+            <textarea matInput hidden></textarea>
+        </mat-form-field>
+        <mat-form-field class="nombre" floatLabel="always">
+            <mat-slide-toggle matInput [checked]="false" [(ngModel)]="producto.original " name="original ">&nbsp;&nbsp;&nbsp;&nbsp;Original</mat-slide-toggle>
+            <textarea matInput hidden></textarea>
+        </mat-form-field>
+    </div>
+    <mat-form-field class="nombre">
+        <mat-label>Sección</mat-label>
+        <mat-select [(ngModel)]="producto.seccion " name="seccion ">
+            <mat-option value=" "></mat-option>
+            <mat-option *ngFor="let seccion of secciones" [value]="seccion.id ">{{seccion.nombre}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="nombre">
+        <mat-label>Categoría</mat-label>
+        <mat-select [(ngModel)]="producto.categoria " name="categoria ">
+            <mat-option value=" "></mat-option>
+            <mat-option *ngFor="let categoria of categorias" [value]="categoria.id ">{{categoria.nombre}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="nombre">
+        <mat-label>Marca</mat-label>
+        <mat-select [(ngModel)]="producto.marca " name="marca ">
+            <mat-option value=" "></mat-option>
+            <mat-option *ngFor="let marca of marcas" [value]="marca.id ">{{marca.nombre}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="nombre">
+        <mat-label>Talla</mat-label>
+        <mat-select [(ngModel)]="producto.talla " name="talla ">
+            <mat-option value=" "></mat-option>
+            <mat-option *ngFor="let talla of tallas" [value]="talla.id ">{{talla.nombre}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button type="submit " (click)="onSubmit() ">Guardar</button>
+</form>
