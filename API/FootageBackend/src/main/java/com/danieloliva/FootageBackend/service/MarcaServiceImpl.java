@@ -7,9 +7,13 @@ import com.danieloliva.FootageBackend.service.base.MarcaService;
 import com.danieloliva.FootageBackend.service.base.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,9 +36,7 @@ public class MarcaServiceImpl implements MarcaService {
 
     @Override
     public Marca save(Marca m) {
-
         return marcaRepository.save(m);
-
     }
 
     @Override
@@ -42,10 +44,8 @@ public class MarcaServiceImpl implements MarcaService {
 
         Marca marca = marcaRepository.getById(id);
 
-        storageService.deleteFile(marca.getImagen());
-
         marca.setNombre(m.getNombre());
-        marca.setImagen(m.getImagen());
+        marca.setImagen(marca.getImagen());
 
         return marcaRepository.save(marca);
 
@@ -53,17 +53,11 @@ public class MarcaServiceImpl implements MarcaService {
 
     @Override
     public void delete(Marca m) {
-
-        storageService.deleteFile(m.getImagen());
         marcaRepository.delete(m);
-
     }
 
     @Override
     public void deleteById(Long id) {
-
-        storageService.deleteFile(findById(id).get().getImagen());
         marcaRepository.deleteById(id);
-
     }
 }

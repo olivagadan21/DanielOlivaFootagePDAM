@@ -1,5 +1,6 @@
 package com.danieloliva.FootageBackend.usuario.dto;
 
+import com.danieloliva.FootageBackend.dto.meGusta.GetMeGustaDto;
 import com.danieloliva.FootageBackend.dto.producto.GetProductoUsuarioDto;
 import com.danieloliva.FootageBackend.usuario.model.RolUsuario;
 import lombok.*;
@@ -32,5 +33,7 @@ public class GetUsuarioDto {
     private RolUsuario rol;
 
     private List<GetProductoUsuarioDto> articulos = new ArrayList<>();
+
+    private List<GetProductoUsuarioDto> meGustas = new ArrayList<>();
 
 }

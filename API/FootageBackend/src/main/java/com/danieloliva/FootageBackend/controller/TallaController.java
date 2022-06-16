@@ -1,9 +1,7 @@
 package com.danieloliva.FootageBackend.controller;
 
-import com.danieloliva.FootageBackend.dto.talla.CreateTallaDto;
-import com.danieloliva.FootageBackend.dto.talla.GetTallaDto;
-import com.danieloliva.FootageBackend.dto.talla.TallaDtoConverter;
 import com.danieloliva.FootageBackend.model.Talla;
+import com.danieloliva.FootageBackend.service.base.ProductoService;
 import com.danieloliva.FootageBackend.service.base.TallaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,7 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -23,25 +20,26 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Tag(name = "Talla", description = "Controller de las tallas")
 @RequestMapping("/talla/")
+@CrossOrigin(origins = "http://localhost:4200")
 public class TallaController {
 
+    private final ProductoService productoService;
     private final TallaService tallaService;
-    private final TallaDtoConverter tallaDtoConverter;
 
     @Operation(summary = "Obtiene lista de tallas")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Se han encontrado las tallas",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = GetTallaDto.class))}),
+                            schema = @Schema(implementation = Talla.class))}),
             @ApiResponse(responseCode = "400",
                     description = "No se han encontrado las tallas",
                     content = @Content),
     })
     @GetMapping("")
-    public ResponseEntity<List<GetTallaDto>> findAll() {
+    public ResponseEntity<List<Talla>> findAll() {
 
-        List<GetTallaDto> tallas = tallaService.findAll().stream().map(tallaDtoConverter::getTallaDto).toList();
+        List<Talla> tallas = tallaService.findAll();
 
         if (tallas.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -56,45 +54,20 @@ public class TallaController {
             @ApiResponse(responseCode = "200",
                     description = "Se ha encontrado la talla",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = GetTallaDto.class))}),
+                            schema = @Schema(implementation = Talla.class))}),
             @ApiResponse(responseCode = "400",
                     description = "No se ha encontrado la talla",
                     content = @Content),
     })
     @GetMapping("{id}")
-    public ResponseEntity<GetTallaDto> findOne(@PathVariable Long id) {
+    public ResponseEntity<Talla> findOne(@PathVariable Long id) {
 
         Optional<Talla> talla = tallaService.findById(id);
 
         if (talla.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            GetTallaDto t = tallaDtoConverter.getTallaDto(talla.get());
-            return ResponseEntity.ok().body(t);
-        }
-
-    }
-
-    @Operation(summary = "Obtiene una talla en base a su categoria")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Se ha encontrado la talla",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = GetTallaDto.class))}),
-            @ApiResponse(responseCode = "400",
-                    description = "No se ha encontrado la talla",
-                    content = @Content),
-    })
-    @GetMapping("categoria/{id}")
-    public ResponseEntity<List<GetTallaDto>> findByCategoria(@PathVariable Long id) {
-
-        List<Talla> tallas = tallaService.findByCategoria(id);
-
-        if (tallas.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            List<GetTallaDto> t = tallas.stream().map(tallaDtoConverter::getTallaDto).toList();
-            return ResponseEntity.ok().body(t);
+            return ResponseEntity.ok().body(talla.get());
         }
 
     }
@@ -109,14 +82,13 @@ public class TallaController {
                     description = "No se ha creado la nueva talla",
                     content = @Content),
     })
-    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<GetTallaDto> create(@RequestBody CreateTallaDto talla) {
+    @PostMapping(value = "")
+    public ResponseEntity<Talla> create(@RequestBody Talla talla) {
 
         if (talla.getNombre().isEmpty()) {
             return ResponseEntity.badRequest().build();
         } else {
-            GetTallaDto t = tallaDtoConverter.getTallaDto(tallaService.save(tallaDtoConverter.createTallaDto(talla)));
-            return ResponseEntity.status(HttpStatus.CREATED).body(t);
+            return ResponseEntity.status(HttpStatus.CREATED).body(tallaService.save(talla));
         }
 
     }
@@ -131,16 +103,15 @@ public class TallaController {
                     description = "No se ha editado la talla",
                     content = @Content),
     })
-    @PutMapping(value = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<GetTallaDto> edit(@RequestBody CreateTallaDto talla, @PathVariable Long id) {
+    @PutMapping(value = "{id}")
+    public ResponseEntity<Talla> edit(@RequestBody Talla talla, @PathVariable Long id) {
 
         Optional<Talla> data = tallaService.findById(id);
 
         if (data.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            GetTallaDto t = tallaDtoConverter.getTallaDto(tallaService.edit(tallaDtoConverter.createTallaDto(talla), id));
-            return ResponseEntity.ok().body(t);
+            return ResponseEntity.ok().body(tallaService.edit(talla, id));
         }
 
     }
@@ -160,6 +131,7 @@ public class TallaController {
         if (tallaService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
+            productoService.findByTalla(id).forEach(producto -> {producto.setTalla(null);});
             tallaService.deleteById(id);
             return ResponseEntity.noContent().build();
         }

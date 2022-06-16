@@ -1,6 +1,10 @@
 package com.danieloliva.FootageBackend.usuario.dto;
 
+import com.danieloliva.FootageBackend.dto.producto.GetProductoUsuarioDto;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,5 +28,9 @@ public class GetUsuarioProductoDto {
     private String localizacion;
 
     private boolean premium;
+
+    private List<GetProductoUsuarioDto> articulos = new ArrayList<>();
+
+    private List<GetProductoUsuarioDto> meGustas = new ArrayList<>();
 
 }

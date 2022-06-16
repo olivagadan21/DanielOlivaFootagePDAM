@@ -7,6 +7,8 @@ import com.danieloliva.FootageBackend.model.Producto;
 import com.danieloliva.FootageBackend.model.Seccion;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,9 +28,15 @@ public interface ProductoService {
 
     List<Producto> findByMarca(Long id);
 
+    List<Producto> findByTalla(Long id);
+
+    List<Producto> findByUsuario(Long id);
+
     Producto save(Producto p);
 
-    Producto edit(Producto p, Long id);
+    Producto edit(Producto p, Long id) throws IOException;
+
+    Producto edit2(Producto p, Long id);
 
     void delete(Producto p);
 

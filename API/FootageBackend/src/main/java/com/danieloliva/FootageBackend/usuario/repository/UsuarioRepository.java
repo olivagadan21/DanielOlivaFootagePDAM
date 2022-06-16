@@ -24,4 +24,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
             """, nativeQuery = true)
     List<Usuario> findByPremium ();
 
+    Optional<Usuario> findByEmail(String email);
+
 }

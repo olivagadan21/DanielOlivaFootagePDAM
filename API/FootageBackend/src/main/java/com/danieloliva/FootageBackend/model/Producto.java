@@ -31,11 +31,7 @@ public class Producto implements Serializable {
 
     private boolean original;
 
-    @Column(name = "foto1")
-    private String foto1;
-
-    @Column(name = "foto2")
-    private String foto2;
+    private String foto;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", updatable = false, nullable = false)
@@ -56,5 +52,17 @@ public class Producto implements Serializable {
     @ManyToOne
     @JoinColumn(name = "talla_id")
     private Talla talla;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado")
+    private Estado estado;
+
+    @ManyToOne
+    @JoinColumn(name = "anuncio_id")
+    private Anuncio anuncio;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "producto", cascade = {CascadeType.REMOVE})
+    private List<MeGusta> meGustas = new ArrayList<>();
 
 }

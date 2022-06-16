@@ -24,7 +24,16 @@ public class CategoriaDtoConverter {
 
         return Categoria.builder()
                 .nombre(createCategoriaDto.getNombre())
-                .imagen(filename)
+                .imagen(uri)
+                .build();
+
+    }
+
+    public Categoria createCategoria (CreateCategoriaDto createCategoriaDto) {
+
+        return Categoria.builder()
+                .nombre(createCategoriaDto.getNombre())
+                .imagen("https://api-footage.herokuapp.com/download/category.png")
                 .build();
 
     }

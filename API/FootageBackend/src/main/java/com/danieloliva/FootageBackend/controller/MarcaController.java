@@ -4,6 +4,7 @@ import com.danieloliva.FootageBackend.dto.marca.CreateMarcaDto;
 import com.danieloliva.FootageBackend.dto.marca.MarcaDtoConverter;
 import com.danieloliva.FootageBackend.model.Marca;
 import com.danieloliva.FootageBackend.service.base.MarcaService;
+import com.danieloliva.FootageBackend.service.base.ProductoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,6 +17,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,8 +26,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Tag(name = "Marca", description = "Controller de las marcas")
 @RequestMapping("/marca/")
+@CrossOrigin(origins = "http://localhost:4200")
 public class MarcaController {
 
+    private final ProductoService productoService;
     private final MarcaService marcaService;
     private final MarcaDtoConverter marcaDtoConverter;
 
@@ -84,15 +89,14 @@ public class MarcaController {
                     description = "No se ha creado la nueva marca",
                     content = @Content),
     })
-    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Marca> create(@RequestPart("marca") CreateMarcaDto marcaDto, @RequestPart("file") MultipartFile file) {
+    @PostMapping("")
+    public ResponseEntity<Marca> create(@RequestBody CreateMarcaDto marcaDto) {
 
         if (marcaDto.getNombre().isEmpty()) {
             return ResponseEntity.badRequest().build();
         } else {
-            Marca marca = marcaDtoConverter.createMarca(marcaDto, file);
-            marcaService.save(marca);
-            return ResponseEntity.status(HttpStatus.CREATED).body(marca);
+            Marca marca = marcaDtoConverter.createMarca(marcaDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(marcaService.save(marca));
         }
 
     }
@@ -107,15 +111,15 @@ public class MarcaController {
                     description = "No se ha editado la marca",
                     content = @Content),
     })
-    @PutMapping(value = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Marca> edit(@RequestPart("marca") CreateMarcaDto marcaDto, @RequestPart("file") MultipartFile file, @PathVariable Long id) {
+    @PutMapping("{id}")
+    public ResponseEntity<Marca> edit(@RequestBody CreateMarcaDto marcaDto, @PathVariable Long id) throws IOException {
 
         Optional<Marca> mar = marcaService.findById(id);
 
         if (mar.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            Marca marca = marcaDtoConverter.createMarca(marcaDto, file);
+            Marca marca = marcaDtoConverter.createMarca(marcaDto);
             return ResponseEntity.ok().body(marcaService.edit(marca, id));
         }
 
@@ -136,6 +140,7 @@ public class MarcaController {
         if (marcaService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
+            productoService.findByMarca(id).forEach(producto -> {producto.setMarca(null);});
             marcaService.deleteById(id);
             return ResponseEntity.noContent().build();
         }

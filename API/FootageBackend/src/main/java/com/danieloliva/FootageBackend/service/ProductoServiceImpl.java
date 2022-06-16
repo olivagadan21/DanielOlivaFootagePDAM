@@ -2,23 +2,22 @@ package com.danieloliva.FootageBackend.service;
 
 import com.danieloliva.FootageBackend.dto.producto.CreateProductoDto;
 import com.danieloliva.FootageBackend.dto.producto.ProductoDtoConverter;
-import com.danieloliva.FootageBackend.model.Categoria;
-import com.danieloliva.FootageBackend.model.Marca;
-import com.danieloliva.FootageBackend.model.Producto;
-import com.danieloliva.FootageBackend.model.Seccion;
-import com.danieloliva.FootageBackend.repository.CategoriaRepository;
-import com.danieloliva.FootageBackend.repository.MarcaRepository;
-import com.danieloliva.FootageBackend.repository.ProductoRepository;
-import com.danieloliva.FootageBackend.repository.SeccionRepository;
+import com.danieloliva.FootageBackend.model.*;
+import com.danieloliva.FootageBackend.repository.*;
 import com.danieloliva.FootageBackend.service.base.BaseService;
 import com.danieloliva.FootageBackend.service.base.ProductoService;
 import com.danieloliva.FootageBackend.service.base.StorageService;
+import com.danieloliva.FootageBackend.usuario.model.Usuario;
 import com.danieloliva.FootageBackend.usuario.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,13 +25,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductoServiceImpl implements ProductoService {
 
+    private final TallaRepository tallaRepository;
     private final UsuarioRepository usuarioRepository;
     private final SeccionRepository seccionRepository;
     private final CategoriaRepository categoriaRepository;
     private final MarcaRepository marcaRepository;
     private final ProductoRepository productoRepository;
     private final StorageService storageService;
-    private final ProductoDtoConverter productoDtoConverter;
 
     @Override
     public List<Producto> findAll() {
@@ -73,27 +72,63 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
-    public Producto save(Producto p) {
-
-        return productoRepository.save(p);
-
+    public List<Producto> findByTalla(Long id) {
+        Talla talla = tallaRepository.getById(id);
+        return productoRepository.findByTalla(talla);
     }
 
     @Override
-    public Producto edit(Producto p, Long id) {
+    public List<Producto> findByUsuario(Long id) {
+        Usuario usuario = usuarioRepository.getById(id);
+        return productoRepository.findByUsuario(usuario);
+    }
+
+    @Override
+    public Producto save(Producto p) {
+        return productoRepository.save(p);
+    }
+
+    @Override
+    public Producto edit(Producto p, Long id) throws IOException {
 
         Producto producto = productoRepository.getById(id);
 
-        storageService.deleteFile(producto.getFoto1());
-        storageService.deleteFile(producto.getFoto2());
+        String name = StringUtils.cleanPath(String.valueOf(producto.getFoto())).replace("https://api-footage.herokuapp.com/download/", "").replace("%20", " ");
+
+        Path pa = storageService.load(name);
+
+        String filename = StringUtils.cleanPath(String.valueOf(pa)).replace("https://api-footage.herokuapp.com/download/", "").replace("%20", " ");
+
+        Path path = Paths.get(filename);
+
+        storageService.deleteFile(path);
 
         producto.setTitulo(p.getTitulo());
         producto.setDescripcion(p.getDescripcion());
         producto.setPrecio(p.getPrecio());
         producto.setIntercambio(p.isIntercambio());
         producto.setOriginal(p.isOriginal());
-        producto.setFoto1(p.getFoto1());
-        producto.setFoto2(p.getFoto2());
+        producto.setFoto(producto.getFoto());
+        producto.setUsuario(usuarioRepository.getById(p.getUsuario().getId()));
+        producto.setSeccion(seccionRepository.getById(p.getSeccion().getId()));
+        producto.setCategoria(categoriaRepository.getById(p.getCategoria().getId()));
+        producto.setMarca(marcaRepository.getById(p.getMarca().getId()));
+
+        return productoRepository.save(producto);
+
+    }
+
+    @Override
+    public Producto edit2 (Producto p, Long id) {
+
+        Producto producto = productoRepository.getById(id);
+
+        producto.setTitulo(p.getTitulo());
+        producto.setDescripcion(p.getDescripcion());
+        producto.setPrecio(p.getPrecio());
+        producto.setIntercambio(p.isIntercambio());
+        producto.setOriginal(p.isOriginal());
+        producto.setFoto(producto.getFoto());
         producto.setUsuario(usuarioRepository.getById(p.getUsuario().getId()));
         producto.setSeccion(seccionRepository.getById(p.getSeccion().getId()));
         producto.setCategoria(categoriaRepository.getById(p.getCategoria().getId()));
@@ -105,15 +140,11 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public void delete(Producto p) {
-        storageService.deleteFile(p.getFoto1());
-        storageService.deleteFile(p.getFoto2());
         productoRepository.delete(p);
     }
 
     @Override
     public void deleteById(Long id) {
-        storageService.deleteFile(productoRepository.getById(id).getFoto1());
-        storageService.deleteFile(productoRepository.getById(id).getFoto2());
         productoRepository.deleteById(id);
     }
 }

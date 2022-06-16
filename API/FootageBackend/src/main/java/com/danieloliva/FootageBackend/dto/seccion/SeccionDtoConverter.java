@@ -24,7 +24,16 @@ public class SeccionDtoConverter {
 
         return Seccion.builder()
                 .nombre(createSeccionDto.getNombre())
-                .imagen(filename)
+                .imagen(uri)
+                .build();
+
+    }
+
+    public Seccion createSeccion (CreateSeccionDto createSeccionDto) {
+
+        return Seccion.builder()
+                .nombre(createSeccionDto.getNombre())
+                .imagen("https://api-footage.herokuapp.com/download/section.png")
                 .build();
 
     }

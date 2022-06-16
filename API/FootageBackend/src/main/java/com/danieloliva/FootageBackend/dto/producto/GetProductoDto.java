@@ -1,11 +1,12 @@
 package com.danieloliva.FootageBackend.dto.producto;
 
-import com.danieloliva.FootageBackend.model.Categoria;
-import com.danieloliva.FootageBackend.model.Marca;
-import com.danieloliva.FootageBackend.model.Seccion;
-import com.danieloliva.FootageBackend.model.Talla;
+import com.danieloliva.FootageBackend.dto.meGusta.GetMeGustaDto;
+import com.danieloliva.FootageBackend.model.*;
 import com.danieloliva.FootageBackend.usuario.dto.GetUsuarioProductoDto;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,9 +27,7 @@ public class GetProductoDto {
 
     private boolean original;
 
-    private String foto1;
-
-    private String foto2;
+    private String foto;
 
     private GetUsuarioProductoDto usuario;
 
@@ -39,5 +38,11 @@ public class GetProductoDto {
     private Marca marca;
 
     private Talla talla;
+
+    private Estado estado;
+
+    private Anuncio anuncio;
+
+    private List<GetUsuarioProductoDto> meGustas = new ArrayList<>();
 
 }

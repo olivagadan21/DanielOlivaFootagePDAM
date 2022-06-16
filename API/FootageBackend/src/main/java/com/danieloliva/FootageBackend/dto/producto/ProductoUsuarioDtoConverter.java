@@ -14,9 +14,11 @@ public class ProductoUsuarioDtoConverter {
                 .titulo(producto.getTitulo())
                 .precio(producto.getPrecio())
                 .original(producto.isOriginal())
-                .foto1(producto.getFoto1())
+                .foto(producto.getFoto())
                 .marca(producto.getMarca())
                 .talla(producto.getTalla())
+                .estado(producto.getEstado())
+                .anuncio(producto.getAnuncio())
                 .build();
     }
 

@@ -1,8 +1,11 @@
 
 package com.danieloliva.FootageBackend.usuario.model;
 
+import com.danieloliva.FootageBackend.model.MeGusta;
 import com.danieloliva.FootageBackend.model.Producto;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
@@ -49,8 +52,13 @@ public class Usuario implements UserDetails {
     @Column(name = "rol")
     private RolUsuario rol;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Producto> articulos = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<MeGusta> meGustas = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -59,7 +67,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getUsername() {
-        return nombre;
+        return username;
     }
 
     @Override

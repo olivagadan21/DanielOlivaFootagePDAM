@@ -2,6 +2,7 @@
 package com.danieloliva.FootageBackend.usuario.controller;
 
 
+import com.danieloliva.FootageBackend.service.base.ProductoService;
 import com.danieloliva.FootageBackend.usuario.dto.CreateUsuarioDto;
 import com.danieloliva.FootageBackend.usuario.dto.GetUsuarioDto;
 import com.danieloliva.FootageBackend.usuario.dto.GetUsuarioProductoDto;
@@ -21,14 +22,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "Usuario", description = "Controller de los usuarios")
+@RequestMapping("/usuario/")
+@CrossOrigin(origins = "http://localhost:4200")
 public class UsuarioController {
 
+    private final ProductoService productoService;
     private final UsuarioService usuarioService;
     private final UsuarioDtoConverter usuarioDtoConverter;
 
@@ -42,7 +48,7 @@ public class UsuarioController {
                     description = "No se han encontrado los usuarios",
                     content = @Content),
     })
-    @GetMapping("/usuarios/")
+    @GetMapping("")
     public ResponseEntity<List<GetUsuarioDto>> findAll() {
 
         List<Usuario> data = usuarioService.findAll();
@@ -68,7 +74,7 @@ public class UsuarioController {
                     description = "No se ha encontrado el usuario",
                     content = @Content),
     })
-    @GetMapping("/usuarios/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<GetUsuarioDto> findOne(@PathVariable Long id) {
 
         Optional<Usuario> data = usuarioService.findById(id);
@@ -92,7 +98,7 @@ public class UsuarioController {
                     description = "No se han encontrado los usuarios premium.",
                     content = @Content),
     })
-    @GetMapping("/usuarios/premium")
+    @GetMapping("premium")
     public ResponseEntity<List<GetUsuarioDto>> findAllPremium() {
 
         List<Usuario> data = usuarioService.findAllPremium();
@@ -116,7 +122,7 @@ public class UsuarioController {
                     description = "No se han encontrado los usuarios de tipo admin.",
                     content = @Content),
     })
-    @GetMapping("/usuarios/admin")
+    @GetMapping("admin")
     public ResponseEntity<List<GetUsuarioDto>> findByRolAdmin() {
 
         List<Usuario> data = usuarioService.findByRol("ADMIN");
@@ -140,7 +146,7 @@ public class UsuarioController {
                     description = "No se han encontrado los usuarios de tipo user.",
                     content = @Content),
     })
-    @GetMapping("/usuarios/user")
+    @GetMapping("user")
     public ResponseEntity<List<GetUsuarioDto>> findByRolUser() {
 
         List<Usuario> data = usuarioService.findByRol("USER");
@@ -150,52 +156,6 @@ public class UsuarioController {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.ok().body(usuarios);
-        }
-
-    }
-
-    @Operation(summary = "Crea un nuevo usuario de tipo user")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Se ha creado el nuevo usuario de tipo user",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = GetUsuarioDto.class))}),
-            @ApiResponse(responseCode = "404",
-                    description = "No se ha creado el nuevo usuario de tipo user",
-                    content = @Content),
-    })
-    @PostMapping("/auth/register/user")
-    public ResponseEntity<GetUsuarioDto> createUser (@RequestBody CreateUsuarioDto usuario) {
-
-        if (usuario.getUsername().isEmpty()) {
-            return ResponseEntity.badRequest().build();
-        } else {
-            Usuario usu = usuarioService.saveUser(usuario);
-            GetUsuarioDto u = usuarioDtoConverter.usuarioToGetUsuarioDto(usu);
-            return ResponseEntity.status(HttpStatus.CREATED).body(u);
-        }
-
-    }
-
-    @Operation(summary = "Crea un nuevo usuario de tipo admin")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Se ha creado el nuevo usuario de tipo admin",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = GetUsuarioDto.class))}),
-            @ApiResponse(responseCode = "404",
-                    description = "No se ha creado el nuevo usuario de tipo admin",
-                    content = @Content),
-    })
-    @PostMapping("/auth/register/admin")
-    public ResponseEntity<GetUsuarioDto> createAdmin (@RequestBody CreateUsuarioDto usuario) {
-
-        if (usuario.getUsername().isEmpty()) {
-            return ResponseEntity.badRequest().build();
-        } else {
-            Usuario usu = usuarioService.saveAdmin(usuario);
-            GetUsuarioDto u = usuarioDtoConverter.usuarioToGetUsuarioDto(usu);
-            return ResponseEntity.status(HttpStatus.CREATED).body(u);
         }
 
     }
@@ -210,15 +170,15 @@ public class UsuarioController {
                     description = "No se ha editado el usuario",
                     content = @Content),
     })
-    @PutMapping(value = "/usuarios/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<GetUsuarioDto> edit (@RequestPart("user") CreateUsuarioDto usuario, @PathVariable Long id, @RequestPart("file") MultipartFile file) {
+    @PutMapping("{id}")
+    public ResponseEntity<GetUsuarioDto> edit (@RequestBody CreateUsuarioDto usuario, @PathVariable Long id) {
 
         Optional<Usuario> u = usuarioService.findById(id);
 
         if (u.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            GetUsuarioDto getUsuarioDto = usuarioDtoConverter.usuarioToGetUsuarioDto(usuarioService.editProfile(usuario, file, u.get()));
+            GetUsuarioDto getUsuarioDto = usuarioDtoConverter.usuarioToGetUsuarioDto(usuarioService.editProfile(usuario, u.get()));
             return ResponseEntity.ok().body(getUsuarioDto);
         }
 
@@ -234,8 +194,8 @@ public class UsuarioController {
                     description = "No se ha editado el usuario",
                     content = @Content),
     })
-    @PutMapping(value = "/usuarios/me", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<GetUsuarioDto> editMe (@RequestPart("user") CreateUsuarioDto usuarioDto, @AuthenticationPrincipal Usuario usuario, @RequestPart("file") MultipartFile file) {
+    @PutMapping(value = "me", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<GetUsuarioDto> editMe (@RequestPart("user") CreateUsuarioDto usuarioDto, @AuthenticationPrincipal Usuario usuario, @RequestPart("file") MultipartFile file) throws IOException {
         return ResponseEntity.ok().body(usuarioDtoConverter.usuarioToGetUsuarioDto(usuarioService.editProfile(usuarioDto, file, usuario)));
     }
 
@@ -248,12 +208,13 @@ public class UsuarioController {
                     description = "No se ha borrado el usuario",
                     content = @Content),
     })
-    @DeleteMapping("/usuarios/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
 
         if (usuarioService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
+            productoService.findByUsuario(id).forEach(producto -> productoService.delete(producto));
             usuarioService.deleteById(id);
             return ResponseEntity.noContent().build();
         }

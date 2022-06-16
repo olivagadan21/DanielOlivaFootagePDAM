@@ -3,6 +3,7 @@ package com.danieloliva.FootageBackend.controller;
 import com.danieloliva.FootageBackend.dto.seccion.CreateSeccionDto;
 import com.danieloliva.FootageBackend.dto.seccion.SeccionDtoConverter;
 import com.danieloliva.FootageBackend.model.Seccion;
+import com.danieloliva.FootageBackend.service.base.ProductoService;
 import com.danieloliva.FootageBackend.service.base.SeccionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,6 +17,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,8 +26,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Tag(name = "Seccion", description = "Controller de las secciones")
 @RequestMapping("/seccion/")
+@CrossOrigin(origins = "http://localhost:4200")
 public class SeccionController {
 
+    private final ProductoService productoService;
     private final SeccionService seccionService;
     private final SeccionDtoConverter seccionDtoConverter;
 
@@ -84,15 +89,14 @@ public class SeccionController {
                     description = "No se ha creado la nueva sección",
                     content = @Content),
     })
-    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Seccion> create(@RequestPart("seccion") CreateSeccionDto seccionDto, @RequestPart("file") MultipartFile file) {
+    @PostMapping("")
+    public ResponseEntity<Seccion> create(@RequestBody CreateSeccionDto seccionDto) {
 
         if (seccionDto.getNombre().isEmpty()) {
             return ResponseEntity.badRequest().build();
         } else {
-            Seccion seccion = seccionDtoConverter.createSeccion(seccionDto, file);
-            seccionService.save(seccion);
-            return ResponseEntity.status(HttpStatus.CREATED).body(seccion);
+            Seccion seccion = seccionDtoConverter.createSeccion(seccionDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(seccionService.save(seccion));
         }
 
     }
@@ -107,13 +111,13 @@ public class SeccionController {
                     description = "No se ha editado la seccion",
                     content = @Content),
     })
-    @PutMapping(value = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Seccion> edit(@RequestPart("seccion") CreateSeccionDto seccionDto, @RequestPart("file") MultipartFile file, @PathVariable Long id) {
+    @PutMapping("{id}")
+    public ResponseEntity<Seccion> edit(@RequestBody CreateSeccionDto seccionDto, @PathVariable Long id) throws IOException {
 
         if (seccionService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            Seccion seccion = seccionDtoConverter.createSeccion(seccionDto, file);
+            Seccion seccion = seccionDtoConverter.createSeccion(seccionDto);
             return ResponseEntity.ok().body(seccionService.edit(seccion, id));
         }
 
@@ -134,6 +138,7 @@ public class SeccionController {
         if (seccionService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
+            productoService.findBySeccion(id).forEach(producto -> {producto.setSeccion(null);});
             seccionService.deleteById(id);
             return ResponseEntity.noContent().build();
         }

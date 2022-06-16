@@ -1,5 +1,7 @@
 package com.danieloliva.FootageBackend.dto.producto;
 
+import com.danieloliva.FootageBackend.model.Anuncio;
+import com.danieloliva.FootageBackend.model.Estado;
 import com.danieloliva.FootageBackend.model.Marca;
 import com.danieloliva.FootageBackend.model.Talla;
 import lombok.*;
@@ -19,10 +21,14 @@ public class GetProductoUsuarioDto {
 
     private boolean original;
 
-    private String foto1;
+    private String foto;
 
     private Marca marca;
 
     private Talla talla;
+
+    private Estado estado;
+
+    private Anuncio anuncio;
 
 }

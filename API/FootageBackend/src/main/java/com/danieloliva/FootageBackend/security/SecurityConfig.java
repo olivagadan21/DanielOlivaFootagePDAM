@@ -55,9 +55,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                /*
+
                 //auth
-                .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth/login").anonymous()
                 .antMatchers(HttpMethod.POST, "/auth/register/user").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth/register/admin").hasRole("ADMIN")
                 //usuario
@@ -96,7 +96,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/anuncio/{id}").hasRole("ADMIN")
                 .antMatchers("/h2-console/**").permitAll()
 
-                 */
+
                 .anyRequest().permitAll();
 
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);

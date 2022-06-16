@@ -24,7 +24,16 @@ public class MarcaDtoConverter {
 
         return Marca.builder()
                 .nombre(createMarcaDto.getNombre())
-                .imagen(filename)
+                .imagen(uri)
+                .build();
+
+    }
+
+    public Marca createMarca (CreateMarcaDto createMarcaDto) {
+
+        return Marca.builder()
+                .nombre(createMarcaDto.getNombre())
+                .imagen("https://api-footage.herokuapp.com/download/trademark.png")
                 .build();
 
     }

@@ -1,5 +1,6 @@
 package com.danieloliva.FootageBackend.dto.producto;
 
+import com.danieloliva.FootageBackend.dto.meGusta.MeGustaDtoConverter;
 import com.danieloliva.FootageBackend.model.Producto;
 import com.danieloliva.FootageBackend.service.base.*;
 import com.danieloliva.FootageBackend.usuario.dto.UsuarioDtoConverter;
@@ -20,21 +21,15 @@ public class ProductoDtoConverter {
     private final StorageService storageService;
     private final TallaService tallaService;
     private final UsuarioDtoConverter usuarioDtoConverter;
+    private final AnuncioService anuncioService;
 
-    public Producto createProductoDtoToProducto (CreateProductoDto p, MultipartFile file1, MultipartFile file2) {
+    public Producto createProductoDtoToProducto (CreateProductoDto p, MultipartFile file) {
 
-        String filename1 = storageService.store(file1);
+        String filename = storageService.store(file);
 
-        String uri1 = ServletUriComponentsBuilder.fromCurrentContextPath()
+        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/download/")
-                .path(filename1)
-                .toUriString();
-
-        String filename2 = storageService.store(file2);
-
-        String uri2 = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(filename2)
+                .path(filename)
                 .toUriString();
 
         return Producto.builder()
@@ -43,13 +38,33 @@ public class ProductoDtoConverter {
                 .precio(p.getPrecio())
                 .intercambio(p.isIntercambio())
                 .original(p.isOriginal())
-                .foto1(filename1)
-                .foto2(filename2)
+                .foto(uri)
                 .usuario(usuarioService.findById(p.getUsuario()).get())
                 .seccion(seccionService.findById(p.getSeccion()).get())
                 .categoria(categoriaService.findById(p.getCategoria()).get())
                 .marca(marcaService.findById(p.getMarca()).get())
                 .talla(tallaService.findById(p.getTalla()).get())
+                .estado(p.getEstado())
+                .anuncio(anuncioService.findOneAleatory())
+                .build();
+
+    }
+
+    public Producto createProductoDtoToProducto (CreateProductoDto p) {
+
+        return Producto.builder()
+                .titulo(p.getTitulo())
+                .descripcion(p.getDescripcion())
+                .precio(p.getPrecio())
+                .intercambio(p.isIntercambio())
+                .original(p.isOriginal())
+                .foto("https://api-footage.herokuapp.com/download/product.png")
+                .usuario(usuarioService.findById(p.getUsuario()).get())
+                .seccion(seccionService.findById(p.getSeccion()).get())
+                .categoria(categoriaService.findById(p.getCategoria()).get())
+                .marca(marcaService.findById(p.getMarca()).get())
+                .talla(tallaService.findById(p.getTalla()).get())
+                .estado(p.getEstado())
                 .build();
 
     }
@@ -62,13 +77,17 @@ public class ProductoDtoConverter {
                 .precio(producto.getPrecio())
                 .intercambio(producto.isIntercambio())
                 .original(producto.isOriginal())
-                .foto1(producto.getFoto1())
-                .foto2(producto.getFoto2())
+                .foto(producto.getFoto())
                 .usuario(usuarioDtoConverter.usuarioToGetUsuarioProductoDto(producto.getUsuario()))
                 .seccion(producto.getSeccion())
                 .categoria(producto.getCategoria())
                 .marca(producto.getMarca())
                 .talla(producto.getTalla())
+                .estado(producto.getEstado())
+                .anuncio(producto.getAnuncio())
+                .meGustas(producto.getMeGustas().stream().map(meGusta -> {
+                    return usuarioDtoConverter.usuarioToGetUsuarioProductoDto(meGusta.getUsuario());
+                }).toList())
                 .build();
     }
 
