@@ -51,7 +51,7 @@ class MapClickPage extends GoogleMapExampleAppPage {
                         style: ElevatedButton.styleFrom(
                             primary: Colores.principal,
                             fixedSize: Size(MediaQuery.of(context).size.width, 40)),
-                        onPressed: () {},
+                        onPressed: () {Navigator.pop(context);},
                         child: const Text(
                           "Guardar",
                           textAlign: TextAlign.center,

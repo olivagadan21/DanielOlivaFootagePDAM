@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:footage_flutter/ui/screens/buscado.dart';
 import 'package:footage_flutter/ui/screens/buscar.dart';
-import 'package:footage_flutter/ui/screens/editar_perfil.dart';
 import 'package:footage_flutter/ui/screens/mapa.dart';
 import 'package:footage_flutter/ui/screens/menu.dart';
 import 'package:footage_flutter/ui/screens/perfil.dart';

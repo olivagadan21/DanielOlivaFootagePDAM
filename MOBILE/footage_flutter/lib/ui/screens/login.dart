@@ -21,10 +21,12 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool _passwordVisible = false;
 
   @override
   void initState() {
     authRepository = AuthRepositoryImpl();
+    _passwordVisible = false;
     super.initState();
   }
 
@@ -151,12 +153,23 @@ class _LoginState extends State<Login> {
                         ),
                         child: TextFormField(
                           controller: passwordController,
-                          obscureText: true,
-                          decoration: const InputDecoration(
+                          obscureText: !_passwordVisible,
+                          decoration: InputDecoration(
                             hintText: 'Contraseña',
-                            suffixIcon: Icon(Icons.visibility_off, color: Colores.gris,),
-                            hintStyle: TextStyle(color: Colores.gris),
-                            border: OutlineInputBorder(
+                            suffixIcon: IconButton(
+                              icon: Icon(_passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colores.gris,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _passwordVisible = !_passwordVisible;
+                                });
+                              },
+                            ),
+                            hintStyle: const TextStyle(color: Colores.gris),
+                            border: const OutlineInputBorder(
                               borderSide: BorderSide.none,
                             ),
                           ),

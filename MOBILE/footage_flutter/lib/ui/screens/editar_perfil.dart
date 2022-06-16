@@ -3,6 +3,7 @@ import 'package:footage_flutter/models/usuario/perfil_response.dart';
 import 'package:footage_flutter/style/styles.dart';
 import 'package:footage_flutter/ui/screens/mapa.dart';
 import 'package:footage_flutter/ui/screens/menu.dart';
+import 'package:footage_flutter/ui/screens/perfil.dart';
 
 class EditarPerfil extends StatefulWidget {
 
@@ -26,7 +27,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
               children: [
                 Container(
                   alignment: Alignment.topLeft,
-                  child: IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const Menu()));}, icon: const Icon(Icons.arrow_back)),
+                  child: IconButton(onPressed: (){Navigator.pop(context);}, icon: const Icon(Icons.arrow_back)),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.01),
@@ -168,7 +169,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
                         style: ElevatedButton.styleFrom(
                             primary: Colores.principal,
                             fixedSize: Size(MediaQuery.of(context).size.width, 40)),
-                        onPressed: () { },
+                        onPressed: () { Navigator.pop(context); },
                         child: const Text(
                           "Guardar",
                           textAlign: TextAlign.center,

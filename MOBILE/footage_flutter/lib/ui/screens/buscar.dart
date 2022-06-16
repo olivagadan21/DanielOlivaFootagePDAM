@@ -221,7 +221,7 @@ Widget _secciones (BuildContext context, SeccionResponse seccionResponse) {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Image(image: NetworkImage(seccionResponse.imagen.replaceAll("http://localhost:8080", "http://localhost:8080")), width: 150,),
+                  child: Image(image: NetworkImage(seccionResponse.imagen), width: 150,),
                 ),
                 Text(seccionResponse.nombre)
               ],
@@ -244,7 +244,7 @@ Widget _marcas (BuildContext context, MarcaResponse marcaResponse) {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Image(image: NetworkImage(marcaResponse.imagen.replaceAll("http://localhost:8080", "http://localhost:8080")), width: 150,),
+                  child: Image(image: NetworkImage(marcaResponse.imagen), width: 150,),
                 ),
                 Text(marcaResponse.nombre)
               ],

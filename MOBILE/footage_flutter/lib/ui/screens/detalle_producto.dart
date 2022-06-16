@@ -35,7 +35,7 @@ class _DetalleProductoState extends State<DetalleProducto> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const Menu()));},
+                        onPressed: () {Navigator.pop(context);},
                         icon: const Icon(Icons.arrow_back, color: Colores.blanco)
                       ),
                       IconButton(
