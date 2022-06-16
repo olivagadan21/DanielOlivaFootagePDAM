@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:footage_flutter/bloc/auth/register_user_bloc/register_user_bloc.dart';
-import 'package:footage_flutter/models/auth/register_response.dart';
 import 'package:footage_flutter/repository/auth/auth_repository.dart';
 import 'package:footage_flutter/repository/auth/auth_repository_impl.dart';
 import 'package:footage_flutter/style/styles.dart';
-import 'package:footage_flutter/ui/screens/menu_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'login_screen.dart';
-import 'principal_screen.dart';
+import '../../models/auth/register_dto.dart';
+import 'login.dart';
+import 'principal.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -18,28 +16,21 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  String imageSelect = "Imagen no selecionada";
-
-  String date = "";
-  DateTime selectedDate = DateTime.now();
 
   late AuthRepository authRepository;
+  final _formKey = GlobalKey<FormState>();
   TextEditingController nombre = TextEditingController();
   TextEditingController apellidos = TextEditingController();
   TextEditingController username = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController password2 = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  late Future<SharedPreferences> _prefs;
-  final String uploadUrl = 'http://10.0.2.2:8080/auth/register/user';
-  String path = "";
   bool _passwordVisible = false;
   bool _password2Visible = false;
 
   @override
   void initState() {
     authRepository = AuthRepositoryImpl();
-    _prefs = SharedPreferences.getInstance();
     _passwordVisible = false;
     _password2Visible = false;
     super.initState();
@@ -73,7 +64,7 @@ class _RegisterState extends State<Register> {
             return state is RegisterSuccessState || state is RegisterErrorState;
           }, listener: (context, state) async {
             if (state is RegisterSuccessState) {
-              _registerSuccess(context, state.registerResponse);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()),);
             } else if (state is RegisterErrorState) {
               _showSnackbar(context, state.message);
             }
@@ -89,19 +80,6 @@ class _RegisterState extends State<Register> {
             }
           })),
     );
-  }
-
-  Future<void> _registerSuccess(
-      BuildContext context, RegisterResponse late) async {
-    _prefs.then((SharedPreferences prefs) {
-      prefs.setString('token', late.email);
-      prefs.setString('id', late.id);
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const Login()),
-      );
-    });
   }
 
   void _showSnackbar(BuildContext context, String message) {
@@ -143,6 +121,7 @@ class _RegisterState extends State<Register> {
               Padding(
                 padding: const EdgeInsets.only(top: 25.0),
                 child: Form(
+                  key: _formKey,
                   child: Column(
                     children: [
                       Container(
@@ -320,28 +299,28 @@ class _RegisterState extends State<Register> {
                 padding: const EdgeInsets.only(top: 40),
                 child: Center(
                   child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: Colores.principal,
-                          fixedSize: const Size(320, 40)),
-                      onPressed: () {
-                        /*if (_formKey.currentState!.validate()) {
-                          final registerDto = RegisterDto(
-                              nombre: nombre.text,
-                              apellidos: apellidos.text,
-                              username: username.text,
-                              email: emailController.text,
-                              password2: password2.text,
-                              password: passwordController.text);
-                          BlocProvider.of<RegisterBloc>(context)
-                              .add(DoRegisterEvent(registerDto));
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
-                        }*/Navigator.push(context, MaterialPageRoute(builder: (context) => const Menu()));
-                      },
-                      child: const Text(
-                        "Regístrate",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colores.blanco),
-                      )),
+                    style: ElevatedButton.styleFrom(
+                        primary: Colores.principal,
+                        fixedSize: const Size(320, 40)),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        final registerDto = RegisterDto(
+                          nombre: nombre.text,
+                          apellidos: apellidos.text,
+                          username: username.text,
+                          email: emailController.text,
+                          password2: password2.text,
+                          password: passwordController.text
+                        );
+                        BlocProvider.of<RegisterBloc>(context).add(DoRegisterEvent(registerDto));
+                      }
+                    },
+                    child: const Text(
+                      "Regístrate",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colores.blanco),
+                    )
+                  ),
                 ),
               ),
             ],

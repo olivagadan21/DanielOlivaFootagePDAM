@@ -10,12 +10,12 @@ abstract class UsuarioState extends Equatable {
 class UsuarioInitial extends UsuarioState {}
 
 class UsuarioFetched extends UsuarioState {
-  final UsuarioResponse usuarioResponse;
+  final ProfileResponse profileResponse;
 
-  const UsuarioFetched(this.usuarioResponse);
+  const UsuarioFetched(this.profileResponse);
 
   @override
-  List<Object> get props => [usuarioResponse];
+  List<Object> get props => [profileResponse];
 }
 
 class UsuarioFetchError extends UsuarioState {

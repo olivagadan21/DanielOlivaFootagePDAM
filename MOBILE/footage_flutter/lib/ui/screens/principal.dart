@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:footage_flutter/style/styles.dart';
 
-import 'login_screen.dart';
-import 'register_screen.dart';
+import 'login.dart';
+import 'register.dart';
 
 class Principal extends StatelessWidget {
 

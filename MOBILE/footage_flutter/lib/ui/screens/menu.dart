@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:footage_flutter/style/styles.dart';
 
-import 'buscar_screen.dart';
-import 'inicio_screen.dart';
-import 'mensajes_screen.dart';
-import 'perfil_screen.dart';
-import 'vender_screen.dart';
+import 'buscar.dart';
+import 'inicio.dart';
+import 'perfil.dart';
+import 'vender.dart';
 
 void main() => runApp(const Menu());
 
@@ -33,11 +32,10 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
-    Inicio(),
-    Buscar(),
-    Vender(),
-    Mensajes(),
-    Perfil(),
+    InicioScreen(),
+    BuscarScreen(),
+    VenderScreen(),
+    PerfilScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -71,10 +69,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             BottomNavigationBarItem(
               icon: Icon(Icons.add_circle_outline),
               label: 'Vender',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.email_outlined),
-              label: 'Mensajes',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_outline),

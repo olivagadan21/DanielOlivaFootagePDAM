@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:footage_flutter/bloc/auth/login_bloc/login_bloc.dart';
-import 'package:footage_flutter/models/auth/login_response.dart';
 import 'package:footage_flutter/repository/auth/auth_repository.dart';
 import 'package:footage_flutter/repository/auth/auth_repository_impl.dart';
 import 'package:footage_flutter/style/styles.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'menu_screen.dart';
-import 'principal_screen.dart';
+import 'package:footage_flutter/utils/preferences.dart';
+import '../../models/auth/login_dto.dart';
+import 'menu.dart';
+import 'principal.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -19,17 +18,21 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   late AuthRepository authRepository;
+  final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  late Future<SharedPreferences> _prefs;
   bool _passwordVisible = false;
 
   @override
   void initState() {
     authRepository = AuthRepositoryImpl();
-    _prefs = SharedPreferences.getInstance();
     _passwordVisible = false;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -44,20 +47,24 @@ class _LoginState extends State<Login> {
   _createBody(BuildContext context) {
     return Scaffold(
       body: Container(
-          color: Colores.blanco,
-          padding: const EdgeInsets.all(20),
-          child: BlocConsumer<LoginBloc, LoginState>(
-              listenWhen: (context, state) {
+        color: Colores.blanco,
+        padding: const EdgeInsets.all(20),
+        child: BlocConsumer<LoginBloc, LoginState>(
+          listenWhen: (context, state) {
             return state is LoginSuccessState || state is LoginErrorState;
-          }, listener: (context, state) async {
+          },
+          listener: (context, state) async {
             if (state is LoginSuccessState) {
-              _loginSuccess(context, state.loginResponse);
+              PreferenceUtils.setString('token', state.loginResponse.token);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const Menu()),);
             } else if (state is LoginErrorState) {
               _showSnackbar(context, state.message);
             }
-          }, buildWhen: (context, state) {
+          },
+          buildWhen: (context, state) {
             return state is LoginInitialState || state is LoginLoadingState;
-          }, builder: (ctx, state) {
+          },
+          builder: (ctx, state) {
             if (state is LoginInitialState) {
               return _login(ctx);
             } else if (state is LoginLoadingState) {
@@ -65,21 +72,10 @@ class _LoginState extends State<Login> {
             } else {
               return _login(ctx);
             }
-          })),
+          }
+        )
+      ),
     );
-  }
-
-  Future<void> _loginSuccess(BuildContext context, LoginResponse late) async {
-    _prefs.then((SharedPreferences prefs) {
-      prefs.setString('token', late.token);
-      prefs.setString('id', late.id);
-      prefs.setString('avatar', late.avatar);
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const Menu()),
-      );
-    });
   }
 
   void _showSnackbar(BuildContext context, String message) {
@@ -99,13 +95,14 @@ class _LoginState extends State<Login> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Principal()));
-                    },
-                    icon: const Icon(Icons.arrow_back)),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Principal()));
+                  },
+                  icon: const Icon(Icons.arrow_back)
+                ),
                 const Padding(
                   padding: EdgeInsets.only(top: 10.0, left: 20),
                   child: Text(
@@ -119,6 +116,7 @@ class _LoginState extends State<Login> {
             Padding(
               padding: const EdgeInsets.only(top: 25.0),
               child: Form(
+                key: _formKey,
                 child: Column(
                   children: [
                     Padding(
@@ -154,62 +152,62 @@ class _LoginState extends State<Login> {
                               bottom: BorderSide(color: Colores.gris, width: 1)),
                         ),
                         child: TextFormField(
-                            controller: passwordController,
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              hintText: 'Contraseña',
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _passwordVisible
+                          controller: passwordController,
+                          obscureText: !_passwordVisible,
+                          decoration: InputDecoration(
+                            hintText: 'Contraseña',
+                            suffixIcon: IconButton(
+                              icon: Icon(_passwordVisible
                                       ? Icons.visibility
                                       : Icons.visibility_off,
                                   color: Colores.gris,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _passwordVisible = !_passwordVisible;
-                                  });
-                                },
                               ),
-                              hintStyle: const TextStyle(color: Colores.gris),
-                              border: const OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _passwordVisible = !_passwordVisible;
+                                });
+                              },
                             ),
-                            onSaved: (String? value) {},
-                            validator: (value) {
-                              return (value == null || value.isEmpty)
-                                  ? 'Escribe la contraseña'
-                                  : null;
-                            }),
+                            hintStyle: const TextStyle(color: Colores.gris),
+                            border: const OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                          onSaved: (String? value) {},
+                          validator: (value) {
+                            return (value == null || value.isEmpty)
+                                ? 'Escribe la contraseña'
+                                : null;
+                          }
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 60),
-              child: Center(
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        primary: Colores.principal,
-                        fixedSize: const Size(320, 40)),
-                    onPressed: () {
-                      /*if (_formKey.currentState!.validate()) {
-                          final loginDto = LoginDto(
-                              email: emailController.text,
-                              password: passwordController.text);
-                          BlocProvider.of<LoginBloc>(context)
-                              .add(DoLoginEvent(loginDto));
-                        }*/Navigator.push(context, MaterialPageRoute(builder: (context) => const Menu()));
-                    },
-                    child: const Text(
-                      "Inicia sesión",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colores.blanco),
-                    )),
-              ),
+            GestureDetector(
+              onTap: () {
+                if (_formKey.currentState!.validate()) {
+                  final loginDto = LoginDto(
+                      email: emailController.text,
+                      password: passwordController.text);
+                  BlocProvider.of<LoginBloc>(context).add(DoLoginEvent(loginDto));
+                }
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.only(top: 30, left: 30, right: 30),
+                padding:const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colores.principal, width: 2),
+                  borderRadius: BorderRadius.circular(50)),
+                child: Text(
+                  'Sign In'.toUpperCase(),
+                  style: const TextStyle(color: Colores.principal),
+                  textAlign: TextAlign.center,
+                )
+              )
             ),
             const Padding(
               padding: EdgeInsets.only(top: 30),

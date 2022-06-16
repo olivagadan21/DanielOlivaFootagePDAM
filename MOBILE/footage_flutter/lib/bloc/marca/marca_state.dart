@@ -10,12 +10,12 @@ abstract class MarcaState extends Equatable {
 class MarcaInitial extends MarcaState {}
 
 class MarcasFetched extends MarcaState {
-  final List<MarcaResponse> Marcas;
+  final List<MarcaResponse> marcas;
 
-  const MarcasFetched(this.Marcas);
+  const MarcasFetched(this.marcas);
 
   @override
-  List<Object> get props => [Marcas];
+  List<Object> get props => [marcas];
 }
 
 class MarcaFetchError extends MarcaState {

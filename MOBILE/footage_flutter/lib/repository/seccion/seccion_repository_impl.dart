@@ -12,13 +12,9 @@ class SeccionRepositoryImpl extends SeccionRepository {
   @override
   Future<List<SeccionResponse>> fetchSecciones() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final response = await _client.get(
-        Uri.parse('${Constant.baseUrl}/seccion/'),
-        headers: {'Authorization': 'Bearer ${prefs.getString('token')}'});
+    final response = await _client.get(Uri.parse('${Constant.baseUrl}seccion/'), headers: {'Authorization': 'Bearer ${prefs.getString('token')}'});
     if (response.statusCode == 200) {
-      return (json.decode(response.body) as List)
-          .map((i) => SeccionResponse.fromJson(i))
-          .toList();
+      return (json.decode(response.body) as List).map((i) => SeccionResponse.fromJson(i)).toList();
     } else {
       throw Exception('Fail to load posts');
     }

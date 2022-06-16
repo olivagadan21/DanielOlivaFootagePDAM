@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:footage_flutter/ui/screens/buscado_screen.dart';
-import 'package:footage_flutter/ui/screens/buscar_screen.dart';
-import 'package:footage_flutter/ui/screens/chat_screen.dart';
-import 'package:footage_flutter/ui/screens/detalleproducto_screen.dart';
-import 'package:footage_flutter/ui/screens/editarperfil_screen.dart';
+import 'package:footage_flutter/ui/screens/buscado.dart';
+import 'package:footage_flutter/ui/screens/buscar.dart';
 import 'package:footage_flutter/ui/screens/mapa.dart';
-import 'package:footage_flutter/ui/screens/mensajes_screen.dart';
-import 'package:footage_flutter/ui/screens/menu_screen.dart';
-import 'package:footage_flutter/ui/screens/perfil_screen.dart';
-import 'package:footage_flutter/ui/screens/vender_screen.dart';
-import 'ui/screens/login_screen.dart';
-import 'ui/screens/principal_screen.dart';
-import 'ui/screens/register_screen.dart';
+import 'package:footage_flutter/ui/screens/menu.dart';
+import 'package:footage_flutter/ui/screens/perfil.dart';
+import 'package:footage_flutter/ui/screens/vender.dart';
+import 'package:footage_flutter/utils/preferences.dart';
+import 'ui/screens/login.dart';
+import 'ui/screens/principal.dart';
+import 'ui/screens/register.dart';
 
-void main() {
+Future<void> main() async {
   runApp(const MyApp());
+  PreferenceUtils.init();
 }
 
 class MyApp extends StatelessWidget {
@@ -34,14 +32,10 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const Login(),
         '/register': (context) => const Register(),
         '/menu': (context) => const Menu(),
-        '/detalleproducto':(context) => const DetalleProducto(),
-        '/buscar': (context) => const Buscar(),
+        '/buscar': (context) => const BuscarScreen(),
         '/buscado': (context) => const Buscado(),
-        '/vender':(context) => const Vender(),
-        '/mensajes':(context) => const Mensajes(),
-        '/chat':(context) => const Chat(),
-        '/perfil':(context) => const Perfil(),
-        '/editar-perfil':(context) => const EditarPerfil(),
+        '/vender':(context) => const VenderScreen(),
+        '/perfil':(context) => const PerfilScreen(),
         '/mapa':(context) => const MapClickPage(),
       },
     );

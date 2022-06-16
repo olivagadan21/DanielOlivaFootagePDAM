@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:footage_flutter/models/usuario/perfil_response.dart';
 import 'package:footage_flutter/style/styles.dart';
 import 'package:footage_flutter/ui/screens/mapa.dart';
-import 'package:footage_flutter/ui/screens/menu_screen.dart';
+import 'package:footage_flutter/ui/screens/menu.dart';
+import 'package:footage_flutter/ui/screens/perfil.dart';
 
-class EditarPerfil extends StatelessWidget {
+class EditarPerfil extends StatefulWidget {
 
-  const EditarPerfil({ Key? key }) : super(key: key);
+  const EditarPerfil({ Key? key, required this.profileResponse }) : super(key: key);
 
+  final ProfileResponse profileResponse;
+
+  @override
+  _EditarPerfilState createState() => _EditarPerfilState();
+
+}
+class _EditarPerfilState extends State<EditarPerfil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +27,7 @@ class EditarPerfil extends StatelessWidget {
               children: [
                 Container(
                   alignment: Alignment.topLeft,
-                  child: IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const Menu()));}, icon: const Icon(Icons.arrow_back)),
+                  child: IconButton(onPressed: (){Navigator.pop(context);}, icon: const Icon(Icons.arrow_back)),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.01),
@@ -42,8 +51,8 @@ class EditarPerfil extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(50),
-                            child: const Image(
-                              image: AssetImage("assets/images/icono.png"),
+                            child: Image(
+                              image: NetworkImage(widget.profileResponse.avatar),
                               width: 100,
                             )
                           )
@@ -68,10 +77,10 @@ class EditarPerfil extends StatelessWidget {
                           border: Border(bottom: BorderSide(color: Colores.gris, width: 1)),
                         ),
                         child: TextFormField(
-                          decoration: const InputDecoration(
-                            hintText: 'Daniel',
-                            hintStyle: TextStyle(color: Colores.negro),
-                            border: OutlineInputBorder(
+                          decoration: InputDecoration(
+                            hintText: widget.profileResponse.nombre,
+                            hintStyle: const TextStyle(color: Colores.negro),
+                            border: const OutlineInputBorder(
                               borderSide: BorderSide.none,
                             ),
                           ),
@@ -86,10 +95,10 @@ class EditarPerfil extends StatelessWidget {
                                     BorderSide(color: Colores.gris, width: 1)),
                           ),
                           child: TextFormField(
-                            decoration: const InputDecoration(
-                              hintText: 'Oliva García',
-                              hintStyle: TextStyle(color: Colores.negro),
-                              border: OutlineInputBorder(
+                            decoration: InputDecoration(
+                              hintText: widget.profileResponse.apellidos,
+                              hintStyle: const TextStyle(color: Colores.negro),
+                              border: const OutlineInputBorder(
                                 borderSide: BorderSide.none,
                               ),
                             ),
@@ -105,10 +114,10 @@ class EditarPerfil extends StatelessWidget {
                                     BorderSide(color: Colores.gris, width: 1)),
                           ),
                           child: TextFormField(
-                            decoration: const InputDecoration(
-                              hintText: 'danioliva20',
-                              hintStyle: TextStyle(color: Colores.negro),
-                              border: OutlineInputBorder(
+                            decoration: InputDecoration(
+                              hintText: widget.profileResponse.username,
+                              hintStyle: const TextStyle(color: Colores.negro),
+                              border: const OutlineInputBorder(
                                 borderSide: BorderSide.none,
                               ),
                             ),
@@ -125,10 +134,10 @@ class EditarPerfil extends StatelessWidget {
                           ),
                           child: TextFormField(
                             enabled: false,
-                            decoration: const InputDecoration(
-                              hintText: 'oliva.gadan21@triana.salesianos.edu',
-                              hintStyle: TextStyle(color: Colores.gris),
-                              border: OutlineInputBorder(
+                            decoration: InputDecoration(
+                              hintText: widget.profileResponse.email,
+                              hintStyle: const TextStyle(color: Colores.gris),
+                              border: const OutlineInputBorder(
                                 borderSide: BorderSide.none,
                               ),
                             ),
@@ -160,7 +169,7 @@ class EditarPerfil extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                             primary: Colores.principal,
                             fixedSize: Size(MediaQuery.of(context).size.width, 40)),
-                        onPressed: () {},
+                        onPressed: () { Navigator.pop(context); },
                         child: const Text(
                           "Guardar",
                           textAlign: TextAlign.center,
@@ -175,5 +184,4 @@ class EditarPerfil extends StatelessWidget {
       ),
     );
   }
-  
 }

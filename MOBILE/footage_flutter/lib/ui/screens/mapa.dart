@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:footage_flutter/models/map/map.dart';
 import 'package:footage_flutter/style/styles.dart';
-import 'package:footage_flutter/ui/screens/editarperfil_screen.dart';
+import 'package:footage_flutter/ui/screens/editar_perfil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,7 +23,7 @@ class MapClickPage extends GoogleMapExampleAppPage {
               children: [
                 Container(
                   alignment: Alignment.topLeft,
-                  child: IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const EditarPerfil()));}, icon: const Icon(Icons.arrow_back)),
+                  child: IconButton(onPressed: (){Navigator.of(context).pop();}, icon: const Icon(Icons.arrow_back)),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.01),
@@ -51,7 +51,7 @@ class MapClickPage extends GoogleMapExampleAppPage {
                         style: ElevatedButton.styleFrom(
                             primary: Colores.principal,
                             fixedSize: Size(MediaQuery.of(context).size.width, 40)),
-                        onPressed: () {},
+                        onPressed: () {Navigator.pop(context);},
                         child: const Text(
                           "Guardar",
                           textAlign: TextAlign.center,

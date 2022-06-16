@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:footage_flutter/models/producto/producto_dto.dart';
 import 'package:footage_flutter/models/producto/producto_response.dart';
 import 'package:footage_flutter/repository/producto/producto_repository.dart';
-
 part 'producto_event.dart';
 part 'producto_state.dart';
 
@@ -18,7 +17,7 @@ class ProductoBloc extends Bloc<ProductoEvent, ProductoState> {
   void _createProductoEvent(CreateProducto event, Emitter<ProductoState> emit) async {
     try {
       final productoResponse =
-          await public.createProducto(event.productoDto, event.imagePath1, event.imagePath2);
+          await public.createProducto(event.productoDto, event.imagePath);
       emit(ProductoSuccessState(productoResponse));
       return;
     } on Exception catch (e) {

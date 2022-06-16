@@ -14,7 +14,7 @@ class CategoriaRepositoryImpl extends CategoriaRepository {
   Future<List<CategoriaResponse>> fetchCategorias() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final response = await _client.get(
-        Uri.parse('${Constant.baseUrl}/categoria/'),
+        Uri.parse('${Constant.baseUrl}categoria/'),
         headers: {'Authorization': 'Bearer ${prefs.getString('token')}'});
     if (response.statusCode == 200) {
       return (json.decode(response.body) as List)
