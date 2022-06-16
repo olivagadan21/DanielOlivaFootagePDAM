@@ -23,7 +23,7 @@ class MapClickPage extends GoogleMapExampleAppPage {
               children: [
                 Container(
                   alignment: Alignment.topLeft,
-                  child: IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const EditarPerfil()));}, icon: const Icon(Icons.arrow_back)),
+                  child: IconButton(onPressed: (){Navigator.of(context).pop();}, icon: const Icon(Icons.arrow_back)),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.01),

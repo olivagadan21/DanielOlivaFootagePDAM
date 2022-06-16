@@ -37,7 +37,6 @@ class MyApp extends StatelessWidget {
         '/buscado': (context) => const Buscado(),
         '/vender':(context) => const VenderScreen(),
         '/perfil':(context) => const PerfilScreen(),
-        '/editar-perfil':(context) => const EditarPerfil(),
         '/mapa':(context) => const MapClickPage(),
       },
     );

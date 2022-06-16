@@ -36,7 +36,7 @@ class AuthRepositoryImpl extends AuthRepository {
     };
 
     final response = await _client.post(
-        Uri.parse('${Constant.baseUrl}register/user'),
+        Uri.parse('${Constant.baseUrl}auth/register/user'),
         headers: headers,
         body: jsonEncode(registerDto.toJson()));
     if (response.statusCode == 201) {

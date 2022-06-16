@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:footage_flutter/models/usuario/perfil_response.dart';
-import 'package:footage_flutter/models/usuario/usuario_response.dart';
 import 'package:footage_flutter/repository/usuario/usuario_repository.dart';
 import 'package:footage_flutter/utils/preferences.dart';
 import 'package:http/http.dart' as http;

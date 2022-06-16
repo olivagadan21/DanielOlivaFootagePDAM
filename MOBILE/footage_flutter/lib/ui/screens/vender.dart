@@ -24,6 +24,7 @@ import 'package:footage_flutter/style/styles.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../models/seccion/seccion_response.dart';
 import '../../repository/categoria/categoria_repository_impl.dart';
 import 'menu.dart';
 
@@ -253,90 +254,82 @@ class _RegisterScreenState extends State<VenderScreen> {
                     color: Colores.gris,
                   ),
                 ),
-                /*Padding(
+                Padding(
                   padding: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.04),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width*0.7,
-                    child: DropdownButton(
-                      hint: const Text('Sección'),
+                    child: DropdownButtonFormField(
                       value: selectedValueSeccion,
-                      items: dropdownSeccion.map((seccion) {
-                        return DropdownMenuItem(
-                          child: Text(seccion.nombre),
-                          value: seccion.id,
-                        );
-                      }).toList(),
-                      onChanged: (newValue) {
+                      items: dropdownSeccion,
+                      decoration: const InputDecoration(
+                        labelText: "Sección",
+                        labelStyle: TextStyle(fontSize: 18)
+                      ),
+                      onChanged: (String? newValue){
                         setState(() {
-                          selectedValueSeccion = newValue.toString();
+                          selectedValueSeccion = newValue!;
                         });
-                      }
-                    )
+                      },
+                    ),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.04),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width*0.7,
-                    child: DropdownButton(
-                      hint: const Text('Categoría'),
+                    child: DropdownButtonFormField(
                       value: selectedValueCategoria,
-                      items: dropdownCategoria.map((categoria) {
-                        return DropdownMenuItem(
-                          child: Text(categoria.nombre),
-                          value: categoria.id,
-                        );
-                      }).toList(),
-                      onChanged: (newValue) {
+                      items: dropdownCategoria,
+                      decoration: const InputDecoration(
+                        labelText: "Categoría",
+                        labelStyle: TextStyle(fontSize: 18)
+                      ),
+                      onChanged: (String? newValue){
                         setState(() {
-                          selectedValueSeccion = newValue.toString();
+                          selectedValueCategoria = newValue!;
                         });
-                      }
-                    )
+                      },
+                    ),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.04),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width*0.7,
-                    child: DropdownButton(
-                      hint: const Text('Talla'),
-                      value: selectedValueTalla,
-                      items: dropdownTalla.map((talla) {
-                        return DropdownMenuItem(
-                          child: Text(talla.nombre),
-                          value: talla.id,
-                        );
-                      }).toList(),
-                      onChanged: (newValue) {
-                        setState(() {
-                          selectedValueSeccion = newValue.toString();
-                        });
-                      }
-                    )
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.04),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width*0.7,
-                    child: DropdownButton(
-                      hint: const Text('Marca'),
+                    child: DropdownButtonFormField(
                       value: selectedValueMarca,
-                      items: dropdownMarca.map((marca) {
-                        return DropdownMenuItem(
-                          child: Text(marca.nombre),
-                          value: marca.id,
-                        );
-                      }).toList(),
-                      onChanged: (newValue) {
+                      items: dropdownMarca,
+                      decoration: const InputDecoration(
+                        labelText: "Marca",
+                        labelStyle: TextStyle(fontSize: 18)
+                      ),
+                      onChanged: (String? newValue){
                         setState(() {
-                          selectedValueSeccion = newValue.toString();
+                          selectedValueMarca = newValue!;
                         });
-                      }
-                    )
+                      },
+                    ),
                   ),
-                ), */
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.04),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width*0.7,
+                    child: DropdownButtonFormField(
+                      value: selectedValueTalla,
+                      items: dropdownTalla,
+                      decoration: const InputDecoration(
+                        labelText: "Talla",
+                        labelStyle: TextStyle(fontSize: 18)
+                      ),
+                      onChanged: (String? newValue){
+                        setState(() {
+                          selectedValueTalla = newValue!;
+                        });
+                      },
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.04),
                   child: SizedBox(
@@ -434,25 +427,60 @@ class _RegisterScreenState extends State<VenderScreen> {
       );
   }
   
-  /*List<String> get dropdownSeccion{
-    Future<List<SeccionResponse>> menuItems = seccionRepository.fetchSecciones();
-    List<String> list;
-    menuItems.then((value) {})
-    return menuItems;
-  }*/
-
-  List<CategoriaResponse> get dropdownCategoria{
-    List<CategoriaResponse> menuItems = categoriaRepository.fetchCategorias() as List<CategoriaResponse>;
-    return menuItems;
-  }
-
-  List<MarcaResponse> get dropdownMarca{
-    List<MarcaResponse> menuItems = marcaRepository.fetchMarca() as List<MarcaResponse>;
+  List<DropdownMenuItem<String>> get dropdownSeccion{
+    List<DropdownMenuItem<String>> menuItems = [
+      const DropdownMenuItem(child: Text(""),value: ""),
+      const DropdownMenuItem(child: Text("Hombre"),value: "Hombre"),
+      const DropdownMenuItem(child: Text("Mujer"),value: "Mujer"),
+      const DropdownMenuItem(child: Text("Niño"),value: "Niño"),
+      const DropdownMenuItem(child: Text("Unisex"),value: "Unisex"),
+    ];
     return menuItems;
   }
 
-  List<TallaResponse> get dropdownTalla{
-    List<TallaResponse> menuItems = tallaRepository.fetchTallas() as List<TallaResponse>;
+  List<DropdownMenuItem<String>> get dropdownCategoria{
+    List<DropdownMenuItem<String>> menuItems = [
+      const DropdownMenuItem(child: Text(""),value: ""),
+      const DropdownMenuItem(child: Text("Camisetas"),value: "Camisetas"),
+      const DropdownMenuItem(child: Text("Shorts"),value: "Shorts"),
+      const DropdownMenuItem(child: Text("Lifestyle"),value: "Lifestyle"),
+      const DropdownMenuItem(child: Text("Accesorios"),value: "Accesorios"),
+      const DropdownMenuItem(child: Text("Balones"),value: "Balones"),
+      const DropdownMenuItem(child: Text("Banderas"),value: "Banderas"),
+      const DropdownMenuItem(child: Text("Botas"),value: "Botas"),
+      const DropdownMenuItem(child: Text("Bufandas"),value: "Bufandas"),
+      const DropdownMenuItem(child: Text("Banderas"),value: "Banderas"),
+      const DropdownMenuItem(child: Text("Cromos"),value: "Cromos"),
+      const DropdownMenuItem(child: Text("Otra"),value: "Otra"),
+    ];
+    return menuItems;
+  }
+
+  List<DropdownMenuItem<String>> get dropdownMarca{
+    List<DropdownMenuItem<String>> menuItems = [
+      const DropdownMenuItem(child: Text(""),value: ""),
+      const DropdownMenuItem(child: Text("Nike"),value: "Nike"),
+      const DropdownMenuItem(child: Text("Adidas"),value: "Adidas"),
+      const DropdownMenuItem(child: Text("Kappa"),value: "Kappa"),
+      const DropdownMenuItem(child: Text("Umbro"),value: "Umbro"),
+      const DropdownMenuItem(child: Text("Puma"),value: "Puma"),
+      const DropdownMenuItem(child: Text("Errea"),value: "Errea"),
+      const DropdownMenuItem(child: Text("Hummel"),value: "Hummel"),
+    ];
+    return menuItems;
+  }
+
+  List<DropdownMenuItem<String>> get dropdownTalla{
+    List<DropdownMenuItem<String>> menuItems = [
+      const DropdownMenuItem(child: Text(""),value: ""),
+      const DropdownMenuItem(child: Text("XS"),value: "XS"),
+      const DropdownMenuItem(child: Text("S"),value: "S"),
+      const DropdownMenuItem(child: Text("M"),value: "M"),
+      const DropdownMenuItem(child: Text("L"),value: "L"),
+      const DropdownMenuItem(child: Text("XL"),value: "XL"),
+      const DropdownMenuItem(child: Text("XXL"),value: "XXL"),
+      const DropdownMenuItem(child: Text("XXXL"),value: "XXXL"),
+    ];
     return menuItems;
   }
 

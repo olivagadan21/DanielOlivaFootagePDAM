@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:footage_flutter/bloc/usuario/usuario_bloc.dart';
@@ -6,6 +8,7 @@ import 'package:footage_flutter/repository/usuario/usuario_repository.dart';
 import 'package:footage_flutter/repository/usuario/usuario_repository_impl.dart';
 import 'package:footage_flutter/style/styles.dart';
 import 'package:footage_flutter/ui/screens/editar_perfil.dart';
+import 'package:footage_flutter/ui/screens/login.dart';
 import 'package:footage_flutter/ui/widgets/error_page.dart';
 
 import '../../models/usuario/perfil_response.dart';
@@ -71,15 +74,27 @@ Widget _perfil(BuildContext context, ProfileResponse profileResponse) {
   return Scaffold(
     body: SingleChildScrollView(
       child: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(MediaQuery.of(context).size.height*0.04),
-          child: Column(
-            children: [
-              Row(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 25, top: 20, bottom: 20),
+              child: Container(
+                alignment: Alignment.topLeft,
+                child: const Text("Perfil", style: TextStyle(fontSize: 20),)
+              ),
+            ),
+            Container(
+              height: 5,
+              color: Colores.grismedioclaro,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top:20, bottom: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colores.blanco, width: 1),
+                      border: Border.all(color: Colores.negro, width: 1),
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: ClipRRect(
@@ -91,86 +106,158 @@ Widget _perfil(BuildContext context, ProfileResponse profileResponse) {
                     )
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: MediaQuery.of(context).size.height*0.02,),
+                    padding: EdgeInsets.only(left: MediaQuery.of(context).size.height*0.08,),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('${profileResponse.nombre} ${profileResponse.apellidos}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold), maxLines: 1, softWrap: false, overflow: TextOverflow.fade),
-                        Text(profileResponse.username, style: const TextStyle(fontSize: 18, color: Colores.gris, fontWeight: FontWeight.w500),)
+                        Text('${utf8.decode(utf8.encode(profileResponse.nombre))} ${utf8.decode(utf8.encode(profileResponse.apellidos))}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold), maxLines: 1, softWrap: false, overflow: TextOverflow.fade),
+                        Text(utf8.decode(utf8.encode(profileResponse.username)), style: const TextStyle(fontSize: 18, color: Colores.gris, fontWeight: FontWeight.w500),)
                       ],
                     ),
                   )
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.03),
-                child: SizedBox(
-                  width:MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height*0.05,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colores.blanco,
-                      side: const BorderSide(width: 1)
-                    ),
-                    onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const EditarPerfil()));},
-                    child: const Text("Editar perfil", style: TextStyle(fontSize: 18, color: Colores.negro),)
-                  ),
+            ),
+            Container(
+              height: 5,
+              color: Colores.grismedioclaro,
+            ),
+            SizedBox(
+              width:MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height*0.1,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colores.blanco,
+                  side: const BorderSide(width: 0, color: Colores.blanco)
                 ),
-              ),
-              DefaultTabController(
-                length: 2,
-                child: Scaffold(
-                  appBar: AppBar(
-                    bottom: const TabBar(
-                      tabs: [
-                        Icon(Icons.checkroom),
-                        Icon(Icons.favorite)
-                      ],
-                    ),
-                  ),
-                  body: TabBarView(
-                    children: [
-                      Flexible(
-                        child: GridView.builder(
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                          ),
-                          itemCount: profileResponse.articulos.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Card(
-                              color: Colors.white,
-                              child: Image(
-                                image: NetworkImage(profileResponse.articulos.elementAt(index).foto),
-                                fit: BoxFit.cover,
-                              )
-                            );
-                          }
-                        ),
-                      ),
-                      /* Flexible(
-                        child: GridView.builder(
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                          ),
-                          itemCount: profileResponse.meGustas.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Card(
-                              color: Colors.white,
-                              child: Image(
-                                image: NetworkImage(profileResponse.meGustas.elementAt(index).producto),
-                                fit: BoxFit.cover,
-                              )
-                            );
-                          }
-                        ),
-                      ), */
-                    ]
-                  ),
+                onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => EditarPerfil(profileResponse: profileResponse)));},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    Text("Editar Perfil", style: TextStyle(fontSize: 18, color: Colores.negro),),
+                    Icon(Icons.arrow_forward, color: Colores.grisoscuro,)
+                  ],
                 )
               ),
-            ],
-          ),
+            ),
+            Container(
+              height: 5,
+              color: Colores.grismedioclaro,
+            ),
+            Row(
+              children: <Widget> [
+                Expanded(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.2, right: MediaQuery.of(context).size.width*0.2, top: MediaQuery.of(context).size.width*0.05, bottom: MediaQuery.of(context).size.width*0.05),
+                          child: Card(
+                            color: Colores.blanco,
+                            child: Image(
+                              image: NetworkImage(profileResponse.articulos.elementAt(index).foto),
+                              fit: BoxFit.cover,
+                            )
+                          ),
+                        );
+                      },
+                      scrollDirection: Axis.vertical,
+                      itemCount: profileResponse.articulos.length,
+                    ),
+                  ),
+                ),
+              ],
+            )
+            /* 
+            SizedBox(
+              width:MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height*0.1,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colores.blanco,
+                  side: const BorderSide(width: 0, color: Colores.blanco)
+                ),
+                onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const EditarPerfil()));},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    Text("Tus Artículos", style: TextStyle(fontSize: 18, color: Colores.negro),),
+                    Icon(Icons.arrow_forward, color: Colores.grisoscuro,)
+                  ],
+                )
+              ),
+            ),
+            Container(
+              height: 5,
+              color: Colores.grismedioclaro,
+            ),
+            SizedBox(
+              width:MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height*0.1,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colores.blanco,
+                  side: const BorderSide(width: 0, color: Colores.blanco)
+                ),
+                onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const EditarPerfil()));},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    Text("Artículos Favoritos", style: TextStyle(fontSize: 18, color: Colores.negro),),
+                    Icon(Icons.arrow_forward, color: Colores.grisoscuro,)
+                  ],
+                )
+              ),
+            ),
+            Container(
+              height: 5,
+              color: Colores.grismedioclaro,
+            ),
+            SizedBox(
+              width:MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height*0.1,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colores.blanco,
+                  side: const BorderSide(width: 0, color: Colores.blanco)
+                ),
+                onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const EditarPerfil()));},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    Text("Mi Saldo", style: TextStyle(fontSize: 18, color: Colores.negro),),
+                    Icon(Icons.arrow_forward, color: Colores.grisoscuro,)
+                  ],
+                )
+              ),
+            ),
+            Container(
+              height: 5,
+              color: Colores.grismedioclaro,
+            ),
+            SizedBox(
+              width:MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height*0.1,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colores.blanco,
+                  side: const BorderSide(width: 0, color: Colores.blanco)
+                ),
+                onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    Text("Cerrar Sesión", style: TextStyle(fontSize: 18, color: Colores.negro),),
+                    Icon(Icons.arrow_forward, color: Colores.grisoscuro,)
+                  ],
+                )
+              ),
+            ), */
+          ],
         )
       ),
     ),

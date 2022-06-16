@@ -73,12 +73,15 @@ class _UsuarioScreenState extends State<DetalleUsuarioScreen> {
                         child: ListView.builder(
                           shrinkWrap: true,
                           itemBuilder: (BuildContext context, int index) {
-                            return Card(
-                              color: Colores.blanco,
-                              child: Image(
-                                image: NetworkImage(widget.usuarioResponse.articulos.elementAt(index).foto),
-                                fit: BoxFit.cover,
-                              )
+                            return Padding(
+                              padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.2, right: MediaQuery.of(context).size.width*0.2, top: MediaQuery.of(context).size.width*0.05, bottom: MediaQuery.of(context).size.width*0.05),
+                              child: Card(
+                                color: Colores.blanco,
+                                child: Image(
+                                  image: NetworkImage(widget.usuarioResponse.articulos.elementAt(index).foto),
+                                  fit: BoxFit.cover,
+                                )
+                              ),
                             );
                           },
                           scrollDirection: Axis.vertical,
